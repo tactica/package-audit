@@ -28,7 +28,6 @@ module Package
 
         gems = Ruby::GemFinder.outdated(specs)
 
-        puts
         if options[:csv]
           Ruby::GemPrinter.csv(gems, exclude_headers: options[:'exclude-headers'])
         else

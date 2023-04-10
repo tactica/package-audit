@@ -4,21 +4,14 @@ module Package
   module Audit
     module Ruby
       class BundlerSpecs
-        # return all specs
-        def self.all
-          Gem::Specification.latest_specs(true)
-        end
-
-        # include all gems within Gemfile and all of their dependencies, with bundler
+        # include all gems within Gemfile and all of their dependencies, without bundler
         def self.current_specs
-          Bundler::Definition.build(Pathname('Gemfile'), nil, nil).specs.map(&:to_spec)
+          Bundler::LockfileParser.new(File.read("#{Dir.pwd}/Gemfile.lock")).specs
         end
 
         # include only gems that are located within Gemfile
         def self.gemfile
-          current_dependencies = Bundler.ui.silence do
-            Bundler.load.dependencies.to_h { |dep| [dep.name, dep] }
-          end
+          current_dependencies = Bundler::LockfileParser.new(File.read("#{Dir.pwd}/Gemfile.lock")).dependencies
           gemfile_specs, = current_specs.partition do |spec|
             current_dependencies.key? spec.name
           end

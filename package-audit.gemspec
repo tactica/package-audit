@@ -6,17 +6,16 @@ Gem::Specification.new do |spec|
   spec.authors = ['Vadim Kononov']
   spec.email = ['support@tactica.ca']
 
-  spec.summary = 'Write a short summary, because RubyGems requires one.'
-  spec.description = 'Write a longer description or delete this line.'
-  spec.homepage = 'https://google.com'
+  spec.summary = 'Package audit is a helper tool to find outdated and vulnerable dependencies.'
+  spec.description = 'Package audit is designed to find outdated and vulnerable Ruby and Node dependencies.'
+  spec.homepage = 'https://github.com/tactica/package-audit'
   spec.license = 'MIT'
   spec.required_ruby_version = '>= 2.6.0'
 
   spec.metadata['allowed_push_host'] = "Set to your gem server 'https://example.com'"
 
   spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = 'https://google.com'
-  spec.metadata['changelog_uri'] = 'https://google.com'
+  spec.metadata['source_code_uri'] = 'https://github.com/tactica/package-audit'
 
   # Specify which files should be added to the gem when it is released.
   spec.files = Dir.glob('{lib,sig}/**/*', File::FNM_DOTMATCH)
