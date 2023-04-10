@@ -1,5 +1,5 @@
 module Package
   module Audit
-    VERSION = '0.1.1'
+    VERSION = '0.1.0'
   end
 end
