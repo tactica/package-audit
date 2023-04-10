@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.metadata['changelog_uri'] = 'https://google.com'
 
   # Specify which files should be added to the gem when it is released.
-  spec.files = Dir.glob('{lib,slg}/**/*', File::FNM_DOTMATCH)
+  spec.files = Dir.glob('{lib,sig}/**/*', File::FNM_DOTMATCH)
   spec.files << 'bin/package-audit'
   spec.bindir = 'bin'
   spec.executables = ['package-audit']
