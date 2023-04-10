@@ -1,0 +1,7 @@
+module Package
+  module Audit
+    class CLI
+      def outdated: -> void
+    end
+  end
+end

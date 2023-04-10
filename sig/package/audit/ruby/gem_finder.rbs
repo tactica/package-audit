@@ -1,0 +1,9 @@
+module Package
+  module Audit
+    module Ruby
+      class GemFinder
+        def self.outdated: (Array[Gem::Specification]) -> Array[GemData]
+      end
+    end
+  end
+end
