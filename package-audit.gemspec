@@ -25,6 +25,8 @@ Gem::Specification.new do |spec|
       (File.expand_path(f) == __FILE__) || f.start_with?(*%w[bin/ test/ spec/ features/ .git .circleci appveyor])
     end
   end
+  spec.files << 'bin/package_audit'
+
   spec.bindir = 'bin'
   spec.executables = ['package-audit']
   spec.require_paths = ['lib']
