@@ -11,7 +11,7 @@ module Package
       default_task :outdated
       map '--version' => :version
 
-      desc 'outdated [DIR]', 'Check the Gemfile for outdated gems'
+      desc 'outdated [DIR]', 'Check the Gemfile.lock for outdated gems'
       method_option :'only-explicit', type: :boolean, default: false,
                                       desc: 'Only include gem explicitly defined within Gemfile'
       method_option :csv, type: :boolean, default: false, desc: 'Output using comma separated values (CSV)'
@@ -55,14 +55,14 @@ module Package
 
       private
 
-      def exit_with_success(msg)
-        puts "\e[32m#{msg}\e[0m"
-        exit 0
-      end
-
       def exit_with_error(msg)
         puts "\e[31m#{msg}\e[0m"
         exit 1
+      end
+
+      def exit_with_success(msg)
+        puts "\e[32m#{msg}\e[0m"
+        exit 0
       end
     end
   end
