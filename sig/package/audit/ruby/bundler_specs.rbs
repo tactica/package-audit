@@ -1,0 +1,13 @@
+module Package
+  module Audit
+    module Ruby
+      class BundlerSpecs
+        def self.current_specs: (String) -> Array[Gem::Specification]
+
+        def self.gemfile: (String) -> Array[Gem::Specification]
+
+        def self.gemfile_dependencies: (String) -> Array[Gem::Specification]
+      end
+    end
+  end
+end

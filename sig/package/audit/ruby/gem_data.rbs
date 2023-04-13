@@ -1,0 +1,21 @@
+module Package
+  module Audit
+    module Ruby
+      class GemData
+        @curr_version: String
+        @curr_version_date: String
+        @latest_version: String
+        @latest_version_date: String
+        @name: String
+
+        attr_reader curr_version: String
+        attr_reader curr_version_date: String
+        attr_reader latest_version: String
+        attr_reader latest_version_date: String
+        attr_reader name: String
+
+        def to_csv: (Array[Symbol]) -> String
+      end
+    end
+  end
+end

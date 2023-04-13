@@ -1,0 +1,17 @@
+module Package
+  module Audit
+    class CLI
+      def self.exit_on_failure?: -> bool
+
+      def outdated: -> void
+
+      def version: -> void
+
+      private
+
+      def exit_with_error: (String) -> void
+
+      def exit_with_success: (String) -> void
+    end
+  end
+end

@@ -1,0 +1,24 @@
+AllCops:
+  TargetRubyVersion: 2.4.0
+  NewCops: enable
+  Exclude:
+    - .git/**/*
+    - vendor/bundle/**/*
+
+Layout/LineLength:
+  Max: 120
+
+Layout/SpaceInsideHashLiteralBraces:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 12
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/MutableConstant:
+  Enabled: false

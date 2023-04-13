@@ -1,0 +1,16 @@
+module Package
+  module Audit
+    module Ruby
+      class GemPrinter
+        COLUMN_GAP: int
+        CSV_HEADERS: Hash[Symbol, String]
+        FIELDS: Array[Symbol]
+        HEADERS: Hash[Symbol, String]
+
+        def self.csv: (Array[GemData], fields: Array[Symbol], exclude_headers: bool) -> void
+
+        def self.pretty: (Array[GemData]) -> void
+      end
+    end
+  end
+end
