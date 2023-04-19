@@ -2,8 +2,6 @@ require_relative '../dependency'
 require_relative './gem_meta_data'
 require_relative './vulnerability_finder'
 
-require 'bundler/lockfile_parser'
-
 module Package
   module Audit
     module Ruby
