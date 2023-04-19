@@ -1,0 +1,13 @@
+module Package
+  module Audit
+    module Enum
+      module Environment
+        DEFAULT: Symbol
+        DEV: Symbol
+        PRODUCTION: Symbol
+        STAGING: Symbol
+        TEST: Symbol
+      end
+    end
+  end
+end

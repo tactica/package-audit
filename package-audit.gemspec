@@ -6,25 +6,23 @@ Gem::Specification.new do |spec|
   spec.authors = ['Vadim Kononov']
   spec.email = ['support@tactica.ca']
 
-  spec.summary = 'Package audit is a helper tool to find outdated and vulnerable dependencies.'
-  spec.description = 'Package audit is designed to find outdated and vulnerable Ruby and Node dependencies.'
+  spec.summary = 'A helper tool to find outdated, deprecated and vulnerable dependencies.'
+  spec.description = 'A useful tool for patch management and prioritization, package-audit produces a list of dependencies that are outdated, deprecated or have security vulnerabilities.' # rubocop:disable Layout/LineLength
   spec.homepage = 'https://github.com/tactica/package-audit'
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 2.4.0'
-
-  spec.metadata['allowed_push_host'] = "Set to your gem server 'https://example.com'"
+  spec.required_ruby_version = '>= 2.7.0'
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/tactica/package-audit'
 
   # Specify which files should be added to the gem when it is released.
-  spec.files = Dir.glob('{lib,sig}/**/*', File::FNM_DOTMATCH)
-  spec.files << 'bin/package-audit'
-  spec.bindir = 'bin'
-  spec.executables = ['package-audit']
+  spec.files = Dir.glob('{exe,lib,sig}/**/*', File::FNM_DOTMATCH)
+  spec.bindir = 'exe'
+  spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
   # Uncomment to register a new dependency of your gem
+  spec.add_dependency 'bundler-audit', '~> 0.8'
   spec.add_dependency 'thor', '~> 1.2'
 
   # For more information and examples about making a new gem, check out our

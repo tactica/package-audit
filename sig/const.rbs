@@ -1,0 +1,5 @@
+module Const
+  SECONDS_ELAPSED_TO_BE_OUTDATED: Integer
+  YEARS_ELAPSED_TO_BE_OUTDATED: Integer
+  SECONDS_PER_YEAR: Integer
+end

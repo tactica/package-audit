@@ -1,0 +1,13 @@
+module Package
+  module Audit
+    module Formatter
+      class VersionDate
+        @date: String
+
+        def initialize: (String) -> void
+
+        def format: -> void
+      end
+    end
+  end
+end

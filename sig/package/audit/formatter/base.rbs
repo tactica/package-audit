@@ -1,0 +1,9 @@
+module Package
+  module Audit
+    module Formatter
+      class Base
+        def format: -> String
+      end
+    end
+  end
+end

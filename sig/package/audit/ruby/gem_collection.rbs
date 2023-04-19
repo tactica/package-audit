@@ -1,0 +1,15 @@
+module Package
+  module Audit
+    module Ruby
+      class GemCollection
+        def self.all: -> Array[Dependency]
+
+        def self.deprecated: -> Array[Dependency]
+
+        def self.outdated: (?include_implicit: bool) -> Array[Dependency]
+
+        def self.vulnerable: -> Array[Dependency]
+      end
+    end
+  end
+end

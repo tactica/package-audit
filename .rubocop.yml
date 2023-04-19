@@ -1,5 +1,11 @@
+require:
+  - rubocop-md
+  - rubocop-minitest
+  - rubocop-performance
+  - rubocop-rake
+
 AllCops:
-  TargetRubyVersion: 2.4.0
+  TargetRubyVersion: 2.7.0
   NewCops: enable
   Exclude:
     - .git/**/*
@@ -13,6 +19,8 @@ Layout/SpaceInsideHashLiteralBraces:
 
 Metrics/MethodLength:
   Max: 12
+  Exclude:
+    - lib/package/audit/cli.rb
 
 Style/Documentation:
   Enabled: false

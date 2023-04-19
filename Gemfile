@@ -6,6 +6,9 @@ gemspec
 group :development do
   gem 'rake'
 
+  # Type Checking
+  gem 'steep'
+
   # Code Linting
   gem 'rubocop', require: false
   gem 'rubocop-md', require: false
