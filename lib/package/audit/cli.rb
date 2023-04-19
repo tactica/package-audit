@@ -40,8 +40,8 @@ module Package
         else
           exit_with_success 'Bundle up to date!'
         end
-        rescue StandardError => e
-          exit_with_error "#{e.class}: #{e.message}"
+      rescue StandardError => e
+        exit_with_error "#{e.class}: #{e.message}"
       end
 
       desc 'version', 'Print the package-audit version'
