@@ -10,10 +10,10 @@ module Package
 
       COLUMN_GAP = 3
 
+      # the names of these fields must match the instance variables in the Dependency class
       FIELDS = %i[
         name
         version
-        version_date
         latest_version
         latest_version_date
         vulnerability
@@ -23,23 +23,12 @@ module Package
 
       HEADERS = {
         name: 'Gem',
-        version: 'Current',
+        version: 'Version',
         latest_version: 'Latest',
         latest_version_date: 'Latest Date',
         vulnerability: 'Vulnerability',
         risk_type: 'Risk',
         risk_explanation: 'Risk Explanation'
-      }
-
-      CSV_HEADERS = {
-        name: 'package',
-        version: 'curr_version',
-        version_date: 'version_date',
-        latest_version: 'latest_version',
-        latest_version_date: 'latest_version_date',
-        vulnerability: 'vulnerability',
-        risk_type: 'risk',
-        risk_explanation: 'risk_explanation'
       }
 
       def initialize(dependencies, options)
@@ -105,7 +94,7 @@ module Package
       def csv(fields, exclude_headers: false)
         return if @dependencies.empty?
 
-        puts fields.map { |field| CSV_HEADERS[field] }.join(',') unless exclude_headers
+        puts fields.join(',') unless exclude_headers
 
         @dependencies.map { |gem| puts gem.to_csv(fields) }
       end

@@ -57,12 +57,12 @@ module Package
       private
 
       def exit_with_error(msg)
-        puts BashColor.red msg
+        puts Util::BashColor.red msg
         exit 1
       end
 
       def exit_with_success(msg)
-        puts BashColor.green msg
+        puts Util::BashColor.green msg
         exit 0
       end
     end

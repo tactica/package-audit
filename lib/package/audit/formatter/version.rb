@@ -1,5 +1,5 @@
 require_relative './base'
-require_relative '../bash_color'
+require_relative '../util/bash_color'
 
 module Package
   module Audit
@@ -16,13 +16,13 @@ module Package
           target_tokens = @target.split('.')
 
           if curr_tokens[0] && curr_tokens[0] < target_tokens[0]
-            BashColor.orange(@curr)
+            Util::BashColor.orange(@curr)
           elsif curr_tokens[1] && curr_tokens[1] < target_tokens[1]
-            "#{curr_tokens[0]}.#{BashColor.yellow(curr_tokens[1..-1]&.join('.'))}"
+            "#{curr_tokens[0]}.#{Util::BashColor.yellow(curr_tokens[1..-1]&.join('.'))}"
           elsif curr_tokens[2] && curr_tokens[2] < target_tokens[2]
-            "#{curr_tokens[0..1]&.join('.')}.#{BashColor.green(curr_tokens[2..-1]&.join('.'))}"
+            "#{curr_tokens[0..1]&.join('.')}.#{Util::BashColor.green(curr_tokens[2..-1]&.join('.'))}"
           elsif curr_tokens[3] && curr_tokens[3] < target_tokens[3]
-            "#{curr_tokens[0..2]&.join('.')}.#{BashColor.green(curr_tokens[3])}"
+            "#{curr_tokens[0..2]&.join('.')}.#{Util::BashColor.green(curr_tokens[3])}"
           else
             @curr
           end

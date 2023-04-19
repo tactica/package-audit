@@ -1,5 +1,5 @@
 require_relative './base'
-require_relative '../bash_color'
+require_relative '../util/bash_color'
 
 module Package
   module Audit
@@ -16,7 +16,7 @@ module Package
           seconds_since_date = (Time.now - Time.parse(@date)).to_i
 
           if seconds_since_date >= SECONDS_PER_YEAR
-            BashColor.yellow(@date)
+            Util::BashColor.yellow(@date)
           else
             @date
           end

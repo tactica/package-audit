@@ -1,7 +1,7 @@
 require 'test_helper'
 
-require_relative '../../../../lib/package/audit/risk'
-require_relative '../../../../lib/package/audit/enum/risk_type'
+require_relative '../../../lib/package/audit/risk'
+require_relative '../../../lib/package/audit/enum/risk_type'
 
 module Package
   module Audit
