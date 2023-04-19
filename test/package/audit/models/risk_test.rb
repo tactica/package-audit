@@ -11,19 +11,19 @@ module Package
       end
 
       def test_the_overloaded_comparison_operator_works_correctly # rubocop:disable Metrics/AbcSize
-        assert_equal Risk.new(Enum::RiskType::NONE, nil), Risk.new(Enum::RiskType::NONE, nil)
-        assert_equal Risk.new(Enum::RiskType::LOW, nil), Risk.new(Enum::RiskType::LOW, nil)
-        assert_equal Risk.new(Enum::RiskType::MEDIUM, nil), Risk.new(Enum::RiskType::MEDIUM, nil)
-        assert_equal Risk.new(Enum::RiskType::HIGH, nil), Risk.new(Enum::RiskType::HIGH, nil)
+        assert_equal Risk.new(Enum::RiskType::NONE), Risk.new(Enum::RiskType::NONE)
+        assert_equal Risk.new(Enum::RiskType::LOW), Risk.new(Enum::RiskType::LOW)
+        assert_equal Risk.new(Enum::RiskType::MEDIUM), Risk.new(Enum::RiskType::MEDIUM)
+        assert_equal Risk.new(Enum::RiskType::HIGH), Risk.new(Enum::RiskType::HIGH)
 
-        assert Risk.new(Enum::RiskType::HIGH, nil) > Risk.new(Enum::RiskType::MEDIUM, nil)
-        assert Risk.new(Enum::RiskType::HIGH, nil) > Risk.new(Enum::RiskType::LOW, nil)
-        assert Risk.new(Enum::RiskType::HIGH, nil) > Risk.new(Enum::RiskType::NONE, nil)
+        assert Risk.new(Enum::RiskType::HIGH) > Risk.new(Enum::RiskType::MEDIUM)
+        assert Risk.new(Enum::RiskType::HIGH) > Risk.new(Enum::RiskType::LOW)
+        assert Risk.new(Enum::RiskType::HIGH) > Risk.new(Enum::RiskType::NONE)
 
-        assert Risk.new(Enum::RiskType::MEDIUM, nil) > Risk.new(Enum::RiskType::LOW, nil)
-        assert Risk.new(Enum::RiskType::MEDIUM, nil) > Risk.new(Enum::RiskType::NONE, nil)
+        assert Risk.new(Enum::RiskType::MEDIUM) > Risk.new(Enum::RiskType::LOW)
+        assert Risk.new(Enum::RiskType::MEDIUM) > Risk.new(Enum::RiskType::NONE)
 
-        assert Risk.new(Enum::RiskType::LOW, nil) > Risk.new(Enum::RiskType::NONE, nil)
+        assert Risk.new(Enum::RiskType::LOW) > Risk.new(Enum::RiskType::NONE)
       end
     end
   end

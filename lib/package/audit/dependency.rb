@@ -19,7 +19,7 @@ module Package
       end
 
       def risk
-        @risk ||= RiskCalculator.new(self).find || Risk.new(Enum::RiskType::NONE, nil)
+        @risk ||= RiskCalculator.new(self).find || Risk.new(Enum::RiskType::NONE)
       end
 
       def risk?

@@ -4,7 +4,7 @@ module Package
       attr_reader explanation: String?
       attr_reader type: String
 
-      def initialize: (String, String | nil)-> void
+      def initialize: (String, ?String?)-> void
 
       def <=>: (Risk) -> Integer?
     end

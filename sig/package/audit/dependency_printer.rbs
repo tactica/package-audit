@@ -12,13 +12,13 @@ module Package
 
       def initialize: (Array[Dependency], Hash[Symbol, untyped]) -> void
 
-      def print: -> void
+      def print: (?Array[Symbol]) -> void
 
       private
 
-      def csv: (?fields: Array[Symbol], ?exclude_headers: bool) -> void
+      def csv: (Array[Symbol], ?exclude_headers: bool) -> void
 
-      def pretty: -> void
+      def pretty: (Array[Symbol]) -> void
     end
   end
 end

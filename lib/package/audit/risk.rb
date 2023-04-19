@@ -5,7 +5,7 @@ module Package
 
       attr_reader :type, :explanation
 
-      def initialize(type, explanation)
+      def initialize(type, explanation = nil)
         @type = type
         @explanation = explanation
       end

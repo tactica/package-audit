@@ -25,7 +25,7 @@ module Package
         when Enum::VulnerabilityType::LOW
           Risk.new(Enum::RiskType::LOW, Enum::RiskExplanation::VULNERABILITY)
         else
-          Risk.new(Enum::RiskType::NONE, nil)
+          Risk.new(Enum::RiskType::NONE)
         end
       end
 
@@ -39,7 +39,7 @@ module Package
         elsif @dependency.version < @dependency.latest_version
           Risk.new(Enum::RiskType::LOW, Enum::RiskExplanation::OUTDATED)
         else
-          Risk.new(Enum::RiskType::NONE, nil)
+          Risk.new(Enum::RiskType::NONE)
         end
       end
     end

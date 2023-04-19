@@ -2,7 +2,7 @@ module Package
   module Audit
     module Formatter
       class Base
-        def print: -> void
+        def format: -> String
       end
     end
   end
