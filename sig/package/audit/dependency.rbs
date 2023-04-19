@@ -1,0 +1,28 @@
+module Package
+  module Audit
+    class Dependency
+      @risk: Risk
+
+      attr_accessor latest_version: String
+      attr_accessor latest_version_date: String
+      attr_reader name: String
+      attr_reader version: String
+      attr_accessor version_date: String
+      attr_accessor vulnerability: String
+
+      def initialize: (String, String) -> void
+
+      def risk?: -> bool
+
+      def risk: -> Risk
+
+      def risk_explanation: -> String?
+
+      def risk_type: -> String
+
+      def to_csv: (Array[Symbol]) -> String
+
+      def update: (**Hash[Symbol, String]) -> void
+    end
+  end
+end

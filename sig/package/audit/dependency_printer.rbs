@@ -1,0 +1,24 @@
+module Package
+  module Audit
+    class DependencyPrinter
+      BASH_FORMATTING_REGEX: Regexp
+      COLUMN_GAP: Integer
+      CSV_HEADERS: Hash[Symbol, String]
+      FIELDS: Array[Symbol]
+      HEADERS: Hash[Symbol, String]
+
+      @dependencies: Array[Dependency]
+      @options: Hash[Symbol, untyped]
+
+      def initialize: (Array[Dependency], Hash[Symbol, untyped]) -> void
+
+      def print: -> void
+
+      private
+
+      def csv: (?fields: Array[Symbol], ?exclude_headers: bool) -> void
+
+      def pretty: -> void
+    end
+  end
+end

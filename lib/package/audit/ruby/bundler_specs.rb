@@ -1,30 +1,33 @@
+require_relative '../dependency'
+require_relative './gem_meta_data'
+require_relative './vulnerability_finder'
+
 require 'bundler'
 
 module Package
   module Audit
     module Ruby
       class BundlerSpecs
-        # include all gems within Gemfile and all of their dependencies, without bundler
-        def self.current_specs(gemfile_lock_path)
-          Bundler::LockfileParser.new(File.read(gemfile_lock_path)).specs
+        def self.all(gemfile_lock_path)
+          gems_from_specs Bundler::LockfileParser.new(File.read(gemfile_lock_path)).specs
         end
 
-        # include only gems that are located within Gemfile
         def self.gemfile(gemfile_lock_path)
           current_dependencies = Bundler::LockfileParser.new(File.read(gemfile_lock_path)).dependencies
-          gemfile_specs, = current_specs(gemfile_lock_path).partition do |spec|
+          gems, = all(gemfile_lock_path).partition do |spec|
             current_dependencies.key? spec.name
           end
-          gemfile_specs
+          gems
         end
 
-        # include only the dependencies of gems within Gemfile (without the gems themselves)
-        def self.gemfile_dependencies(gemfile_lock_path)
-          current_dependencies = Bundler::LockfileParser.new(File.read(gemfile_lock_path)).dependencies
-          _, dependency_specs = current_specs(gemfile_lock_path).partition do |spec|
-            current_dependencies.key? spec.name
-          end
-          dependency_specs
+        def self.vulnerable(gemfile_lock_path)
+          gems = VulnerabilityFinder.gems(File.dirname(gemfile_lock_path))
+          GemMetaData.new(gems).find.filter(&:risk?)
+        end
+
+        private_class_method def self.gems_from_specs(specs)
+          gems = specs.map { |spec| Dependency.new spec.name, spec.version }
+          GemMetaData.new(gems).find.filter(&:risk?)
         end
       end
     end

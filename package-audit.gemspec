@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   # Uncomment to register a new dependency of your gem
+  spec.add_dependency 'bundler-audit', '~> 0.8'
   spec.add_dependency 'thor', '~> 1.2'
 
   # For more information and examples about making a new gem, check out our

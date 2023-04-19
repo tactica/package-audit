@@ -1,0 +1,19 @@
+module Package
+  module Audit
+    class RiskCalculator
+      SECONDS_PER_YEAR: Integer
+
+      @dependency: Dependency
+
+      def initialize: (Dependency) -> void
+
+      def find: -> Risk?
+
+      private
+
+      def assess_version_risk: -> Risk
+
+      def assess_vulnerability_risk: -> Risk
+    end
+  end
+end

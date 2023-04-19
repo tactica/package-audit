@@ -2,11 +2,13 @@ module Package
   module Audit
     module Ruby
       class BundlerSpecs
-        def self.current_specs: (String) -> Array[Gem::Specification]
+        def self.all: (String) -> Array[Dependency]
 
-        def self.gemfile: (String) -> Array[Gem::Specification]
+        def self.gemfile: (String) -> Array[Dependency]
 
-        def self.gemfile_dependencies: (String) -> Array[Gem::Specification]
+        def self.gems_from_specs: (Array[untyped]) -> Array[Dependency]
+
+        def self.vulnerable: (String) -> Array[Dependency]
       end
     end
   end

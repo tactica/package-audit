@@ -3,7 +3,7 @@ module Package
     class CLI
       def self.exit_on_failure?: -> bool
 
-      def outdated: -> void
+      def outdated: (String) -> void
 
       def version: -> void
 
