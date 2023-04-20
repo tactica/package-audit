@@ -17,6 +17,8 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
+      - name: Delete Gemfile.lock
+        run: rm Gemfile.lock
       - name: Install dependencies
         run: bundle install
       - name: Run tests
