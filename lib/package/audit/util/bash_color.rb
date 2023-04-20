@@ -17,6 +17,14 @@ module Package
         def self.red(str)
           "\e[31m#{str}\e[0m"
         end
+
+        def self.cyan(str)
+          "\e[36m#{str}\e[0m"
+        end
+
+        def self.magenta(str)
+          "\e[35m#{str}\e[0m"
+        end
       end
     end
   end

@@ -4,11 +4,15 @@ module Package
       module BashColor
         def self.green: (String?) -> String
 
+        def self.magenta: (String?) -> String
+
         def self.orange: (String?) -> String
 
         def self.red: (String?) -> String
 
         def self.yellow: (String?) -> String
+
+        def self.cyan: (String?) -> String
       end
     end
   end

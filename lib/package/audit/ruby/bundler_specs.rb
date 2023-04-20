@@ -18,11 +18,6 @@ module Package
           gems
         end
 
-        def self.vulnerable(gemfile_lock_path)
-          gems = VulnerabilityFinder.gems(File.dirname(gemfile_lock_path))
-          GemMetaData.new(gems).find.filter(&:risk?)
-        end
-
         private_class_method def self.gems_from_specs(specs)
           gems = specs.map { |spec| Dependency.new spec.name, spec.version }
           GemMetaData.new(gems).find.filter(&:risk?)
