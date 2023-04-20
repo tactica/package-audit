@@ -26,6 +26,16 @@ module Package
       assert_match 'All gems are at latest versions!', output
     end
 
+    def test_that_there_is_a_success_message_when_there_are_no_vulnerabilities
+      output = `bundle exec package-audit vulnerable test/files/empty`
+      assert_match 'No vulnerabilities found!', output
+    end
+
+    def test_that_there_is_a_success_message_when_there_are_no_deprecations
+      output = `bundle exec package-audit deprecated test/files/empty`
+      assert_match 'No potential deprecated have been found!', output
+    end
+
     def test_that_headers_overline_and_underliine_are_present
       output = `bundle exec package-audit outdated test/files/generic`
       lines = output.split(/\n/)
