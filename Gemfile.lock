@@ -103,7 +103,6 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rake
   steep
-  thor
 
 BUNDLED WITH
    2.4.10
