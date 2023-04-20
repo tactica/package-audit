@@ -8,8 +8,6 @@ module Package
         def initialize(dir, options)
           @dir = dir
           @options = options
-
-          raise "Gemfile.lock was not found in #{dir}/Gemfile.lock" unless File.exist?("#{dir}/Gemfile.lock")
         end
 
         def all
@@ -29,7 +27,7 @@ module Package
         end
 
         def outdated
-          specs = if @options['only-explicit']
+          specs = if @options[:'only-explicit']
                     BundlerSpecs.gemfile("#{@dir}/Gemfile.lock")
                   else
                     BundlerSpecs.all("#{@dir}/Gemfile.lock")
@@ -45,9 +43,11 @@ module Package
         def vulnerable
           gems = VulnerabilityFinder.gems(@dir)
 
-          GemMetaData.new(gems).find.filter do |gem|
+          gems = GemMetaData.new(gems).find.filter do |gem|
             gem.risk.explanation == Enum::RiskExplanation::VULNERABILITY
-          end.uniq { |gem| gem.name + gem.version }
+          end
+
+          gems.uniq { |gem| gem.name + gem.version }
         end
       end
     end

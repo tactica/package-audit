@@ -3,15 +3,27 @@ module Package
     class CLI
       def self.exit_on_failure?: -> bool
 
+      def deprecated: (String) -> void
+
       def outdated: (String) -> void
 
+      def report: (String) -> void
+
       def version: -> void
+
+      def vulnerable: (String) -> void
 
       private
 
       def exit_with_error: (String) -> void
 
       def exit_with_success: (String) -> void
+
+      def print_total: (Integer) -> void
+
+      def print_vulnerability_info: (String) -> void
+
+      def within_rescue_block: (String) { () -> void } -> void
     end
   end
 end

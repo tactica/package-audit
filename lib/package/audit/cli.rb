@@ -8,8 +8,9 @@ require 'thor'
 
 module Package
   module Audit
-    class CLI < ::Thor
-      default_task :find
+    class CLI < Thor
+      default_task :report
+
       map '--version' => :version
 
       desc 'report [DIR]', 'Produce a report of outdated, deprecated or vulnerable dependencies.'
@@ -17,7 +18,7 @@ module Package
       method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
 
       def report(dir = Dir.pwd)
-        within_rescue_block do
+        within_rescue_block(dir) do
           gems = Ruby::GemCollection.new(dir, options).all
           DependencyPrinter.new(gems, options).print
 
@@ -37,7 +38,7 @@ module Package
       method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
 
       def deprecated(dir = Dir.pwd)
-        within_rescue_block do
+        within_rescue_block(dir) do
           gems = Ruby::GemCollection.new(dir, options).deprecated
           DependencyPrinter.new(gems, options).print
 
@@ -57,7 +58,7 @@ module Package
       method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
 
       def outdated(dir = Dir.pwd)
-        within_rescue_block do
+        within_rescue_block(dir) do
           gems = Ruby::GemCollection.new(dir, options).outdated
           DependencyPrinter.new(gems, options).print
 
@@ -74,8 +75,8 @@ module Package
       method_option :csv, type: :boolean, default: false, desc: 'Output using comma separated values (CSV)'
       method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
 
-      def vulnerable(dir = Dir.pwd)
-        within_rescue_block do
+      def vulnerable(dir = Dir.pwd) # rubocop:disable Metrics/AbcSize
+        within_rescue_block(dir) do
           gems = Ruby::GemCollection.new(dir, options).vulnerable
           DependencyPrinter.new(gems, options).print(%i[name version latest_version vulnerability])
 
@@ -101,8 +102,10 @@ module Package
 
       private
 
-      def within_rescue_block(&block)
-        yield block
+      def within_rescue_block(dir)
+        raise "Gemfile.lock was not found in #{dir}/Gemfile.lock" unless File.exist?("#{dir}/Gemfile.lock")
+
+        yield
       rescue StandardError => e
         exit_with_error "#{e.class}: #{e.message}"
       end
