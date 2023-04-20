@@ -2,8 +2,6 @@ module Package
   module Audit
     module Formatter
       class VersionDate
-        SECONDS_PER_YEAR: Integer
-
         @date: String
 
         def initialize: (String) -> void

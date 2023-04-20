@@ -1,8 +1,6 @@
 module Package
   module Audit
     class RiskCalculator
-      SECONDS_PER_YEAR: Integer
-
       @dependency: Dependency
 
       def initialize: (Dependency) -> void

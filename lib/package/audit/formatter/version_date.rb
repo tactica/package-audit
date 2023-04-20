@@ -1,12 +1,13 @@
+require_relative '../const'
 require_relative './base'
 require_relative '../util/bash_color'
+
+require 'time'
 
 module Package
   module Audit
     module Formatter
       class VersionDate < Formatter::Base
-        SECONDS_PER_YEAR = 31_536_000 # assuming 24-hour days and 365-day years
-
         def initialize(date)
           super()
           @date = date
@@ -15,7 +16,7 @@ module Package
         def format
           seconds_since_date = (Time.now - Time.parse(@date)).to_i
 
-          if seconds_since_date >= SECONDS_PER_YEAR
+          if seconds_since_date >= Const::SECONDS_ELAPSED_TO_BE_OUTDATED
             Util::BashColor.yellow(@date)
           else
             @date

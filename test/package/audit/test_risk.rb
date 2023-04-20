@@ -5,7 +5,7 @@ require_relative '../../../lib/package/audit/enum/risk_type'
 
 module Package
   module Audit
-    class RiskTest < Minitest::Test
+    class TestRisk < Minitest::Test
       def test_that_there_are_only_specific
         assert_equal %i[NONE LOW MEDIUM HIGH].sort, Enum::RiskType.constants.sort
       end

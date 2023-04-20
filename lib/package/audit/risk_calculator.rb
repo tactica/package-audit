@@ -1,8 +1,8 @@
+require_relative './const'
+
 module Package
   module Audit
     class RiskCalculator
-      SECONDS_PER_YEAR = 31_536_000 # assuming 24-hour days and 365-day years
-
       def initialize(dependency)
         @dependency = dependency
       end
@@ -32,7 +32,8 @@ module Package
       def assess_version_risk # rubocop:disable Metrics/AbcSize
         seconds_since_date = (Time.now - Time.parse(@dependency.latest_version_date)).to_i
 
-        if @dependency.version == @dependency.latest_version && seconds_since_date >= SECONDS_PER_YEAR
+        if @dependency.version == @dependency.latest_version &&
+           seconds_since_date >= Const::SECONDS_ELAPSED_TO_BE_OUTDATED
           Risk.new(Enum::RiskType::MEDIUM, Enum::RiskExplanation::POTENTIAL_DEPRECATION)
         elsif (@dependency.version.split('.').first || '') < (@dependency.latest_version.split('.').first || '')
           Risk.new(Enum::RiskType::MEDIUM, Enum::RiskExplanation::OUTDATED_BY_MAJOR_VERSION)
