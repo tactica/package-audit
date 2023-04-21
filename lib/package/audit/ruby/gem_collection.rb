@@ -5,49 +5,41 @@ module Package
   module Audit
     module Ruby
       class GemCollection
-        def initialize(dir, options)
-          @dir = dir
+        def initialize(options)
           @options = options
         end
 
         def all
-          specs = BundlerSpecs.gemfile("#{@dir}/Gemfile.lock")
-          gemfile_gems = specs.map { |spec| Dependency.new spec.name, spec.version }
-          vulnerable_gems = VulnerabilityFinder.gems(@dir)
-          GemMetaData.new(gemfile_gems + vulnerable_gems).find.sort_by(&:name).uniq { |gem| gem.name + gem.version }
+          specs = BundlerSpecs.gemfile
+          dependencies = specs.map { |spec| Dependency.new(spec.name, spec.version) }
+          vulnerable_deps = VulnerabilityFinder.run
+          GemMetaData.new(dependencies + vulnerable_deps).fetch.sort_by(&:name).uniq(&:name)
         end
 
         def deprecated
-          specs = BundlerSpecs.gemfile("#{@dir}/Gemfile.lock")
-          gems = specs.map { |spec| Dependency.new spec.name, spec.version }
+          specs = BundlerSpecs.gemfile
+          dependencies = specs.map { |spec| Dependency.new(spec.name, spec.version) }
 
-          GemMetaData.new(gems).find.filter do |gem|
-            gem.risk.explanation == Enum::RiskExplanation::POTENTIAL_DEPRECATION
-          end
+          GemMetaData.new(dependencies).fetch.filter do |dep|
+            dep.risk.explanation == Enum::RiskExplanation::POTENTIAL_DEPRECATION
+          end.sort_by(&:name).uniq(&:name)
         end
 
         def outdated
-          specs = if @options[:'only-explicit']
-                    BundlerSpecs.gemfile("#{@dir}/Gemfile.lock")
-                  else
-                    BundlerSpecs.all("#{@dir}/Gemfile.lock")
-                  end
+          specs = @options[:'only-explicit'] ? BundlerSpecs.gemfile : BundlerSpecs.all
+          dependencies = specs.map { |spec| Dependency.new(spec.name, spec.version) }
 
-          gems = specs.map { |spec| Dependency.new spec.name, spec.version }
-
-          GemMetaData.new(gems).find.filter do |gem|
-            gem.version < gem.latest_version
-          end
+          GemMetaData.new(dependencies).fetch.filter do |dep|
+            dep.version < dep.latest_version
+          end.sort_by(&:name).uniq(&:name)
         end
 
         def vulnerable
-          gems = VulnerabilityFinder.gems(@dir)
+          dependencies = VulnerabilityFinder.run
 
-          gems = GemMetaData.new(gems).find.filter do |gem|
-            gem.risk.explanation == Enum::RiskExplanation::VULNERABILITY
-          end
-
-          gems.uniq { |gem| gem.name + gem.version }
+          GemMetaData.new(dependencies).fetch.filter do |dep|
+            dep.risk.explanation == Enum::RiskExplanation::VULNERABILITY
+          end.sort_by(&:name).uniq(&:name)
         end
       end
     end

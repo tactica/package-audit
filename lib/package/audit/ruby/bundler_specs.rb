@@ -6,21 +6,19 @@ module Package
   module Audit
     module Ruby
       class BundlerSpecs
-        def self.all(gemfile_lock_path)
-          gems_from_specs Bundler::LockfileParser.new(File.read(gemfile_lock_path)).specs
+        def self.all
+          Bundler.ui.silence { Bundler.definition.resolve }
         end
 
-        def self.gemfile(gemfile_lock_path)
-          current_dependencies = Bundler::LockfileParser.new(File.read(gemfile_lock_path)).dependencies
-          gems, = all(gemfile_lock_path).partition do |spec|
+        def self.gemfile
+          current_dependencies = Bundler.ui.silence do
+            Bundler.load.dependencies.to_h { |dep| [dep.name, dep] }
+          end
+
+          gemfile_specs, = all.partition do |spec|
             current_dependencies.key? spec.name
           end
-          gems
-        end
-
-        private_class_method def self.gems_from_specs(specs)
-          gems = specs.map { |spec| Dependency.new spec.name, spec.version }
-          GemMetaData.new(gems).find.filter(&:risk?)
+          gemfile_specs
         end
       end
     end

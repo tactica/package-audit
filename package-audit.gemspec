@@ -18,10 +18,9 @@ Gem::Specification.new do |spec|
   spec.metadata['source_code_uri'] = 'https://github.com/tactica/package-audit'
 
   # Specify which files should be added to the gem when it is released.
-  spec.files = Dir.glob('{lib,sig}/**/*', File::FNM_DOTMATCH)
-  spec.files << 'bin/package-audit'
-  spec.bindir = 'bin'
-  spec.executables = ['package-audit']
+  spec.files = Dir.glob('{exe,lib,sig}/**/*', File::FNM_DOTMATCH)
+  spec.bindir = 'exe'
+  spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
   # Uncomment to register a new dependency of your gem

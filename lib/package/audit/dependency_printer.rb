@@ -16,7 +16,8 @@ module Package
         version
         latest_version
         latest_version_date
-        vulnerability
+        groups
+        vulnerabilities
         risk_type
         risk_explanation
       ]
@@ -26,7 +27,8 @@ module Package
         version: 'Version',
         latest_version: 'Latest',
         latest_version_date: 'Latest Date',
-        vulnerability: 'Vulnerability',
+        groups: 'Groups',
+        vulnerabilities: 'Vulnerabilities',
         risk_type: 'Risk',
         risk_explanation: 'Risk Explanation'
       }
@@ -54,7 +56,14 @@ module Package
         fields.each do |key|
           instance_variable_set "@max_#{key}", HEADERS[key].length
           @dependencies.each do |gem|
-            curr_field_length = gem.send(key)&.gsub(BASH_FORMATTING_REGEX, '')&.length || 0
+            curr_field_length = case key
+                                when :vulnerabilities
+                                  gem.vulnerability_groups.length
+                                when :groups
+                                  gem.group_list.length
+                                else
+                                  gem.send(key)&.gsub(BASH_FORMATTING_REGEX, '')&.length || 0
+                                end
             max_field_length = instance_variable_get "@max_#{key}"
             instance_variable_set "@max_#{key}", [curr_field_length, max_field_length].max
           end
@@ -69,18 +78,20 @@ module Package
         }.join(' ' * COLUMN_GAP)
         puts '=' * line_length
 
-        @dependencies.each do |gem|
+        @dependencies.each do |dep|
           puts fields.map { |key|
-            val = gem.send(key) || ''
+            val = dep.send(key) || ''
             val = case key
+                  when :groups
+                    dep.group_list
                   when :risk_type
-                    Formatter::Risk.new(gem.risk.type).format
+                    Formatter::Risk.new(dep.risk.type).format
                   when :version
-                    Formatter::Version.new(gem.version, gem.latest_version).format
-                  when :vulnerability
-                    Formatter::Vulnerability.new(gem.vulnerability).format
+                    Formatter::Version.new(dep.version, dep.latest_version).format
+                  when :vulnerabilities
+                    Formatter::Vulnerability.new(dep.vulnerabilities).format
                   when :latest_version_date
-                    Formatter::VersionDate.new(gem.latest_version_date).format
+                    Formatter::VersionDate.new(dep.latest_version_date).format
                   else
                     val
                   end

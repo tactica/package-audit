@@ -7,11 +7,13 @@ module Package
   module Audit
     class Dependency
       attr_reader :name, :version
-      attr_accessor :version_date, :latest_version, :latest_version_date, :vulnerability
+      attr_accessor :groups, :version_date, :latest_version, :latest_version_date, :vulnerability, :vulnerabilities
 
       def initialize(name, version)
         @name = name.to_s
         @version = version.to_s
+        @groups = []
+        @vulnerabilities = []
       end
 
       def update(**attr)
@@ -26,6 +28,14 @@ module Package
         risk.type != Enum::RiskType::NONE
       end
 
+      def group_list
+        @groups.join('|')
+      end
+
+      def vulnerability_groups
+        @vulnerabilities.group_by(&:itself).map { |k, v| "#{k} (#{v.length})" }.join(', ')
+      end
+
       def risk_type
         risk.type
       end
@@ -36,6 +46,10 @@ module Package
 
       def to_csv(fields)
         fields.map { |field| send(field) }.join(',')
+      end
+
+      def to_s
+        "#{@name} #{@version} - [#{@groups.sort.join(', ')}]"
       end
     end
   end

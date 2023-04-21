@@ -7,6 +7,7 @@ group :development do
   gem 'rake'
 
   # Type Checking
+  gem 'rails', '6.0.0'
   gem 'steep'
 
   # Code Linting
