@@ -142,10 +142,13 @@ GEM
     zeitwerk (2.6.7)
 
 PLATFORMS
+  arm64-darwin-21
   arm64-darwin-22
+  x86_64-darwin-22
+  x86_64-linux
 
 DEPENDENCIES
-  fileutils (= 1.5)
+  fileutils (<= 5.1.0)
   rails (< 7.0.0)
 
 BUNDLED WITH

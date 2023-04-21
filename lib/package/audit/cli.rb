@@ -115,7 +115,7 @@ module Package
       def print_vulnerability_info
         printf("\n%<info>s\n%<cmd>s\n",
                info: 'To get more information about the vulnerabilities run:',
-               cmd: Util::BashColor.magenta(' > bundle exec bundle-audit check --update'))
+               cmd: Util::BashColor.magenta(' > bundle-audit check --update'))
       end
 
       def exit_with_error(msg)
