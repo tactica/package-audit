@@ -7,7 +7,7 @@ module Package
   module Audit
     class Dependency
       attr_reader :name, :version
-      attr_accessor :groups, :version_date, :latest_version, :latest_version_date, :vulnerability, :vulnerabilities
+      attr_accessor :groups, :version_date, :latest_version, :latest_version_date, :vulnerabilities
 
       def initialize(name, version)
         @name = name.to_s
@@ -32,7 +32,7 @@ module Package
         @groups.join('|')
       end
 
-      def vulnerability_groups
+      def vulnerabilities_grouped
         @vulnerabilities.group_by(&:itself).map { |k, v| "#{k} (#{v.length})" }.join(', ')
       end
 

@@ -19,7 +19,7 @@ module Package
 
       def report
         within_rescue_block do
-          gems = Ruby::GemCollection.new(options).all
+          gems = Ruby::GemCollection.all
           DependencyPrinter.new(gems, options).print
 
           if gems.any?
@@ -39,7 +39,7 @@ module Package
 
       def deprecated
         within_rescue_block do
-          gems = Ruby::GemCollection.new(options).deprecated
+          gems = Ruby::GemCollection.deprecated
           DependencyPrinter.new(gems, options).print
 
           if gems.any?
@@ -59,7 +59,7 @@ module Package
 
       def outdated
         within_rescue_block do
-          gems = Ruby::GemCollection.new(options).outdated
+          gems = Ruby::GemCollection.outdated
           DependencyPrinter.new(gems, options).print
 
           if gems.any?
@@ -75,9 +75,9 @@ module Package
       method_option :csv, type: :boolean, default: false, desc: 'Output using comma separated values (CSV)'
       method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
 
-      def vulnerable # rubocop:disable Metrics/AbcSize
+      def vulnerable
         within_rescue_block do
-          gems = Ruby::GemCollection.new(options).vulnerable
+          gems = Ruby::GemCollection.vulnerable
           DependencyPrinter.new(gems, options).print(%i[name version latest_version groups vulnerabilities])
 
           if gems.any?

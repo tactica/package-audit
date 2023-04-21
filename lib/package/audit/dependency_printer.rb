@@ -58,7 +58,7 @@ module Package
           @dependencies.each do |gem|
             curr_field_length = case key
                                 when :vulnerabilities
-                                  gem.vulnerability_groups.length
+                                  gem.vulnerabilities_grouped.length
                                 when :groups
                                   gem.group_list.length
                                 else

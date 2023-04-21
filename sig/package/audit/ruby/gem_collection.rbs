@@ -2,18 +2,13 @@ module Package
   module Audit
     module Ruby
       class GemCollection
-        @dir: String
-        @options: Hash[Symbol, untyped]
+        def self.all: -> Array[Dependency]
 
-        def initialize: (String, Hash[Symbol, untyped]) -> void
+        def self.deprecated: -> Array[Dependency]
 
-        def all: -> Array[Dependency]
+        def self.outdated: -> Array[Dependency]
 
-        def deprecated: -> Array[Dependency]
-
-        def outdated: -> Array[Dependency]
-
-        def vulnerable: -> Array[Dependency]
+        def self.vulnerable: -> Array[Dependency]
       end
     end
   end

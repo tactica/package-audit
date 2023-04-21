@@ -1,16 +1,21 @@
 module Package
   module Audit
     class Dependency
+      @groups: Array[Symbol]
       @risk: Risk
+      @vulnerabilities: Array[String]
 
+      attr_accessor groups: Array[Symbol]
       attr_accessor latest_version: String
       attr_accessor latest_version_date: String
       attr_reader name: String
       attr_reader version: String
       attr_accessor version_date: String
-      attr_accessor vulnerability: String
+      attr_accessor vulnerabilities: Array[String]
 
       def initialize: (String, String) -> void
+
+      def group_list: -> String
 
       def risk?: -> bool
 
@@ -22,7 +27,9 @@ module Package
 
       def to_csv: (Array[Symbol]) -> String
 
-      def update: (**Hash[Symbol, String]) -> void
+      def update: (**Hash[Symbol, untyped]) -> void
+
+      def vulnerabilities_grouped: -> String
     end
   end
 end

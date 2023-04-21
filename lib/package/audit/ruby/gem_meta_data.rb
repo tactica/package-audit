@@ -6,13 +6,13 @@ module Package
       class GemMetaData
         def initialize(dependencies)
           @dependencies = dependencies
-          @gems = {}
+          @gem_hash = {}
         end
 
         def fetch
           find_rubygems_metadata
           assign_groups
-          @gems.values
+          @gem_hash.values
         end
 
         private
@@ -35,20 +35,20 @@ module Package
               local_version_date = remote_spec.date if local_version == remote_spec.version
             end
 
-            @gems[dep.name] = dep
+            @gem_hash[dep.name] = dep
             dep.update latest_version: latest_version.to_s,
                        version_date: local_version_date.strftime('%Y-%m-%d'),
                        latest_version_date: latest_version_date.strftime('%Y-%m-%d')
           end
         end
 
-        def assign_groups
+        def assign_groups # rubocop:disable Metrics/AbcSize
           definition = Bundler.definition
           groups = definition.groups.uniq.sort
           groups.each do |group|
             specs = definition.specs_for([group])
             specs.each do |spec|
-              @gems[spec.name].update(groups: @gems[spec.name].groups | [group]) if @gems.key? spec.name
+              @gem_hash[spec.name].update(groups: @gem_hash[spec.name].groups | [group]) if @gem_hash.key? spec.name
             end
           end
         end

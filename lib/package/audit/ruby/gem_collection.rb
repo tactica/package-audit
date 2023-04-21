@@ -5,18 +5,14 @@ module Package
   module Audit
     module Ruby
       class GemCollection
-        def initialize(options)
-          @options = options
-        end
-
-        def all
+        def self.all
           specs = BundlerSpecs.gemfile
           dependencies = specs.map { |spec| Dependency.new(spec.name, spec.version) }
           vulnerable_deps = VulnerabilityFinder.run
-          GemMetaData.new(dependencies + vulnerable_deps).fetch.sort_by(&:name).uniq(&:name)
+          GemMetaData.new(dependencies + vulnerable_deps).fetch.filter(&:risk?).sort_by(&:name).uniq(&:name)
         end
 
-        def deprecated
+        def self.deprecated
           specs = BundlerSpecs.gemfile
           dependencies = specs.map { |spec| Dependency.new(spec.name, spec.version) }
 
@@ -25,16 +21,18 @@ module Package
           end.sort_by(&:name).uniq(&:name)
         end
 
-        def outdated
-          specs = @options[:'only-explicit'] ? BundlerSpecs.gemfile : BundlerSpecs.all
+        def self.outdated
+          specs = BundlerSpecs.gemfile
           dependencies = specs.map { |spec| Dependency.new(spec.name, spec.version) }
+
+          puts BundlerSpecs.all.class
 
           GemMetaData.new(dependencies).fetch.filter do |dep|
             dep.version < dep.latest_version
           end.sort_by(&:name).uniq(&:name)
         end
 
-        def vulnerable
+        def self.vulnerable
           dependencies = VulnerabilityFinder.run
 
           GemMetaData.new(dependencies).fetch.filter do |dep|
