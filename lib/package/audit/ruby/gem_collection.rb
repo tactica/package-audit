@@ -25,8 +25,6 @@ module Package
           specs = BundlerSpecs.gemfile
           dependencies = specs.map { |spec| Dependency.new(spec.name, spec.version) }
 
-          puts BundlerSpecs.all.class
-
           GemMetaData.new(dependencies).fetch.filter do |dep|
             dep.version < dep.latest_version
           end.sort_by(&:name).uniq(&:name)

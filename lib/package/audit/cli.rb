@@ -103,9 +103,12 @@ module Package
       private
 
       def within_rescue_block
+        raise "Gemfile was not found in #{Dir.pwd}/Gemfile" unless File.exist?("#{Dir.pwd}/Gemfile")
+        raise "Gemfile.lock was not found in #{Dir.pwd}/Gemfile.lock" unless File.exist?("#{Dir.pwd}/Gemfile.lock")
+
         yield
-        # rescue StandardError => e
-        #   exit_with_error "#{e.class}: #{e.message}"
+        rescue StandardError => e
+          exit_with_error "#{e.class}: #{e.message}"
       end
 
       def print_total(num)

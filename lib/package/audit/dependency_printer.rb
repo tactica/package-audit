@@ -39,6 +39,10 @@ module Package
       end
 
       def print(fields = FIELDS)
+        if (fields - FIELDS).any?
+          raise ArgumentError, "#{fields - FIELDS} are not valid field names. Available fields names are: #{FIELDS}."
+        end
+
         if @options[:csv]
           csv(fields, exclude_headers: @options[:'exclude-headers'])
         else

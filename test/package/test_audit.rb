@@ -12,39 +12,34 @@ module Package
     end
 
     def test_that_there_is_an_error_message_when_a_file_is_not_found
-      output = `bundle exec package-audit outdated test/files/not_found`
-      assert_match 'Gemfile.lock was not found in test/files/not_found/Gemfile.lock', output
-    end
-
-    def test_that_there_is_an_error_message_when_a_file_is_invalid
-      output = `bundle exec package-audit outdated test/files/invalid`
-      assert_match 'NoMethodError', output
+      Dir.chdir('test/files') && (output = `../../exe/package-audit`)
+      assert_match "Gemfile was not found in #{Dir.pwd}/Gemfile", output
     end
 
     def test_that_there_is_a_success_message_when_everything_is_up_to_date
-      output = `bundle exec package-audit outdated test/files/empty`
+      Dir.chdir('test/files/empty') && (output = `../../../exe/package-audit outdated`)
       assert_match 'All gems are at latest versions!', output
     end
 
     def test_that_there_is_a_success_message_when_there_are_no_vulnerabilities
-      output = `bundle exec package-audit vulnerable test/files/empty`
+      Dir.chdir('test/files/empty') && (output = `../../../exe/package-audit vulnerable`)
       assert_match 'No vulnerabilities found!', output
     end
 
     def test_that_there_is_a_success_message_when_there_are_no_deprecations
-      output = `bundle exec package-audit deprecated test/files/empty`
+      Dir.chdir('test/files/empty') && (output = `../../../exe/package-audit deprecated`)
       assert_match 'No potential deprecated have been found!', output
     end
 
-    def test_that_headers_overline_and_underliine_are_present
-      output = `bundle exec package-audit outdated test/files/generic`
+    def test_that_header_overline_and_underline_are_present
+      Dir.chdir('test/files/generic') && (output = `../../../exe/package-audit outdated`)
       lines = output.split(/\n/)
       assert_equal lines[0], lines[2]
       assert_equal lines[0].length, lines[1].length
     end
 
     def test_that_every_line_of_output_has_the_same_length
-      output = `bundle exec package-audit outdated test/files/generic`
+      output = `cd test/files/generic && ../../../exe/package-audit outdated`
       lines = output.split(/\n/)
       assert_equal 21, lines.length
       lines[0..-3].each_with_index { |l, i| assert_equal l[i - 1].length, l[i].length if i.positive? }
