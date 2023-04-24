@@ -106,7 +106,7 @@ module Package
         end
       end
 
-      def csv(fields, exclude_headers: false)
+      def csv(fields, exclude_headers: false) # rubocop:disable Metrics/MethodLength
         return if @dependencies.empty?
 
         value_fields = fields.map do |field|

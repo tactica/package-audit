@@ -32,7 +32,7 @@ module Package
           puts Util::BashColor.cyan("\nFound a total of #{num} gems.")
         end
 
-        def self.risk
+        def self.risk # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           puts Util::BashColor.blue('1. Check if the dependency has a security vulnerability.')
           puts '   If yes, the following vulnerability -> risk mapping is used:'
           puts "      - #{Util::BashColor.red('unknown')} vulnerability\t-> #{Util::BashColor.red('high')} risk"
@@ -52,7 +52,7 @@ module Package
           puts Util::BashColor.blue('3. Check if a newer version of the dependency is available.')
 
           puts '   If yes, assign risk as follows:'
-          puts "      - #{Util::BashColor.orange('major version')} mismatch\t-> #{Util::BashColor.orange('medium')} risk"
+          puts "      - #{Util::BashColor.orange('major version')} mismatch\t-> #{Util::BashColor.orange('medium')} risk" # rubocop:disable Layout/LineLength
           puts "      - #{Util::BashColor.yellow('minor version')} mismatch\t-> #{Util::BashColor.yellow('low')} risk"
           puts "      - #{Util::BashColor.green('patch version')} mismatch\t-> #{Util::BashColor.yellow('low')} risk"
           puts "      - #{Util::BashColor.green('build version')} mismatch\t-> #{Util::BashColor.yellow('low')} risk"
@@ -61,7 +61,7 @@ module Package
 
           puts Util::BashColor.blue('4. Take the highest risk from the first 3 steps.')
           puts '   If two risks match in severity, use the following precedence:'
-          puts "      - #{Util::BashColor.red('vulnerability')} > #{Util::BashColor.orange('deprecation')} > #{Util::BashColor.yellow('outdatedness')}"
+          puts "      - #{Util::BashColor.red('vulnerability')} > #{Util::BashColor.orange('deprecation')} > #{Util::BashColor.yellow('outdatedness')}" # rubocop:disable Layout/LineLength
 
           puts
 

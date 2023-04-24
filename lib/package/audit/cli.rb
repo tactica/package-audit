@@ -59,7 +59,7 @@ module Package
       method_option :csv, type: :boolean, default: false, desc: 'Output using comma separated values (CSV)'
       method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
 
-      def outdated
+      def outdated # rubocop:disable Metrics/AbcSize
         within_rescue_block do
           gems = Ruby::GemCollection.outdated(include_implicit: options[:'include-implicit'])
           DependencyPrinter.new(gems, options).print(%i[name version latest_version latest_version_date groups])

@@ -57,7 +57,8 @@ module Package
       end
 
       def production_dependency?
-        @dependency.groups.none? || (@dependency.groups & [Enum::Environment::DEFAULT, Enum::Environment::PRODUCTION]).any?
+        @dependency.groups.none? || (@dependency.groups & [Enum::Environment::DEFAULT,
+                                                           Enum::Environment::PRODUCTION]).any?
       end
     end
   end

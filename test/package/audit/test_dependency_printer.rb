@@ -9,13 +9,17 @@ require_relative '../../../lib/package/audit/dependency'
 module Package
   module Audit
     class TestDependencyPrinter < Minitest::Test
-      def setup
+      def setup # rubocop:disable Metrics/MethodLength
         @today = Time.now.strftime('%Y-%m-%d')
         @fileutils = Dependency.new 'fileutils', '1.5.0'
         @fileutils.update latest_version: '1.7.1', latest_version_date: @today, groups: %i[default]
         @rails = Dependency.new 'rails', '6.0.0'
         @rails.update latest_version: '7.0.4.3', latest_version_date: @today, groups: %i[default],
-                      vulnerabilities: [Enum::VulnerabilityType::MEDIUM, Enum::VulnerabilityType::HIGH, Enum::VulnerabilityType::HIGH]
+                      vulnerabilities: [
+                        Enum::VulnerabilityType::MEDIUM,
+                        Enum::VulnerabilityType::HIGH,
+                        Enum::VulnerabilityType::HIGH
+                      ]
         @puma = Dependency.new 'puma', '5.1.1'
         @puma.update latest_version: '5.1.1', latest_version_date: '2020-12-10', groups: %i[development test]
         @gems = [@fileutils, @puma, @rails]
@@ -50,7 +54,7 @@ module Package
         assert_equal "rails      #{Util::BashColor.orange('6.0.0')}    7.0.4.3  #{@today} ", lines[5]
       end
 
-      def test_that_the_dependencies_are_displayed_correctly_in_csv_with_headers
+      def test_that_the_dependencies_are_displayed_correctly_in_csv_with_headers # rubocop:disable Metrics/AbcSize
         columns = %i[name version latest_version groups]
         DependencyPrinter.new(@gems, {csv: true}).print(columns)
         lines = @output.string.split("\n")
