@@ -33,7 +33,7 @@ module Package
       end
 
       def vulnerabilities_grouped
-        @vulnerabilities.group_by(&:itself).map { |k, v| "#{k} (#{v.length})" }.join(', ')
+        @vulnerabilities.group_by(&:itself).map { |k, v| "#{k}(#{v.length})" }.join('|')
       end
 
       def risk_type

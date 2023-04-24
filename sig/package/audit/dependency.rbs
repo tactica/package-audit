@@ -27,7 +27,7 @@ module Package
 
       def to_csv: (Array[Symbol]) -> String
 
-      def update: (**Hash[Symbol, untyped]) -> void
+      def update: (**untyped) -> void
 
       def vulnerabilities_grouped: -> String
     end

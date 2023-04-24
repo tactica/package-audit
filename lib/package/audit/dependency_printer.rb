@@ -109,9 +109,19 @@ module Package
       def csv(fields, exclude_headers: false)
         return if @dependencies.empty?
 
-        puts fields.join(',') unless exclude_headers
+        value_fields = fields.map do |field|
+          case field
+          when :groups
+            :group_list
+          when :vulnerabilities
+            :vulnerabilities_grouped
+          else
+            field
+          end
+        end
 
-        @dependencies.map { |gem| puts gem.to_csv(fields) }
+        puts fields.join(',') unless exclude_headers
+        @dependencies.map { |gem| puts gem.to_csv(value_fields) }
       end
     end
   end

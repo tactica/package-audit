@@ -66,7 +66,7 @@ module Package
 
           if gems.any?
             Util::SummaryPrinter.total(gems.length) unless options[:csv]
-            Util::SummaryPrinter.outdated options[:'include-implicit'] || options[:csv]
+            Util::SummaryPrinter.outdated unless options[:'include-implicit'] || options[:csv]
             exit 1
           else
             exit_with_success 'All gems are at latest versions!'
