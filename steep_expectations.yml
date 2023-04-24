@@ -3,40 +3,40 @@
   diagnostics:
   - range:
       start:
-        line: 10
+        line: 12
         character: 10
       end:
-        line: 10
+        line: 12
         character: 17
     severity: WARNING
     message: 'Cannot find the declaration of constant: `Bundler`'
     code: Ruby::UnknownConstant
   - range:
       start:
-        line: 10
+        line: 12
         character: 31
       end:
-        line: 10
+        line: 12
         character: 38
     severity: WARNING
     message: 'Cannot find the declaration of constant: `Bundler`'
     code: Ruby::UnknownConstant
   - range:
       start:
-        line: 14
+        line: 16
         character: 33
       end:
-        line: 14
+        line: 16
         character: 40
     severity: WARNING
     message: 'Cannot find the declaration of constant: `Bundler`'
     code: Ruby::UnknownConstant
   - range:
       start:
-        line: 15
+        line: 17
         character: 12
       end:
-        line: 15
+        line: 17
         character: 19
     severity: WARNING
     message: 'Cannot find the declaration of constant: `Bundler`'
@@ -73,17 +73,3 @@
     severity: WARNING
     message: 'Cannot find the declaration of constant: `Bundler`'
     code: Ruby::UnknownConstant
-  - range:
-      start:
-        line: 51
-        character: 50
-      end:
-        line: 51
-        character: 87
-    severity: ERROR
-    message: |-
-      Cannot pass a value of type `::Array[untyped]` as an argument of type `::Hash[::Symbol, untyped]`
-        ::Array[untyped] <: ::Hash[::Symbol, untyped]
-          ::Object <: ::Hash[::Symbol, untyped]
-            ::BasicObject <: ::Hash[::Symbol, untyped]
-    code: Ruby::ArgumentTypeMismatch

@@ -6,7 +6,7 @@ module Package
 
         def self.deprecated: -> Array[Dependency]
 
-        def self.outdated: (include_implicit: bool) -> Array[Dependency]
+        def self.outdated: (?include_implicit: bool) -> Array[Dependency]
 
         def self.vulnerable: -> Array[Dependency]
       end
