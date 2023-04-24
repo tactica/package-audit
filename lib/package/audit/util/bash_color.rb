@@ -25,6 +25,10 @@ module Package
         def self.magenta(str)
           "\e[35m#{str}\e[0m"
         end
+
+        def self.blue(str)
+          "\e[34m#{str}\e[0m"
+        end
       end
     end
   end

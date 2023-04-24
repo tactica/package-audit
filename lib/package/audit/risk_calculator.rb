@@ -17,8 +17,11 @@ module Package
       private
 
       def assess_vulnerability_risk
-        if (@dependency.vulnerabilities & [Enum::VulnerabilityType::UNKNOWN, Enum::VulnerabilityType::CRITICAL,
-                                           Enum::VulnerabilityType::HIGH]).any?
+        if (@dependency.vulnerabilities & [
+          Enum::VulnerabilityType::UNKNOWN,
+          Enum::VulnerabilityType::CRITICAL,
+          Enum::VulnerabilityType::HIGH
+        ]).any?
           Risk.new(Enum::RiskType::HIGH, Enum::RiskExplanation::VULNERABILITY)
         elsif @dependency.vulnerabilities.include? Enum::VulnerabilityType::MEDIUM
           Risk.new(Enum::RiskType::MEDIUM, Enum::RiskExplanation::VULNERABILITY)

@@ -2,6 +2,8 @@ module Package
   module Audit
     module Util
       module BashColor
+        def self.blue: (String?) -> String
+
         def self.green: (String?) -> String
 
         def self.magenta: (String?) -> String

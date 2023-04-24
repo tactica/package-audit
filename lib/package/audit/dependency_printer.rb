@@ -8,7 +8,7 @@ module Package
     class DependencyPrinter
       BASH_FORMATTING_REGEX = /\e\[\d+(?:;\d+)*m/
 
-      COLUMN_GAP = 3
+      COLUMN_GAP = 2
 
       # the names of these fields must match the instance variables in the Dependency class
       FIELDS = %i[

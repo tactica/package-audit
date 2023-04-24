@@ -11,6 +11,7 @@ module Package
         def test_that_todays_date_has_no_special_color
           date = Date.today.strftime('%Y-%m-%d')
           format = VersionDate.new(date).format
+
           assert_equal date, format
         end
 
@@ -19,6 +20,7 @@ module Package
           time_in_seconds = (Time.now.to_i - (Const::SECONDS_ELAPSED_TO_BE_OUTDATED - one_day_in_seconds))
           date = Time.at(time_in_seconds).strftime('%Y-%m-%d')
           format = VersionDate.new(date).format
+
           assert_equal date, format
         end
 
@@ -26,6 +28,7 @@ module Package
           time_in_seconds = (Time.now.to_i - Const::SECONDS_ELAPSED_TO_BE_OUTDATED)
           date = Time.at(time_in_seconds).strftime('%Y-%m-%d')
           format = VersionDate.new(date).format
+
           assert_equal Util::BashColor.yellow(date), format
         end
       end

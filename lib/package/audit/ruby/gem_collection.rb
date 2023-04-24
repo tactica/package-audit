@@ -21,8 +21,8 @@ module Package
           end.sort_by(&:name).uniq(&:name)
         end
 
-        def self.outdated
-          specs = BundlerSpecs.gemfile
+        def self.outdated(include_implicit: false)
+          specs = include_implicit ? BundlerSpecs.all : BundlerSpecs.gemfile
           dependencies = specs.map { |spec| Dependency.new(spec.name, spec.version) }
 
           GemMetaData.new(dependencies).fetch.filter do |dep|

@@ -1,4 +1,6 @@
+require_relative './const'
 require_relative './version'
+require_relative './util/summary_printer'
 require_relative './ruby/bundler_specs'
 require_relative './dependency_printer'
 require_relative './ruby/gem_collection'
@@ -13,7 +15,7 @@ module Package
 
       map '--version' => :version
 
-      desc 'report', 'Produce a report of outdated, deprecated or vulnerable dependencies.'
+      desc 'report', 'Show a report of potentially deprecated, outdated or vulnerable gems'
       method_option :csv, type: :boolean, default: false, desc: 'Output using comma separated values (CSV)'
       method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
 
@@ -23,7 +25,8 @@ module Package
           DependencyPrinter.new(gems, options).print
 
           if gems.any?
-            puts Util::BashColor.cyan("\nFound a total of #{gems.length} gems.") unless options[:csv]
+            Util::SummaryPrinter.total(gems.length) unless options[:csv]
+            Util::SummaryPrinter.report unless options[:csv]
             exit 1
           else
             exit_with_success 'There are no deprecated, outdated or vulnerable gems!'
@@ -31,19 +34,18 @@ module Package
         end
       end
 
-      desc 'deprecated', 'Check the Gemfile.lock for deprecated gems'
-      method_option :'only-explicit', type: :boolean, default: false,
-                                      desc: 'Only include gems explicitly defined within Gemfile'
+      desc 'deprecated', "Show gems with no updates by author for at least #{Const::YEARS_ELAPSED_TO_BE_OUTDATED} years"
       method_option :csv, type: :boolean, default: false, desc: 'Output using comma separated values (CSV)'
       method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
 
       def deprecated
         within_rescue_block do
           gems = Ruby::GemCollection.deprecated
-          DependencyPrinter.new(gems, options).print
+          DependencyPrinter.new(gems, options).print(%i[name version latest_version latest_version_date groups])
 
           if gems.any?
-            print_total(gems.length) unless options[:csv]
+            Util::SummaryPrinter.total(gems.length) unless options[:csv]
+            Util::SummaryPrinter.deprecated unless options[:csv]
             exit 1
           else
             exit_with_success 'No potential deprecated have been found!'
@@ -51,19 +53,20 @@ module Package
         end
       end
 
-      desc 'outdated', 'Check the Gemfile.lock for outdated gems'
-      method_option :'only-explicit', type: :boolean, default: false,
-                                      desc: 'Only include gems explicitly defined within Gemfile'
+      desc 'outdated', 'Show gems, and optionally their dependencies, that are out of date'
+      method_option :'include-implicit', type: :boolean, default: false,
+                                         desc: 'Only both gems specified in Gemfile and their dependencies'
       method_option :csv, type: :boolean, default: false, desc: 'Output using comma separated values (CSV)'
       method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
 
       def outdated
         within_rescue_block do
-          gems = Ruby::GemCollection.outdated
-          DependencyPrinter.new(gems, options).print
+          gems = Ruby::GemCollection.outdated(include_implicit: options[:'include-implicit'])
+          DependencyPrinter.new(gems, options).print(%i[name version latest_version latest_version_date groups])
 
           if gems.any?
-            print_total(gems.length) unless options[:csv]
+            Util::SummaryPrinter.total(gems.length) unless options[:csv]
+            Util::SummaryPrinter.outdated options[:'include-implicit'] || options[:csv]
             exit 1
           else
             exit_with_success 'All gems are at latest versions!'
@@ -71,7 +74,7 @@ module Package
         end
       end
 
-      desc 'vulnerable', 'Check the Gemfile.lock for vulnerable gems'
+      desc 'vulnerable', 'Show gems and their dependencies that have security vulnerabilities'
       method_option :csv, type: :boolean, default: false, desc: 'Output using comma separated values (CSV)'
       method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
 
@@ -81,8 +84,8 @@ module Package
           DependencyPrinter.new(gems, options).print(%i[name version latest_version groups vulnerabilities])
 
           if gems.any?
-            print_total(gems.length) unless options[:csv]
-            print_vulnerability_info unless options[:csv]
+            Util::SummaryPrinter.total(gems.length) unless options[:csv]
+            Util::SummaryPrinter.vulnerable unless options[:csv]
             exit 1
           else
             exit_with_success 'No vulnerabilities found!'
@@ -90,7 +93,7 @@ module Package
         end
       end
 
-      desc 'version', 'Print the package-audit version'
+      desc 'version', 'Print the currently installed version of the package-audit gem'
 
       def version
         puts "package-audit #{VERSION}"
@@ -107,18 +110,8 @@ module Package
         raise "Gemfile.lock was not found in #{Dir.pwd}/Gemfile.lock" unless File.exist?("#{Dir.pwd}/Gemfile.lock")
 
         yield
-        rescue StandardError => e
-          exit_with_error "#{e.class}: #{e.message}"
-      end
-
-      def print_total(num)
-        puts Util::BashColor.cyan("\nFound a total of #{num} gems.") unless options[:csv]
-      end
-
-      def print_vulnerability_info
-        printf("\n%<info>s\n%<cmd>s\n",
-               info: 'To get more information about the vulnerabilities run:',
-               cmd: Util::BashColor.magenta(' > bundle-audit check --update'))
+      rescue StandardError => e
+        exit_with_error "#{e.class}: #{e.message}"
       end
 
       def exit_with_error(msg)

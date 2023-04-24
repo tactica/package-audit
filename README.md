@@ -36,7 +36,7 @@ require 'package-audit'
     ```bash
     bundle exec package-audit outdated
     ```
-  
+
 * To show only the outdated packages that are explicitly included within `Gemfile`:
 
     ```bash
