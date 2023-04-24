@@ -93,6 +93,12 @@ module Package
         end
       end
 
+      desc 'risk', 'Print information on how risk is calculated'
+
+      def risk
+        Util::SummaryPrinter.risk
+      end
+
       desc 'version', 'Print the currently installed version of the package-audit gem'
 
       def version

@@ -9,6 +9,8 @@ module Package
 
       def report: (String) -> void
 
+      def risk: -> void
+
       def version: -> void
 
       def vulnerable: (String) -> void

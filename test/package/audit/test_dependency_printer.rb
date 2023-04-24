@@ -14,7 +14,8 @@ module Package
         @fileutils = Dependency.new 'fileutils', '1.5.0'
         @fileutils.update latest_version: '1.7.1', latest_version_date: @today, groups: %i[default]
         @rails = Dependency.new 'rails', '6.0.0'
-        @rails.update latest_version: '7.0.4.3', latest_version_date: @today, groups: %i[default], vulnerabilities: [Enum::VulnerabilityType::MEDIUM, Enum::VulnerabilityType::HIGH, Enum::VulnerabilityType::HIGH]
+        @rails.update latest_version: '7.0.4.3', latest_version_date: @today, groups: %i[default],
+                      vulnerabilities: [Enum::VulnerabilityType::MEDIUM, Enum::VulnerabilityType::HIGH, Enum::VulnerabilityType::HIGH]
         @puma = Dependency.new 'puma', '5.1.1'
         @puma.update latest_version: '5.1.1', latest_version_date: '2020-12-10', groups: %i[development test]
         @gems = [@fileutils, @puma, @rails]

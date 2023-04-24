@@ -9,9 +9,13 @@ module Package
 
       private
 
+      def assess_deprecation_risk: -> Risk
+
       def assess_version_risk: -> Risk
 
       def assess_vulnerability_risk: -> Risk
+
+      def production_dependency?: -> bool
     end
   end
 end

@@ -89,7 +89,7 @@ module Package
                   when :groups
                     dep.group_list
                   when :risk_type
-                    Formatter::Risk.new(dep.risk.type).format
+                    Formatter::Risk.new(dep.risk_type).format
                   when :version
                     Formatter::Version.new(dep.version, dep.latest_version).format
                   when :vulnerabilities
