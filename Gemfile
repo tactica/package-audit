@@ -8,6 +8,7 @@ group :development do
 
   # Type Checking
   gem 'steep'
+  gem 'parallel', '1.21.0'
 
   # Code Linting
   gem 'rubocop', require: false
