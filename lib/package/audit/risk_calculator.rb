@@ -36,9 +36,12 @@ module Package
       end
 
       def assess_version_risk
-        if (@dependency.version.split('.').first || '') < (@dependency.latest_version.split('.').first || '')
+        version_parts = @dependency.version.split('.').map(&:to_i)
+        latest_version_parts = @dependency.latest_version.split('.').map(&:to_i)
+
+        if (version_parts.first || 0) < (latest_version_parts.first || 0)
           Risk.new(Enum::RiskType::MEDIUM, Enum::RiskExplanation::OUTDATED_BY_MAJOR_VERSION)
-        elsif @dependency.version < @dependency.latest_version
+        elsif (version_parts <=> latest_version_parts) == -1
           Risk.new(Enum::RiskType::LOW, Enum::RiskExplanation::OUTDATED)
         else
           Risk.new(Enum::RiskType::NONE)
