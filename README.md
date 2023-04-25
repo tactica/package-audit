@@ -1,7 +1,9 @@
 # Package::Audit
 
 [![Gem Version](https://badge.fury.io/rb/package-audit.svg)](https://rubygems.org/gems/package-audit)
-[![Test Status](https://github.com/tactica/package-audit/actions/workflows/test.yml/badge.svg)](https://github.com/tactica/package-audit/actions)
+[![Lint Status](https://github.com/tactica/package-audit/actions/workflows/lint.yml/badge.svg)](https://github.com/tactica/package-audit/actions/workflows/lint.yml)
+[![Test Status](https://github.com/tactica/package-audit/actions/workflows/test.yml/badge.svg)](https://github.com/tactica/package-audit/actions/workflows/test.yml)
+[![RBS Status](https://github.com/tactica/package-audit/actions/workflows/rbs.yml/badge.svg)](https://github.com/tactica/package-audit/actions/workflows/rbs.yml)
 
 A useful tool for patch management and prioritization, `package-audit` produces a list of dependencies that are outdated, deprecated or have security vulnerabilities.
 
