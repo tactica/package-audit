@@ -23,7 +23,7 @@ module Package
       ]
 
       HEADERS = {
-        name: 'Gem',
+        name: 'Package',
         version: 'Version',
         latest_version: 'Latest',
         latest_version_date: 'Latest Date',
