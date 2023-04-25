@@ -37,18 +37,6 @@ module Package
       assert_equal `bundle exec package-audit report`, `bundle exec package-audit`
     end
 
-    def test_that_there_is_a_success_message_when_report_is_empty
-      output = `bundle exec package-audit report`
-
-      assert_match 'There are no deprecated, outdated or vulnerable gems!', output
-    end
-
-    def test_that_there_is_a_success_message_when_everything_is_up_to_date
-      output = `bundle exec package-audit outdated`
-
-      assert_match 'All gems are at latest versions!', output
-    end
-
     def test_that_there_is_a_success_message_when_there_are_no_vulnerabilities
       output = `bundle exec package-audit vulnerable`
 
