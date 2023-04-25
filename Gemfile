@@ -7,8 +7,8 @@ group :development do
   gem 'rake'
 
   # Type Checking
-  gem 'steep'
-  gem 'parallel', '1.21.0'
+  gem 'parallel', '1.22.1'
+  gem 'steep', '1.3.2'
 
   # Code Linting
   gem 'rubocop', require: false
