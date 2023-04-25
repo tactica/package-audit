@@ -5,9 +5,9 @@ A useful tool for patch management and prioritization, `package-audit` produces 
 Here's an example of the report:
 
 ```
-==================================================================================================================================================
+========================================================================================================================
 Package                  Version  Latest   Latest Date  Vulnerabilities                Risk    Risk Explanation         
-==================================================================================================================================================
+========================================================================================================================
 actionpack               6.0.0    7.0.4.3  2023-03-13   high(6) medium(6) unknown(2)   high    security vulnerability   
 actionview               6.0.0    7.0.4.3  2023-03-13   medium(4)                      medium  security vulnerability   
 activerecord             6.0.0    7.0.4.3  2023-03-13   medium(1) critical(1) high(2)  high    security vulnerability   
