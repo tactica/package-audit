@@ -14,10 +14,6 @@ jobs:
       - uses: actions/checkout@v3
       - name: Delete Gemfile.lock
         run: rm Gemfile.lock
-      - name: Update RubyGems
-        run: gem update --system
-      - name: Install latest bundler
-        run: gem install bundler
       - name: Set up Ruby ${{ matrix.ruby }}
         uses: ruby/setup-ruby@v1
         with:
