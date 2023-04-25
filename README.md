@@ -1,6 +1,6 @@
 # Package::Audit
 
-Package audit is a helper tool to find outdated and vulnerable dependencies.
+A useful tool for patch management and prioritization, `package-audit` produces a list of dependencies that are outdated, deprecated or have security vulnerabilities.
 
 ## Installation
 
@@ -31,28 +31,28 @@ require 'package-audit'
 ## Usage
 
 
-* To show all outdated packages:
+* To produce a report of vulnerable, deprecated and outdated packages run:
 
     ```bash
-    bundle exec package-audit outdated
+    bundle exec package-audit
     ```
 
-* To show only the outdated packages that are explicitly included within `Gemfile`:
+* To show how risk is calculated for the above report run:
 
     ```bash
-    bundle exec package-audit outdated --only-explicit
+    bundle exec package-audit risk
     ```
 
-* To output the results as a CSV, use `--csv` for any command, e.g.:
+* To produce the same report in a CSV format run:
 
     ```bash
-    bundle exec package-audit outdated --only-explicit --csv
+    bundle exec package-audit --csv
     ```
 
-* To omit headers when using the `csv` option, include `--exclude-headers`, e.g.:
+* For a list of other commands and their options run:
 
     ```bash
-    bundle exec package-audit outdated --only-explicit --csv --exclude-headers
+    bundle exec package-audit --help
     ```
 
 ## Development
