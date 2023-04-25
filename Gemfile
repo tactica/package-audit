@@ -7,7 +7,6 @@ group :development do
   gem 'rake'
 
   # Type Checking
-  gem 'activesupport', '< 7.0.0.0'
   gem 'parallel', '1.22.1'
   gem 'parser', '3.2.2.0'
   gem 'steep', '1.3.1'
