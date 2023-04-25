@@ -7,7 +7,7 @@ target :lib do
   ignore 'lib/package/audit/cli.rb'
 
   # Standard libraries
-  library 'json', 'set'
-  library 'pathname', 'set'
-  library 'time', 'set'
+  library 'json'
+  library 'pathname'
+  library 'time'
 end

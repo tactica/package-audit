@@ -38,11 +38,15 @@ module Package
     end
 
     def test_that_there_is_a_success_message_when_report_is_empty
-      refute system 'bundle exec package-audit report'
+      output = `bundle exec package-audit report`
+
+      assert_match 'There are no deprecated, outdated or vulnerable gems!', output
     end
 
     def test_that_there_is_a_success_message_when_everything_is_up_to_date
-      refute system 'bundle exec package-audit outdated'
+      output = `bundle exec package-audit outdated`
+
+      assert_match 'All gems are at latest versions!', output
     end
 
     def test_that_there_is_a_success_message_when_there_are_no_vulnerabilities
