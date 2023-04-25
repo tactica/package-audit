@@ -1,8 +1,11 @@
 # Package::Audit
 
+[![Gem Version](https://badge.fury.io/rb/package-audit.svg)](https://rubygems.org/gems/package-audit)
+[![Test Status](https://github.com/tactica/package-audit/actions/workflows/test.yml/badge.svg)](https://github.com/tactica/package-audit/actions)
+
 A useful tool for patch management and prioritization, `package-audit` produces a list of dependencies that are outdated, deprecated or have security vulnerabilities.
 
-Here's an example of the report:
+Here's an example of such a report:
 
 ```
 ========================================================================================================================
@@ -85,10 +88,16 @@ require 'package-audit'
     bundle exec package-audit --csv
     ```
 
-* For a list of other commands and their options run:
+* For a list of other useful commands and their options run:
 
     ```bash
-    bundle exec package-audit --help
+    bundle exec package-audit help
+    ```
+  
+    OR
+
+    ```bash
+    bundle exec package-audit help [COMMAND]
     ```
 
 ## Development
