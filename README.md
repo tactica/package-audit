@@ -4,6 +4,7 @@ A useful tool for patch management and prioritization, `package-audit` produces 
 
 Here's an example of the report:
 
+```
 ===========================================================================================================================
 Gem                      Version  Latest   Latest Date  Groups       Vulnerabilities      Risk    Risk Explanation         
 ===========================================================================================================================
@@ -30,6 +31,7 @@ spring-watcher-listen    2.0.1    2.1.0    2022-09-23   development             
 stripe                   6.0.0    8.5.0    2023-03-30   default                           medium  behind by a major version
 
 Found a total of 21 gems.
+```
 
 ## Installation
 
