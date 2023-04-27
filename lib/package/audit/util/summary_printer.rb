@@ -12,7 +12,7 @@ module Package
         end
 
         def self.deprecated
-          puts Util::BashColor.blue("\nAlthough packages listed above have no recent updates, they may not be deprecated.")
+          puts Util::BashColor.blue("\nAlthough the packages above have no recent updates, they may not be deprecated.")
           puts Util::BashColor.blue("Please contact the package author for more information about its status.\n")
         end
 
@@ -27,24 +27,24 @@ module Package
         end
 
         def self.risk # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-          puts Util::BashColor.blue('1. Check if the dependency has a security vulnerability.')
+          puts Util::BashColor.blue('1. Check if the package has a security vulnerability.')
           puts '   If yes, the following vulnerability -> risk mapping is used:'
           puts "      - #{Util::BashColor.red('unknown')} vulnerability\t-> #{Util::BashColor.red('high')} risk"
           puts "      - #{Util::BashColor.red('critical')} vulnerability\t-> #{Util::BashColor.red('high')} risk"
           puts "      - #{Util::BashColor.red('high')} vulnerability\t-> #{Util::BashColor.red('high')} risk"
           puts "      - #{Util::BashColor.orange('medium')} vulnerability\t-> #{Util::BashColor.orange('medium')} risk"
-          puts "      - #{Util::BashColor.orange('moderate')} vulnerability\t-> #{Util::BashColor.orange('medium')} risk"
+          puts "      - #{Util::BashColor.orange('moderate')} vulnerability\t-> #{Util::BashColor.orange('medium')} risk" # rubocop:disable Layout/LineLength
           puts "      - #{Util::BashColor.yellow('low')} vulnerability\t-> #{Util::BashColor.yellow('low')} risk"
 
           puts
 
-          puts Util::BashColor.blue('2. Check the dependency for potential deprecation.')
+          puts Util::BashColor.blue('2. Check the package for potential deprecation.')
           puts "   If no new releases by author for at least #{Const::YEARS_ELAPSED_TO_BE_OUTDATED} years:"
           puts "      - assign the risk to\t-> #{Util::BashColor.orange('medium')} risk"
 
           puts
 
-          puts Util::BashColor.blue('3. Check if a newer version of the dependency is available.')
+          puts Util::BashColor.blue('3. Check if a newer version of the package is available.')
 
           puts '   If yes, assign risk as follows:'
           puts "      - #{Util::BashColor.orange('major version')} mismatch\t-> #{Util::BashColor.orange('medium')} risk" # rubocop:disable Layout/LineLength
@@ -60,8 +60,8 @@ module Package
 
           puts
 
-          puts Util::BashColor.blue('5. Check whether the dependency is used in production or not.')
-          puts '   If a dependency is limited to a non-production environment:'
+          puts Util::BashColor.blue('5. Check whether the package is used in production or not.')
+          puts '   If a package is limited to a non-production environment:'
           puts "      - cap risk severity to\t -> #{Util::BashColor.orange('medium')} risk"
         end
       end

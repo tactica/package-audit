@@ -4,15 +4,15 @@ module Package
       class NpmMetaData
         REGISTRY_URL: String
 
-        @packages: Array[Dependency]
+        @packages: Array[Package]
 
-        def initialize: (Array[Dependency]) -> void
+        def initialize: (Array[Package]) -> void
 
-        def fetch: -> Array[Dependency]
+        def fetch: -> Array[Package]
 
         private
 
-        def update_meta_data: (Dependency, Hash[Symbol, untyped]) -> void
+        def update_meta_data: (Package, Hash[Symbol, untyped]) -> void
       end
     end
   end

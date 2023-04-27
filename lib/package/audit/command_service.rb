@@ -2,7 +2,7 @@ require_relative './const'
 
 module Package
   module Audit
-    class CommandService
+    class CommandService # rubocop:disable Metrics/ClassLength
       GEMFILE = 'Gemfile'
       GEMFILE_LOCK = 'Gemfile.lock'
       PACKAGE_JSON = 'package.json'
@@ -17,13 +17,13 @@ module Package
         @options = options
       end
 
-      def all
+      def all # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/PerceivedComplexity
         pkgs = []
 
         if ruby?
           gems = Ruby::GemCollection.all
           pkgs += gems
-          DependencyPrinter.new(gems, @options).print(Const::REPORT_FIELDS)
+          Printer.new(gems, @options).print(Const::REPORT_FIELDS)
 
           unless @options[:csv]
             if gems.any?
@@ -38,7 +38,7 @@ module Package
         if node?
           npms = Npm::NodeCollection.new(@dir).all
           pkgs += npms
-          DependencyPrinter.new(npms, @options).print(Const::REPORT_FIELDS)
+          Printer.new(npms, @options).print(Const::REPORT_FIELDS)
 
           unless @options[:csv]
             if npms.any?
@@ -50,16 +50,16 @@ module Package
           end
         end
 
-        exit pkgs.any? ? 1 : 0
+        pkgs.any?
       end
 
-      def vulnerable
+      def vulnerable # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/PerceivedComplexity
         pkgs = []
 
         if ruby?
           gems = Ruby::GemCollection.vulnerable
           pkgs += gems
-          DependencyPrinter.new(gems, @options).print(Const::VULNERABLE_FIELDS)
+          Printer.new(gems, @options).print(Const::VULNERABLE_FIELDS)
 
           unless @options[:csv]
             if gems.any?
@@ -74,7 +74,7 @@ module Package
         if node?
           npms = Npm::NodeCollection.new(@dir).vulnerable
           pkgs += npms
-          DependencyPrinter.new(npms, @options).print(Const::VULNERABLE_FIELDS)
+          Printer.new(npms, @options).print(Const::VULNERABLE_FIELDS)
 
           unless @options[:csv]
             if npms.any?
@@ -86,16 +86,16 @@ module Package
           end
         end
 
-        exit pkgs.any? ? 1 : 0
+        pkgs.any?
       end
 
-      def outdated
+      def outdated # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/PerceivedComplexity
         pkgs = []
 
         if ruby?
           gems = Ruby::GemCollection.outdated
           pkgs += gems
-          DependencyPrinter.new(gems, @options).print(Const::OUTDATED_FIELDS)
+          Printer.new(gems, @options).print(Const::OUTDATED_FIELDS)
 
           unless @options[:csv]
             if gems.any?
@@ -109,7 +109,7 @@ module Package
         if node?
           npms = Npm::NodeCollection.new(@dir).outdated
           pkgs += npms
-          DependencyPrinter.new(npms, @options).print(Const::OUTDATED_FIELDS)
+          Printer.new(npms, @options).print(Const::OUTDATED_FIELDS)
 
           unless @options[:csv]
             if npms.any?
@@ -120,16 +120,16 @@ module Package
           end
         end
 
-        exit pkgs.any? ? 1 : 0
+        pkgs.any?
       end
 
-      def deprecated
+      def deprecated # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/PerceivedComplexity
         pkgs = []
 
         if ruby?
           gems = Ruby::GemCollection.deprecated
           pkgs += gems
-          DependencyPrinter.new(gems, @options).print(Const::OUTDATED_FIELDS)
+          Printer.new(gems, @options).print(Const::OUTDATED_FIELDS)
 
           unless @options[:csv]
             if gems.any?
@@ -144,7 +144,7 @@ module Package
         if node?
           npms = Npm::NodeCollection.new(@dir).deprecated
           pkgs += npms
-          DependencyPrinter.new(npms, @options).print(Const::OUTDATED_FIELDS)
+          Printer.new(npms, @options).print(Const::OUTDATED_FIELDS)
 
           unless @options[:csv]
             if npms.any?
@@ -156,7 +156,7 @@ module Package
           end
         end
 
-        exit pkgs.any? ? 1 : 0
+        pkgs.any?
       end
 
       private

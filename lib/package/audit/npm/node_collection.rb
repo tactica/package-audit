@@ -22,18 +22,18 @@ module Package
 
         def deprecated
           implicit_pkgs = fetch_from_lock_file
-          NpmMetaData.new(implicit_pkgs).fetch.filter do |dep|
-            dep.risk.explanation == Enum::RiskExplanation::POTENTIAL_DEPRECATION
+          NpmMetaData.new(implicit_pkgs).fetch.filter do |pkg|
+            pkg.risk.explanation == Enum::RiskExplanation::POTENTIAL_DEPRECATION
           end.sort_by(&:full_name).uniq(&:full_name)
         end
 
         def outdated
           implicit_pkgs = fetch_from_lock_file
-          NpmMetaData.new(implicit_pkgs).fetch.filter do |dep|
+          NpmMetaData.new(implicit_pkgs).fetch.filter do |pkg|
             [
               Enum::RiskExplanation::OUTDATED,
-             Enum::RiskExplanation::OUTDATED_BY_MAJOR_VERSION
-            ].include? dep.risk.explanation
+              Enum::RiskExplanation::OUTDATED_BY_MAJOR_VERSION
+            ].include? pkg.risk.explanation
           end.sort_by(&:full_name).uniq(&:full_name)
         end
 

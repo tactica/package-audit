@@ -10,11 +10,11 @@ module Package
 
         def initialize: (String) -> void
 
-        def all: -> Array[Dependency]
+        def all: -> Array[Package]
 
         private
 
-        def fetch_from_lock_file: -> Array[Dependency]
+        def fetch_from_lock_file: -> Array[Package]
 
         def fetch_from_package_json: -> Array[Hash[Symbol, untyped]]
       end

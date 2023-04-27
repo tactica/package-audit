@@ -1,9 +1,9 @@
 module Package
   module Audit
     class RiskCalculator
-      @dependency: Dependency
+      @dependency: Package
 
-      def initialize: (Dependency) -> void
+      def initialize: (Package) -> void
 
       def find: -> Risk?
 

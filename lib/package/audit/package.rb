@@ -6,7 +6,7 @@ require_relative './enum/risk_explanation'
 
 module Package
   module Audit
-    class Dependency
+    class Package
       attr_reader :name, :version
       attr_accessor :groups, :version_date, :latest_version, :latest_version_date, :vulnerabilities
 

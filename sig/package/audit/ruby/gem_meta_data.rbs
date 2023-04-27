@@ -2,21 +2,21 @@ module Package
   module Audit
     module Ruby
       class GemMetaData
-        @dependencies: Array[Dependency]
+        @dependencies: Array[Package]
 
-        @gem_hash: Hash[String, Dependency]
+        @gem_hash: Hash[String, Package]
 
-        def initialize: (Array[Dependency]) -> void
+        def initialize: (Array[Package]) -> void
 
-        def fetch: -> Array[Dependency]
+        def fetch: -> Array[Package]
 
-        def find: -> Array[Dependency]
+        def find: -> Array[Package]
 
         private
 
-        def assign_groups: -> Array[Dependency]
+        def assign_groups: -> Array[Package]
 
-        def find_rubygems_metadata: -> Array[Dependency]
+        def find_rubygems_metadata: -> Array[Package]
       end
     end
   end

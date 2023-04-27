@@ -7,37 +7,37 @@ module Package
       class GemCollection
         def self.all
           specs = BundlerSpecs.gemfile
-          dependencies = specs.map { |spec| Dependency.new(spec.name, spec.version) }
-          vulnerable_deps = VulnerabilityFinder.new.run
-          GemMetaData.new(dependencies + vulnerable_deps).fetch.filter(&:risk?).sort_by(&:full_name).uniq(&:full_name)
+          pkgs = specs.map { |spec| Package.new(spec.name, spec.version) }
+          vulnerable_pkgs = VulnerabilityFinder.new.run
+          GemMetaData.new(pkgs + vulnerable_pkgs).fetch.filter(&:risk?).sort_by(&:full_name).uniq(&:full_name)
         end
 
         def self.deprecated
           specs = BundlerSpecs.gemfile
-          dependencies = specs.map { |spec| Dependency.new(spec.name, spec.version) }
+          pkgs = specs.map { |spec| Package.new(spec.name, spec.version) }
 
-          GemMetaData.new(dependencies).fetch.filter do |dep|
-            dep.risk.explanation == Enum::RiskExplanation::POTENTIAL_DEPRECATION
+          GemMetaData.new(pkgs).fetch.filter do |pkg|
+            pkg.risk.explanation == Enum::RiskExplanation::POTENTIAL_DEPRECATION
           end.sort_by(&:full_name).uniq(&:full_name)
         end
 
         def self.outdated(include_implicit: false)
           specs = include_implicit ? BundlerSpecs.all : BundlerSpecs.gemfile
-          dependencies = specs.map { |spec| Dependency.new(spec.name, spec.version) }
+          pkgs = specs.map { |spec| Package.new(spec.name, spec.version) }
 
-          GemMetaData.new(dependencies).fetch.filter do |dep|
+          GemMetaData.new(pkgs).fetch.filter do |pkg|
             [
               Enum::RiskExplanation::OUTDATED,
               Enum::RiskExplanation::OUTDATED_BY_MAJOR_VERSION
-            ].include? dep.risk.explanation
+            ].include? pkg.risk.explanation
           end.sort_by(&:full_name).uniq(&:full_name)
         end
 
         def self.vulnerable
-          dependencies = VulnerabilityFinder.new.run
+          pkgs = VulnerabilityFinder.new.run
 
-          GemMetaData.new(dependencies).fetch.filter do |dep|
-            dep.risk.explanation == Enum::RiskExplanation::VULNERABILITY
+          GemMetaData.new(pkgs).fetch.filter do |pkg|
+            pkg.risk.explanation == Enum::RiskExplanation::VULNERABILITY
           end.sort_by(&:full_name).uniq(&:full_name)
         end
       end

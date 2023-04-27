@@ -1,14 +1,14 @@
 module Package
   module Audit
-    class DependencyPrinter
+    class Printer
       BASH_FORMATTING_REGEX: Regexp
       COLUMN_GAP: Integer
       CSV_HEADERS: Hash[Symbol, String]
 
-      @dependencies: Array[Dependency]
+      @dependencies: Array[Package]
       @options: Hash[Symbol, untyped]
 
-      def initialize: (Array[Dependency], Hash[Symbol, untyped]) -> void
+      def initialize: (Array[Package], Hash[Symbol, untyped]) -> void
 
       def print: (Array[Symbol]) -> void
 

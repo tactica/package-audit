@@ -2,25 +2,25 @@ require 'test_helper'
 require 'stringio'
 
 require_relative '../../../lib/package/audit/util/bash_color'
-require_relative '../../../lib/package/audit/dependency_printer'
+require_relative '../../../lib/package/audit/printer'
 require_relative '../../../lib/package/audit/formatter/vulnerability'
 require_relative '../../../lib/package/audit/dependency'
 
 module Package
   module Audit
-    class TestDependencyPrinter < Minitest::Test
+    class TestPrinter < Minitest::Test
       def setup # rubocop:disable Metrics/MethodLength
-        @today = Time.now.strftime('%Y-%m-%d')
-        @fileutils = Dependency.new 'fileutils', '1.5.0'
+        @today = Time.zone.now.strftime('%Y-%m-%d')
+        @fileutils = Package.new 'fileutils', '1.5.0'
         @fileutils.update latest_version: '1.7.1', latest_version_date: @today, groups: %i[default]
-        @rails = Dependency.new 'rails', '6.0.0'
+        @rails = Package.new 'rails', '6.0.0'
         @rails.update latest_version: '7.0.4.3', latest_version_date: @today, groups: %i[default],
                       vulnerabilities: [
                         Enum::VulnerabilityType::MEDIUM,
                         Enum::VulnerabilityType::HIGH,
                         Enum::VulnerabilityType::HIGH
                       ]
-        @puma = Dependency.new 'puma', '5.1.1'
+        @puma = Package.new 'puma', '5.1.1'
         @puma.update latest_version: '5.1.1', latest_version_date: '2020-12-10', groups: %i[development test]
         @gems = [@fileutils, @puma, @rails]
 
@@ -33,19 +33,19 @@ module Package
       end
 
       def test_that_headers_match_field_names
-        assert_equal DependencyPrinter::FIELDS.sort, DependencyPrinter::HEADERS.keys.sort
+        assert_equal Printer::FIELDS.sort, Printer::HEADERS.keys.sort
       end
 
       def test_that_an_error_is_shown_for_invalid_fields
         fields = %i[name version unknown]
-        exp_error = "[:invalid] are not valid field names. Available fields names are: #{DependencyPrinter::FIELDS}."
+        exp_error = "[:invalid] are not valid field names. Available fields names are: #{Printer::FIELDS}."
         assert_raises ArgumentError, exp_error do
-          DependencyPrinter.new([], {}).print(fields)
+          Printer.new([], {}).print(fields)
         end
       end
 
       def test_that_the_dependencies_are_displayed_correctly
-        DependencyPrinter.new(@gems, {}).print(%i[name version latest_version latest_version_date])
+        Printer.new(@gems, {}).print(%i[name version latest_version latest_version_date])
         lines = @output.string.split("\n")
 
         assert_equal 6, lines.length
@@ -56,7 +56,7 @@ module Package
 
       def test_that_the_dependencies_are_displayed_correctly_in_csv_with_headers # rubocop:disable Metrics/AbcSize
         columns = %i[name version latest_version groups]
-        DependencyPrinter.new(@gems, {csv: true}).print(columns)
+        Printer.new(@gems, { csv: true}).print(columns)
         lines = @output.string.split("\n")
 
         assert_equal @gems.length + 1, lines.length
@@ -68,14 +68,14 @@ module Package
       end
 
       def test_that_vulnerabilities_are_displayed_correctly
-        DependencyPrinter.new([@rails], {}).print(%i[vulnerabilities])
+        Printer.new([@rails], {}).print(%i[vulnerabilities])
         lines = @output.string.split("\n")
 
         assert_equal Formatter::Vulnerability.new(@rails.vulnerabilities).format, lines[3]
       end
 
       def test_that_vulnerabilities_are_displayed_correctly_in_csv
-        DependencyPrinter.new([@rails], {csv: true}).print(%i[vulnerabilities])
+        Printer.new([@rails], { csv: true}).print(%i[vulnerabilities])
         lines = @output.string.split("\n")
 
         assert_equal 'medium(1)|high(2)', lines[1]
