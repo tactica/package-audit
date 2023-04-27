@@ -25,7 +25,7 @@ module Package
             local_version_date = Time.new(0)
             latest_version_date = Time.new(0)
             local_version = Gem::Version.new(dep.version)
-            latest_version = Gem::Version.new('0.0.0')
+            latest_version = Gem::Version.new('0.0.0.0')
 
             remote_dependencies, = fetcher.spec_for_dependency gem_dependency
 

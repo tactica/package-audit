@@ -1,4 +1,26 @@
 ---
+- file: lib/package/audit/npm/npm_meta_data.rb
+  diagnostics:
+  - range:
+      start:
+        line: 17
+        character: 25
+      end:
+        line: 17
+        character: 28
+    severity: WARNING
+    message: 'Cannot find the declaration of constant: `Net`'
+    code: Ruby::UnknownConstant
+  - range:
+      start:
+        line: 18
+        character: 57
+      end:
+        line: 18
+        character: 60
+    severity: WARNING
+    message: 'Cannot find the declaration of constant: `Net`'
+    code: Ruby::UnknownConstant
 - file: lib/package/audit/ruby/bundler_specs.rb
   diagnostics:
   - range:

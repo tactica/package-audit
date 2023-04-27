@@ -4,6 +4,8 @@ require_relative './util/summary_printer'
 require_relative './ruby/bundler_specs'
 require_relative './dependency_printer'
 require_relative './ruby/gem_collection'
+require_relative './npm/node_collection'
+require_relative './command_service'
 
 require 'json'
 require 'thor'
@@ -21,16 +23,7 @@ module Package
 
       def report
         within_rescue_block do
-          gems = Ruby::GemCollection.all
-          DependencyPrinter.new(gems, options).print
-
-          if gems.any?
-            Util::SummaryPrinter.total(gems.length) unless options[:csv]
-            Util::SummaryPrinter.report unless options[:csv]
-            exit 1
-          else
-            exit_with_success 'There are no deprecated, outdated or vulnerable gems!'
-          end
+          CommandService.new(Dir.pwd, options).all
         end
       end
 
@@ -40,37 +33,17 @@ module Package
 
       def deprecated
         within_rescue_block do
-          gems = Ruby::GemCollection.deprecated
-          DependencyPrinter.new(gems, options).print(%i[name version latest_version latest_version_date groups])
-
-          if gems.any?
-            Util::SummaryPrinter.total(gems.length) unless options[:csv]
-            Util::SummaryPrinter.deprecated unless options[:csv]
-            exit 1
-          else
-            exit_with_success 'No potential deprecated have been found!'
-          end
+          CommandService.new(Dir.pwd, options).deprecated
         end
       end
 
       desc 'outdated', 'Show gems, and optionally their dependencies, that are out of date'
-      method_option :'include-implicit', type: :boolean, default: false,
-                                         desc: 'Only both gems specified in Gemfile and their dependencies'
       method_option :csv, type: :boolean, default: false, desc: 'Output using comma separated values (CSV)'
       method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
 
-      def outdated # rubocop:disable Metrics/AbcSize
+      def outdated
         within_rescue_block do
-          gems = Ruby::GemCollection.outdated(include_implicit: options[:'include-implicit'])
-          DependencyPrinter.new(gems, options).print(%i[name version latest_version latest_version_date groups])
-
-          if gems.any?
-            Util::SummaryPrinter.total(gems.length) unless options[:csv]
-            Util::SummaryPrinter.outdated unless options[:'include-implicit'] || options[:csv]
-            exit 1
-          else
-            exit_with_success 'All gems are at latest versions!'
-          end
+          CommandService.new(Dir.pwd, options).outdated
         end
       end
 
@@ -80,16 +53,7 @@ module Package
 
       def vulnerable
         within_rescue_block do
-          gems = Ruby::GemCollection.vulnerable
-          DependencyPrinter.new(gems, options).print(%i[name version latest_version groups vulnerabilities])
-
-          if gems.any?
-            Util::SummaryPrinter.total(gems.length) unless options[:csv]
-            Util::SummaryPrinter.vulnerable unless options[:csv]
-            exit 1
-          else
-            exit_with_success 'No vulnerabilities found!'
-          end
+          CommandService.new(Dir.pwd, options).vulnerable
         end
       end
 
@@ -112,9 +76,6 @@ module Package
       private
 
       def within_rescue_block
-        raise "Gemfile was not found in #{Dir.pwd}/Gemfile" unless File.exist?("#{Dir.pwd}/Gemfile")
-        raise "Gemfile.lock was not found in #{Dir.pwd}/Gemfile.lock" unless File.exist?("#{Dir.pwd}/Gemfile.lock")
-
         yield
       rescue StandardError => e
         exit_with_error "#{e.class}: #{e.message}"

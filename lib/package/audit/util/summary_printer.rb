@@ -12,24 +12,18 @@ module Package
         end
 
         def self.deprecated
-          puts Util::BashColor.blue("\nAlthough gems listed above have no recent updates, they may not be deprecated.")
-          puts Util::BashColor.blue("Please contact the gem author for more information about its status.\n")
+          puts Util::BashColor.blue("\nAlthough packages listed above have no recent updates, they may not be deprecated.")
+          puts Util::BashColor.blue("Please contact the package author for more information about its status.\n")
         end
 
-        def self.outdated
-          printf("\n%<info>s\n%<cmd>s\n\n",
-                 info: Util::BashColor.blue('To show both Gemfile gems and their dependencies run:'),
-                 cmd: Util::BashColor.magenta(' > bundle exec package-audit outdated --include-implicit'))
+        def self.vulnerable(package_type, cmd)
+          printf("%<info>s\n%<cmd>s\n\n",
+                 info: Util::BashColor.blue("To get more information about the #{package_type} vulnerabilities run:"),
+                 cmd: Util::BashColor.magenta(" > #{cmd}"))
         end
 
-        def self.vulnerable
-          printf("\n%<info>s\n%<cmd>s\n\n",
-                 info: Util::BashColor.blue('To get more information about the vulnerabilities run:'),
-                 cmd: Util::BashColor.magenta(' > bundle exec bundle-audit check --update'))
-        end
-
-        def self.total(num)
-          puts Util::BashColor.cyan("\nFound a total of #{num} gems.")
+        def self.total(package_type, num)
+          puts Util::BashColor.cyan("Found a total of #{num} #{package_type}s.\n")
         end
 
         def self.risk # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
@@ -39,6 +33,7 @@ module Package
           puts "      - #{Util::BashColor.red('critical')} vulnerability\t-> #{Util::BashColor.red('high')} risk"
           puts "      - #{Util::BashColor.red('high')} vulnerability\t-> #{Util::BashColor.red('high')} risk"
           puts "      - #{Util::BashColor.orange('medium')} vulnerability\t-> #{Util::BashColor.orange('medium')} risk"
+          puts "      - #{Util::BashColor.orange('moderate')} vulnerability\t-> #{Util::BashColor.orange('medium')} risk"
           puts "      - #{Util::BashColor.yellow('low')} vulnerability\t-> #{Util::BashColor.yellow('low')} risk"
 
           puts

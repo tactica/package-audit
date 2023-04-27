@@ -8,8 +8,8 @@ module Package
         def self.all
           specs = BundlerSpecs.gemfile
           dependencies = specs.map { |spec| Dependency.new(spec.name, spec.version) }
-          vulnerable_deps = VulnerabilityFinder.run
-          GemMetaData.new(dependencies + vulnerable_deps).fetch.filter(&:risk?).sort_by(&:name).uniq(&:name)
+          vulnerable_deps = VulnerabilityFinder.new.run
+          GemMetaData.new(dependencies + vulnerable_deps).fetch.filter(&:risk?).sort_by(&:full_name).uniq(&:full_name)
         end
 
         def self.deprecated
@@ -18,7 +18,7 @@ module Package
 
           GemMetaData.new(dependencies).fetch.filter do |dep|
             dep.risk.explanation == Enum::RiskExplanation::POTENTIAL_DEPRECATION
-          end.sort_by(&:name).uniq(&:name)
+          end.sort_by(&:full_name).uniq(&:full_name)
         end
 
         def self.outdated(include_implicit: false)
@@ -26,16 +26,19 @@ module Package
           dependencies = specs.map { |spec| Dependency.new(spec.name, spec.version) }
 
           GemMetaData.new(dependencies).fetch.filter do |dep|
-            dep.version < dep.latest_version
-          end.sort_by(&:name).uniq(&:name)
+            [
+              Enum::RiskExplanation::OUTDATED,
+              Enum::RiskExplanation::OUTDATED_BY_MAJOR_VERSION
+            ].include? dep.risk.explanation
+          end.sort_by(&:full_name).uniq(&:full_name)
         end
 
         def self.vulnerable
-          dependencies = VulnerabilityFinder.run
+          dependencies = VulnerabilityFinder.new.run
 
           GemMetaData.new(dependencies).fetch.filter do |dep|
             dep.risk.explanation == Enum::RiskExplanation::VULNERABILITY
-          end.sort_by(&:name).uniq(&:name)
+          end.sort_by(&:full_name).uniq(&:full_name)
         end
       end
     end

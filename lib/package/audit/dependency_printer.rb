@@ -1,3 +1,4 @@
+require_relative './const'
 require_relative './formatter/risk'
 require_relative './formatter/version'
 require_relative './formatter/version_date'
@@ -10,55 +11,34 @@ module Package
 
       COLUMN_GAP = 2
 
-      # the names of these fields must match the instance variables in the Dependency class
-      FIELDS = %i[
-        name
-        version
-        latest_version
-        latest_version_date
-        groups
-        vulnerabilities
-        risk_type
-        risk_explanation
-      ]
-
-      HEADERS = {
-        name: 'Package',
-        version: 'Version',
-        latest_version: 'Latest',
-        latest_version_date: 'Latest Date',
-        groups: 'Groups',
-        vulnerabilities: 'Vulnerabilities',
-        risk_type: 'Risk',
-        risk_explanation: 'Risk Explanation'
-      }
-
       def initialize(dependencies, options)
         @dependencies = dependencies
         @options = options
       end
 
-      def print(fields = FIELDS)
-        if (fields - FIELDS).any?
-          raise ArgumentError, "#{fields - FIELDS} are not valid field names. Available fields names are: #{FIELDS}."
+      def print(fields)
+        if (fields - Const::FIELDS).any?
+          raise ArgumentError,
+                "#{fields - Const::FIELDS} are not valid field names. Available fields names are: #{Const::FIELDS}."
         end
+
+        return if @dependencies.empty?
 
         if @options[:csv]
           csv(fields, exclude_headers: @options[:'exclude-headers'])
         else
           pretty(fields)
         end
+        puts
       end
 
       private
 
-      def pretty(fields) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
-        return if @dependencies.empty?
-
+      def pretty(fields = Const::REPORT_FIELDS) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
         # find the maximum length of each field across all the dependencies so we know how many
         # characters of horizontal space to allocate for each field when printing
         fields.each do |key|
-          instance_variable_set "@max_#{key}", HEADERS[key].length
+          instance_variable_set "@max_#{key}", Const::HEADERS[key].length
           @dependencies.each do |gem|
             curr_field_length = case key
                                 when :vulnerabilities
@@ -78,7 +58,7 @@ module Package
 
         puts '=' * line_length
         puts fields.map { |key|
-          HEADERS[key].gsub(BASH_FORMATTING_REGEX, '').ljust(instance_variable_get("@max_#{key}"))
+          Const::HEADERS[key].gsub(BASH_FORMATTING_REGEX, '').ljust(instance_variable_get("@max_#{key}"))
         }.join(' ' * COLUMN_GAP)
         puts '=' * line_length
 
@@ -107,8 +87,6 @@ module Package
       end
 
       def csv(fields, exclude_headers: false) # rubocop:disable Metrics/MethodLength
-        return if @dependencies.empty?
-
         value_fields = fields.map do |field|
           case field
           when :groups

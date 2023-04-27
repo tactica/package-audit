@@ -41,7 +41,7 @@ module Package
 
         if (version_parts.first || 0) < (latest_version_parts.first || 0)
           Risk.new(Enum::RiskType::MEDIUM, Enum::RiskExplanation::OUTDATED_BY_MAJOR_VERSION)
-        elsif (version_parts <=> latest_version_parts) == -1
+        elsif (version_parts.first || 0) == (latest_version_parts.first || 0) && (version_parts[1..] <=> latest_version_parts[1..]) == -1
           Risk.new(Enum::RiskType::LOW, Enum::RiskExplanation::OUTDATED)
         else
           Risk.new(Enum::RiskType::NONE)

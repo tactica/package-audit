@@ -1,0 +1,23 @@
+module Package
+  module Audit
+    module Npm
+      class NodeCollection
+        PACKAGE_JSON: String
+        PACKAGE_LOCK: String
+        YARN_LOCK: String
+
+        @dir: String
+
+        def initialize: (String) -> void
+
+        def all: -> Array[Dependency]
+
+        private
+
+        def fetch_from_lock_file: -> Array[Dependency]
+
+        def fetch_from_package_json: -> Array[Hash[Symbol, untyped]]
+      end
+    end
+  end
+end

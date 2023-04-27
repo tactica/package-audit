@@ -4,21 +4,19 @@ module Package
       BASH_FORMATTING_REGEX: Regexp
       COLUMN_GAP: Integer
       CSV_HEADERS: Hash[Symbol, String]
-      FIELDS: Array[Symbol]
-      HEADERS: Hash[Symbol, String]
 
       @dependencies: Array[Dependency]
       @options: Hash[Symbol, untyped]
 
       def initialize: (Array[Dependency], Hash[Symbol, untyped]) -> void
 
-      def print: (?Array[Symbol]) -> void
+      def print: (Array[Symbol]) -> void
 
       private
 
       def csv: (Array[Symbol], ?exclude_headers: bool) -> void
 
-      def pretty: (Array[Symbol]) -> void
+      def pretty: (?Array[Symbol]) -> void
     end
   end
 end

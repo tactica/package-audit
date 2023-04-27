@@ -1,0 +1,19 @@
+module Package
+  module Audit
+    module Npm
+      class NpmMetaData
+        REGISTRY_URL: String
+
+        @packages: Array[Dependency]
+
+        def initialize: (Array[Dependency]) -> void
+
+        def fetch: -> Array[Dependency]
+
+        private
+
+        def update_meta_data: (Dependency, Hash[Symbol, untyped]) -> void
+      end
+    end
+  end
+end
