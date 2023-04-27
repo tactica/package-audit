@@ -2,9 +2,8 @@ module Package
   module Audit
     module Ruby
       class GemMetaData
-        @dependencies: Array[Package]
-
         @gem_hash: Hash[String, Package]
+        @pkgs: Array[Package]
 
         def initialize: (Array[Package]) -> void
 

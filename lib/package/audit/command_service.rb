@@ -1,14 +1,9 @@
-require_relative './const'
+require_relative './const/cmd'
+require_relative './const/file'
 
 module Package
   module Audit
     class CommandService # rubocop:disable Metrics/ClassLength
-      GEMFILE = 'Gemfile'
-      GEMFILE_LOCK = 'Gemfile.lock'
-      PACKAGE_JSON = 'package.json'
-      PACKAGE_LOCK_JSON = 'packaggzgtgh jm  jm nbjmgkuykib ghopygbh oooo ,yghlb, 35e-lock.json'
-      YARN_LOCK = 'yarn.lock'
-
       RUBY_GEM = 'ruby gem'
       NODE_MODULE = 'node module'
 
@@ -23,12 +18,12 @@ module Package
         if ruby?
           gems = Ruby::GemCollection.all
           pkgs += gems
-          Printer.new(gems, @options).print(Const::REPORT_FIELDS)
+          Printer.new(gems, @options).print(Const::Fields::REPORT)
 
           unless @options[:csv]
             if gems.any?
               Util::SummaryPrinter.total(RUBY_GEM, gems.length)
-              Util::SummaryPrinter.vulnerable(RUBY_GEM, Const::BUNDLE_AUDIT_CMD)
+              Util::SummaryPrinter.vulnerable(RUBY_GEM, Const::Cmd::BUNDLE_AUDIT)
             else
               print_success_message "There are no deprecated, outdated or vulnerable #{RUBY_GEM}s!"
             end
@@ -38,12 +33,12 @@ module Package
         if node?
           npms = Npm::NodeCollection.new(@dir).all
           pkgs += npms
-          Printer.new(npms, @options).print(Const::REPORT_FIELDS)
+          Printer.new(npms, @options).print(Const::Fields::REPORT)
 
           unless @options[:csv]
             if npms.any?
               Util::SummaryPrinter.total(NODE_MODULE, npms.length)
-              Util::SummaryPrinter.vulnerable(NODE_MODULE, Const::YARN_AUDIT_CMD)
+              Util::SummaryPrinter.vulnerable(NODE_MODULE, Const::Cmd::YARN_AUDIT)
             else
               print_success_message "There are no deprecated, outdated or vulnerable #{NODE_MODULE}s!"
             end
@@ -59,12 +54,12 @@ module Package
         if ruby?
           gems = Ruby::GemCollection.vulnerable
           pkgs += gems
-          Printer.new(gems, @options).print(Const::VULNERABLE_FIELDS)
+          Printer.new(gems, @options).print(Const::Fields::VULNERABLE)
 
           unless @options[:csv]
             if gems.any?
               Util::SummaryPrinter.total(RUBY_GEM, gems.length)
-              Util::SummaryPrinter.vulnerable(RUBY_GEM, Const::BUNDLE_AUDIT_CMD)
+              Util::SummaryPrinter.vulnerable(RUBY_GEM, Const::Cmd::BUNDLE_AUDIT)
             else
               print_success_message "There are no #{RUBY_GEM} vulnerabilities!"
             end
@@ -74,12 +69,12 @@ module Package
         if node?
           npms = Npm::NodeCollection.new(@dir).vulnerable
           pkgs += npms
-          Printer.new(npms, @options).print(Const::VULNERABLE_FIELDS)
+          Printer.new(npms, @options).print(Const::Fields::VULNERABLE)
 
           unless @options[:csv]
             if npms.any?
               Util::SummaryPrinter.total(NODE_MODULE, npms.length)
-              Util::SummaryPrinter.vulnerable(NODE_MODULE, Const::YARN_AUDIT_CMD)
+              Util::SummaryPrinter.vulnerable(NODE_MODULE, Const::Cmd::YARN_AUDIT)
             else
               print_success_message "There are no #{NODE_MODULE} vulnerabilities!"
             end
@@ -95,7 +90,7 @@ module Package
         if ruby?
           gems = Ruby::GemCollection.outdated
           pkgs += gems
-          Printer.new(gems, @options).print(Const::OUTDATED_FIELDS)
+          Printer.new(gems, @options).print(Const::Fields::OUTDATED)
 
           unless @options[:csv]
             if gems.any?
@@ -109,7 +104,7 @@ module Package
         if node?
           npms = Npm::NodeCollection.new(@dir).outdated
           pkgs += npms
-          Printer.new(npms, @options).print(Const::OUTDATED_FIELDS)
+          Printer.new(npms, @options).print(Const::Fields::OUTDATED)
 
           unless @options[:csv]
             if npms.any?
@@ -129,7 +124,7 @@ module Package
         if ruby?
           gems = Ruby::GemCollection.deprecated
           pkgs += gems
-          Printer.new(gems, @options).print(Const::OUTDATED_FIELDS)
+          Printer.new(gems, @options).print(Const::Fields::OUTDATED)
 
           unless @options[:csv]
             if gems.any?
@@ -144,7 +139,7 @@ module Package
         if node?
           npms = Npm::NodeCollection.new(@dir).deprecated
           pkgs += npms
-          Printer.new(npms, @options).print(Const::OUTDATED_FIELDS)
+          Printer.new(npms, @options).print(Const::Fields::OUTDATED)
 
           unless @options[:csv]
             if npms.any?
@@ -162,25 +157,25 @@ module Package
       private
 
       def ruby?
-        gemfile_present = File.exist?("#{@dir}/#{GEMFILE}")
-        gemfile_lock_present = File.exist?("#{@dir}/#{GEMFILE_LOCK}")
+        gemfile_present = File.exist?("#{@dir}/#{Const::File::GEMFILE}")
+        gemfile_lock_present = File.exist?("#{@dir}/#{Const::File::GEMFILE_LOCK}")
 
         if gemfile_present && gemfile_lock_present
           true
         elsif gemfile_present
-          raise "#{GEMFILE_LOCK} was not found in #{@dir}/"
+          raise "#{Const::File::GEMFILE_LOCK} was not found in #{@dir}/"
         end
       end
 
       def node?
-        package_json_present = File.exist?("#{@dir}/#{PACKAGE_JSON}")
-        package_lock_json_present = File.exist?("#{@dir}/#{PACKAGE_LOCK_JSON}")
-        yarn_lock_present = File.exist?("#{@dir}/#{YARN_LOCK}")
+        package_json_present = File.exist?("#{@dir}/#{Const::File::PACKAGE_JSON}")
+        package_lock_json_present = File.exist?("#{@dir}/#{Const::File::PACKAGE_LOCK_JSON}")
+        yarn_lock_present = File.exist?("#{@dir}/#{Const::File::YARN_LOCK}")
 
         if package_json_present && (package_lock_json_present || yarn_lock_present)
           true
         elsif package_json_present
-          raise "#{PACKAGE_LOCK_JSON} or #{YARN_LOCK} was not found in #{@dir}/"
+          raise "#{Const::File::PACKAGE_LOCK_JSON} or #{Const::File::YARN_LOCK} was not found in #{@dir}/"
         end
       end
 

@@ -12,6 +12,12 @@ module Package
 
         def all: -> Array[Package]
 
+        def deprecated: -> Array[Package]
+
+        def outdated: -> Array[Package]
+
+        def vulnerable: -> Array[Package]
+
         private
 
         def fetch_from_lock_file: -> Array[Package]

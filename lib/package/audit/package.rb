@@ -10,12 +10,11 @@ module Package
       attr_reader :name, :version
       attr_accessor :groups, :version_date, :latest_version, :latest_version_date, :vulnerabilities
 
-      def initialize(name, version, **attr)
+      def initialize(name, version)
         @name = name.to_s
         @version = version.to_s
         @groups = []
         @vulnerabilities = []
-        attr.each { |key, value| instance_variable_set("@#{key}", value) }
       end
 
       def full_name

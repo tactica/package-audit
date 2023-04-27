@@ -1,7 +1,7 @@
 module Package
   module Audit
     class RiskCalculator
-      @dependency: Package
+      @pkg: Package
 
       def initialize: (Package) -> void
 

@@ -26,10 +26,10 @@ module Package
           pkgs = specs.map { |spec| Package.new(spec.name, spec.version) }
 
           GemMetaData.new(pkgs).fetch.filter do |pkg|
-            [
+            ([
               Enum::RiskExplanation::OUTDATED,
               Enum::RiskExplanation::OUTDATED_BY_MAJOR_VERSION
-            ].include? pkg.risk.explanation
+            ] & [pkg.risk.explanation]).any?
           end.sort_by(&:full_name).uniq(&:full_name)
         end
 

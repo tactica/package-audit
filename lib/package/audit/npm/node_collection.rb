@@ -30,10 +30,10 @@ module Package
         def outdated
           implicit_pkgs = fetch_from_lock_file
           NpmMetaData.new(implicit_pkgs).fetch.filter do |pkg|
-            [
+            ([
               Enum::RiskExplanation::OUTDATED,
               Enum::RiskExplanation::OUTDATED_BY_MAJOR_VERSION
-            ].include? pkg.risk.explanation
+            ] & [pkg.risk.explanation]).any?
           end.sort_by(&:full_name).uniq(&:full_name)
         end
 

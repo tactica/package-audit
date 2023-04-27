@@ -5,7 +5,7 @@ module Package
       COLUMN_GAP: Integer
       CSV_HEADERS: Hash[Symbol, String]
 
-      @dependencies: Array[Package]
+      @pkgs: Array[Package]
       @options: Hash[Symbol, untyped]
 
       def initialize: (Array[Package], Hash[Symbol, untyped]) -> void

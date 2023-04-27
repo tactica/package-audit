@@ -1,4 +1,4 @@
-require_relative './const'
+require_relative './const/time'
 
 module Package
   module Audit
@@ -53,7 +53,7 @@ module Package
         seconds_since_date = (Time.now - Time.parse(@pkg.latest_version_date)).to_i
 
         if @pkg.version == @pkg.latest_version &&
-           seconds_since_date >= Const::SECONDS_ELAPSED_TO_BE_OUTDATED
+           seconds_since_date >= Const::Time::SECONDS_ELAPSED_TO_BE_OUTDATED
           Risk.new(Enum::RiskType::MEDIUM, Enum::RiskExplanation::POTENTIAL_DEPRECATION)
         else
           Risk.new(Enum::RiskType::NONE)

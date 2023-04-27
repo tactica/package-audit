@@ -1,4 +1,4 @@
-require_relative './const'
+require_relative './const/time'
 require_relative './version'
 require_relative './util/summary_printer'
 require_relative './ruby/bundler_specs'
@@ -27,7 +27,8 @@ module Package
         end
       end
 
-      desc 'deprecated', "Show gems with no updates by author for at least #{Const::YEARS_ELAPSED_TO_BE_OUTDATED} years"
+      desc 'deprecated',
+           "Show gems with no updates by author for at least #{Const::Time::YEARS_ELAPSED_TO_BE_OUTDATED} years"
       method_option :csv, type: :boolean, default: false, desc: 'Output using comma separated values (CSV)'
       method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
 

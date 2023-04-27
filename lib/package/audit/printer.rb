@@ -1,4 +1,4 @@
-require_relative './const'
+require_relative './const/fields'
 require_relative './formatter/risk'
 require_relative './formatter/version'
 require_relative './formatter/version_date'
@@ -17,9 +17,10 @@ module Package
       end
 
       def print(fields)
-        if (fields - Const::FIELDS).any?
+        if (fields - Const::Fields::ALL).any?
           raise ArgumentError,
-                "#{fields - Const::FIELDS} are not valid field names. Available fields names are: #{Const::FIELDS}."
+                "#{fields - Const::Fields::ALL} are not valid field names. " \
+                "Available fields names are: #{Const::Fields::ALL}."
         end
 
         return if @pkgs.empty?
@@ -34,11 +35,11 @@ module Package
 
       private
 
-      def pretty(fields = Const::REPORT_FIELDS) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+      def pretty(fields = Const::Fields::REPORT) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
         # find the maximum length of each field across all the packages so we know how many
         # characters of horizontal space to allocate for each field when printing
         fields.each do |key|
-          instance_variable_set "@max_#{key}", Const::HEADERS[key].length
+          instance_variable_set "@max_#{key}", Const::Fields::HEADERS[key].length
           @pkgs.each do |gem|
             curr_field_length = case key
                                 when :vulnerabilities
@@ -58,7 +59,7 @@ module Package
 
         puts '=' * line_length
         puts fields.map { |key|
-          Const::HEADERS[key].gsub(BASH_FORMATTING_REGEX, '').ljust(instance_variable_get("@max_#{key}"))
+          Const::Fields::HEADERS[key].gsub(BASH_FORMATTING_REGEX, '').ljust(instance_variable_get("@max_#{key}"))
         }.join(' ' * COLUMN_GAP)
         puts '=' * line_length
 

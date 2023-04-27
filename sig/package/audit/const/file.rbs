@@ -1,0 +1,13 @@
+module Package
+  module Audit
+    module Const
+      module File
+        GEMFILE: String
+        GEMFILE_LOCK: String
+        PACKAGE_JSON: String
+        PACKAGE_LOCK_JSON: String
+        YARN_LOCK: String
+      end
+    end
+  end
+end

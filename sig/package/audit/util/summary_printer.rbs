@@ -4,17 +4,13 @@ module Package
       module SummaryPrinter
         def self.deprecated: -> void
 
-        def self.outdated: -> void
-
         def self.report: -> void
 
         def self.risk: -> void
 
-        def self.total: (String, Integer) -> void
+        def self.total: (String, Integer)-> void
 
-        def self.vulnerable: -> void
-
-        def risk: -> void
+        def self.vulnerable: (String, String)-> void
       end
     end
   end

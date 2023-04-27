@@ -1,4 +1,4 @@
-require_relative '../const'
+require_relative '../const/time'
 require_relative './bash_color'
 
 module Package
@@ -39,7 +39,7 @@ module Package
           puts
 
           puts Util::BashColor.blue('2. Check the package for potential deprecation.')
-          puts "   If no new releases by author for at least #{Const::YEARS_ELAPSED_TO_BE_OUTDATED} years:"
+          puts "   If no new releases by author for at least #{Const::Time::YEARS_ELAPSED_TO_BE_OUTDATED} years:"
           puts "      - assign the risk to\t-> #{Util::BashColor.orange('medium')} risk"
 
           puts
