@@ -20,5 +20,3 @@ end
 group :test do
   gem 'minitest'
 end
-
-gem 'rails', '6.0.0'

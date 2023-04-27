@@ -1,16 +1,17 @@
 require 'test_helper'
 require 'stringio'
 
+require_relative '../../../lib/package/audit/const/fields'
 require_relative '../../../lib/package/audit/util/bash_color'
 require_relative '../../../lib/package/audit/printer'
 require_relative '../../../lib/package/audit/formatter/vulnerability'
-require_relative '../../../lib/package/audit/dependency'
+require_relative '../../../lib/package/audit/package'
 
 module Package
   module Audit
     class TestPrinter < Minitest::Test
       def setup # rubocop:disable Metrics/MethodLength
-        @today = Time.zone.now.strftime('%Y-%m-%d')
+        @today = Time.now.strftime('%Y-%m-%d')
         @fileutils = Package.new 'fileutils', '1.5.0'
         @fileutils.update latest_version: '1.7.1', latest_version_date: @today, groups: %i[default]
         @rails = Package.new 'rails', '6.0.0'
@@ -33,12 +34,12 @@ module Package
       end
 
       def test_that_headers_match_field_names
-        assert_equal Printer::FIELDS.sort, Printer::HEADERS.keys.sort
+        assert_equal Const::Fields::ALL.sort, Const::Fields::HEADERS.keys.sort
       end
 
       def test_that_an_error_is_shown_for_invalid_fields
         fields = %i[name version unknown]
-        exp_error = "[:invalid] are not valid field names. Available fields names are: #{Printer::FIELDS}."
+        exp_error = "[:invalid] are not valid field names. Available fields names are: #{Const::Fields::ALL}."
         assert_raises ArgumentError, exp_error do
           Printer.new([], {}).print(fields)
         end

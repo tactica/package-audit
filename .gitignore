@@ -2,7 +2,6 @@
 *thumbs.db
 .bundle
 .idea
-.ruby-version
 /*.gem
 /.bundle/
 /.idea/

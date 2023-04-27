@@ -67,7 +67,7 @@ module Package
       desc 'version', 'Print the currently installed version of the package-audit gem'
 
       def version
-        puts { "package-audit #{VERSION}" }
+        puts "package-audit #{VERSION}"
       end
 
       def self.exit_on_failure?

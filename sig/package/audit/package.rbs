@@ -13,7 +13,7 @@ module Package
       attr_accessor version_date: String
       attr_accessor vulnerabilities: Array[String]
 
-      def initialize: (String, String) -> void
+      def initialize: (String, String, **untyped) -> void
 
       def full_name: -> String
 
