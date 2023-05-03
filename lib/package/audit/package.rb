@@ -50,6 +50,21 @@ module Package
         risk.explanation
       end
 
+      def deprecated?
+        risk.explanation == Enum::RiskExplanation::POTENTIAL_DEPRECATION
+      end
+
+      def outdated?
+        [
+          Enum::RiskExplanation::OUTDATED,
+          Enum::RiskExplanation::OUTDATED_BY_MAJOR_VERSION
+        ].include?(risk.explanation)
+      end
+
+      def vulnerable?
+        risk.explanation == Enum::RiskExplanation::VULNERABILITY
+      end
+
       def to_csv(fields)
         fields.map { |field| send(field) }.join(',')
       end

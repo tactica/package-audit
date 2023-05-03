@@ -15,9 +15,13 @@ module Package
 
       def initialize: (String, String, **untyped) -> void
 
+      def deprecated?: -> bool
+
       def full_name: -> String
 
       def group_list: -> String
+
+      def outdated?: -> bool
 
       def risk?: -> bool
 
@@ -32,6 +36,8 @@ module Package
       def update: (**untyped) -> void
 
       def vulnerabilities_grouped: -> String
+
+      def vulnerable?: -> bool
     end
   end
 end

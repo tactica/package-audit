@@ -22,7 +22,7 @@ module Package
 
           unless @options[:csv]
             if gems.any?
-              Util::SummaryPrinter.total(RUBY_GEM, gems.length)
+              Util::SummaryPrinter.statistics(RUBY_GEM, gems)
               Util::SummaryPrinter.vulnerable(RUBY_GEM, Const::Cmd::BUNDLE_AUDIT)
             else
               print_success_message "There are no deprecated, outdated or vulnerable #{RUBY_GEM}s!"
@@ -37,7 +37,7 @@ module Package
 
           unless @options[:csv]
             if npms.any?
-              Util::SummaryPrinter.total(NODE_MODULE, npms.length)
+              Util::SummaryPrinter.statistics(NODE_MODULE, npms)
               Util::SummaryPrinter.vulnerable(NODE_MODULE, Const::Cmd::YARN_AUDIT)
             else
               print_success_message "There are no deprecated, outdated or vulnerable #{NODE_MODULE}s!"
@@ -58,7 +58,7 @@ module Package
 
           unless @options[:csv]
             if gems.any?
-              Util::SummaryPrinter.total(RUBY_GEM, gems.length)
+              Util::SummaryPrinter.total(RUBY_GEM, gems)
               Util::SummaryPrinter.vulnerable(RUBY_GEM, Const::Cmd::BUNDLE_AUDIT)
             else
               print_success_message "There are no #{RUBY_GEM} vulnerabilities!"
@@ -73,7 +73,7 @@ module Package
 
           unless @options[:csv]
             if npms.any?
-              Util::SummaryPrinter.total(NODE_MODULE, npms.length)
+              Util::SummaryPrinter.total(NODE_MODULE, npms)
               Util::SummaryPrinter.vulnerable(NODE_MODULE, Const::Cmd::YARN_AUDIT)
             else
               print_success_message "There are no #{NODE_MODULE} vulnerabilities!"
@@ -94,7 +94,7 @@ module Package
 
           unless @options[:csv]
             if gems.any?
-              Util::SummaryPrinter.total(RUBY_GEM, gems.length)
+              Util::SummaryPrinter.total(RUBY_GEM, gems)
             else
               print_success_message "There are no outdated #{RUBY_GEM}s!"
             end
@@ -108,7 +108,7 @@ module Package
 
           unless @options[:csv]
             if npms.any?
-              Util::SummaryPrinter.total(NODE_MODULE, npms.length)
+              Util::SummaryPrinter.total(NODE_MODULE, npms)
             else
               print_success_message "There are no outdated #{NODE_MODULE}s!"
             end
@@ -128,7 +128,7 @@ module Package
 
           unless @options[:csv]
             if gems.any?
-              Util::SummaryPrinter.total(RUBY_GEM, gems.length)
+              Util::SummaryPrinter.total(RUBY_GEM, gems)
               Util::SummaryPrinter.deprecated
             else
               print_success_message "There are no potentially deprecated #{RUBY_GEM}s!"
@@ -143,7 +143,7 @@ module Package
 
           unless @options[:csv]
             if npms.any?
-              Util::SummaryPrinter.total(NODE_MODULE, npms.length)
+              Util::SummaryPrinter.total(NODE_MODULE, npms)
               Util::SummaryPrinter.deprecated
             else
               print_success_message "There are no potentially deprecated #{NODE_MODULE}s!"

@@ -22,8 +22,19 @@ module Package
                  cmd: Util::BashColor.magenta(" > #{cmd}"))
         end
 
-        def self.total(package_type, num)
-          puts Util::BashColor.cyan("Found a total of #{num} #{package_type}s.\n")
+        def self.total(package_type, pkgs)
+          puts Util::BashColor.cyan("Found a total of #{pkgs.length} #{package_type}s.\n")
+        end
+
+        def self.statistics(package_type, pkgs)
+          outdated = pkgs.count(&:outdated?)
+          deprecated = pkgs.count(&:deprecated?)
+          vulnerable = pkgs.count(&:vulnerable?)
+          vulnerabilities = pkgs.sum { |pkg| pkg.vulnerabilities.length }
+
+          puts Util::BashColor.cyan("Found a total of #{pkgs.length} #{package_type}s.\n" \
+                                    "#{vulnerable} vulnerable (#{vulnerabilities} vulnerabilities), " \
+                                    "#{outdated} outdated, #{deprecated} deprecated.\n")
         end
 
         def self.risk # rubocop:disable Metrics/AbcSize, Metrics/MethodLength

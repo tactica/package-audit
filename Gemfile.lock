@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    package-audit (0.1.0)
+    package-audit (0.2.0)
       bundler-audit (~> 0.8)
       thor (~> 1.2)
 
