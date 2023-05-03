@@ -17,7 +17,7 @@ module Package
 
       map '--version' => :version
 
-      desc 'report', 'Show a report of potentially deprecated, outdated or vulnerable gems'
+      desc 'report', 'Show a report of potentially deprecated, outdated or vulnerable packages'
       method_option :csv, type: :boolean, default: false, desc: 'Output using comma separated values (CSV)'
       method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
 
@@ -28,7 +28,7 @@ module Package
       end
 
       desc 'deprecated',
-           "Show gems with no updates by author for at least #{Const::Time::YEARS_ELAPSED_TO_BE_OUTDATED} years"
+           "Show packages with no updates by author for at least #{Const::Time::YEARS_ELAPSED_TO_BE_OUTDATED} years"
       method_option :csv, type: :boolean, default: false, desc: 'Output using comma separated values (CSV)'
       method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
 
