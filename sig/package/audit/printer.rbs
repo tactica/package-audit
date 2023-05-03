@@ -1,0 +1,24 @@
+module Package
+  module Audit
+    class Printer
+      BASH_FORMATTING_REGEX: Regexp
+      COLUMN_GAP: Integer
+      CSV_HEADERS: Hash[Symbol, String]
+
+      @pkgs: Array[Package]
+      @options: Hash[Symbol, untyped]
+
+      def initialize: (Array[Package], Hash[Symbol, untyped]) -> void
+
+      def print: (Array[Symbol]) -> void
+
+      private
+
+      def check_fields: (Array[Symbol]) -> void
+
+      def csv: (Array[Symbol], ?exclude_headers: bool) -> void
+
+      def pretty: (?Array[Symbol]) -> void
+    end
+  end
+end

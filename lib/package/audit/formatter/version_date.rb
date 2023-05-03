@@ -1,5 +1,5 @@
-require_relative '../const'
 require_relative './base'
+require_relative '../const/time'
 require_relative '../util/bash_color'
 
 require 'time'
@@ -16,7 +16,7 @@ module Package
         def format
           seconds_since_date = (Time.now - Time.parse(@date)).to_i
 
-          if seconds_since_date >= Const::SECONDS_ELAPSED_TO_BE_OUTDATED
+          if seconds_since_date >= Const::Time::SECONDS_ELAPSED_TO_BE_OUTDATED
             Util::BashColor.yellow(@date)
           else
             @date

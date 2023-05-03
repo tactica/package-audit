@@ -1,8 +1,8 @@
 module Package
   module Audit
-    class Dependency
+    class Package
       @groups: Array[Symbol]
-      @risk: Risk
+      @risks: Array[Risk]
       @vulnerabilities: Array[String]
 
       attr_accessor groups: Array[Symbol]
@@ -13,13 +13,21 @@ module Package
       attr_accessor version_date: String
       attr_accessor vulnerabilities: Array[String]
 
-      def initialize: (String, String) -> void
+      def initialize: (String, String, **untyped) -> void
+
+      def deprecated?: -> bool
+
+      def full_name: -> String
 
       def group_list: -> String
 
-      def risk?: -> bool
+      def outdated?: -> bool
 
       def risk: -> Risk
+
+      def risk?: -> bool
+
+      def risks: -> Array[Risk]
 
       def risk_explanation: -> String?
 
@@ -30,6 +38,8 @@ module Package
       def update: (**untyped) -> void
 
       def vulnerabilities_grouped: -> String
+
+      def vulnerable?: -> bool
     end
   end
 end

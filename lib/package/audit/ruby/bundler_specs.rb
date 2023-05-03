@@ -1,4 +1,4 @@
-require_relative '../dependency'
+require_relative '../package'
 require_relative './gem_meta_data'
 require_relative './vulnerability_finder'
 

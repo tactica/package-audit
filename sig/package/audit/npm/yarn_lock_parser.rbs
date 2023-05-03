@@ -1,0 +1,19 @@
+module Package
+  module Audit
+    module Npm
+      class YarnLockParser
+        @yarn_lock_path: String
+
+        def initialize: (String) -> void
+
+        def fetch: (Hash[Symbol, untyped], Hash[Symbol, untyped]) -> Array[Package]
+
+        private
+
+        def fetch_package_block: (Symbol, String) -> String
+
+        def fetch_package_version: (Symbol, String) -> String
+      end
+    end
+  end
+end

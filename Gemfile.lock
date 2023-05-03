@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    package-audit (0.1.0)
+    package-audit (0.2.0)
       bundler-audit (~> 0.8)
       thor (~> 1.2)
 
@@ -21,7 +21,7 @@ GEM
     csv (3.2.6)
     ffi (1.15.5)
     fileutils (1.7.1)
-    i18n (1.12.0)
+    i18n (1.13.0)
       concurrent-ruby (~> 1.0)
     json (2.6.3)
     language_server-protocol (3.17.0.3)
@@ -105,4 +105,4 @@ DEPENDENCIES
   steep
 
 BUNDLED WITH
-   2.4.12
+   2.4.10

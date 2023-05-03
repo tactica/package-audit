@@ -1,67 +1,79 @@
-require_relative './const'
+require_relative './const/time'
 
 module Package
   module Audit
     class RiskCalculator
-      def initialize(dependency)
-        @dependency = dependency
+      def initialize(pkg)
+        @pkg = pkg
       end
 
       def find
-        vulnerability_risk = assess_vulnerability_risk
-        deprecation_risk = assess_vulnerability_risk
-        version_risk = assess_version_risk
+        risks = assess_vulnerability_risks + assess_deprecation_risks + assess_version_risks
 
-        risk = [vulnerability_risk, deprecation_risk, version_risk].max
-        risk = [risk, Risk.new(Enum::RiskType::MEDIUM, risk.explanation)].min unless risk.nil? || production_dependency?
-        risk
+        unless production_dependency?
+          risks.each_with_index do |risk, index|
+            risks[index] =
+              [risk, Risk.new(Enum::RiskType::MEDIUM, risk.explanation)].min || Risk.new(Enum::RiskType::NONE)
+          end
+        end
+        risks
       end
 
       private
 
-      def assess_vulnerability_risk # rubocop:disable Metrics/MethodLength
-        if (@dependency.vulnerabilities & [
+      def assess_vulnerability_risks # rubocop:disable Metrics/MethodLength
+        risks = []
+
+        if (@pkg.vulnerabilities & [
           Enum::VulnerabilityType::UNKNOWN,
           Enum::VulnerabilityType::CRITICAL,
           Enum::VulnerabilityType::HIGH
         ]).any?
-          Risk.new(Enum::RiskType::HIGH, Enum::RiskExplanation::VULNERABILITY)
-        elsif @dependency.vulnerabilities.include? Enum::VulnerabilityType::MEDIUM
-          Risk.new(Enum::RiskType::MEDIUM, Enum::RiskExplanation::VULNERABILITY)
-        elsif @dependency.vulnerabilities.include? Enum::VulnerabilityType::LOW
-          Risk.new(Enum::RiskType::LOW, Enum::RiskExplanation::VULNERABILITY)
-        else
-          Risk.new(Enum::RiskType::NONE)
+          risks << Risk.new(Enum::RiskType::HIGH, Enum::RiskExplanation::VULNERABILITY)
         end
+        if (@pkg.vulnerabilities & [
+          Enum::VulnerabilityType::MEDIUM,
+          Enum::VulnerabilityType::MODERATE
+        ]).any?
+          risks << Risk.new(Enum::RiskType::MEDIUM, Enum::RiskExplanation::VULNERABILITY)
+        end
+        if @pkg.vulnerabilities.include? Enum::VulnerabilityType::LOW
+          risks << Risk.new(Enum::RiskType::LOW, Enum::RiskExplanation::VULNERABILITY)
+        end
+        risks
       end
 
-      def assess_version_risk
-        version_parts = @dependency.version.split('.').map(&:to_i)
-        latest_version_parts = @dependency.latest_version.split('.').map(&:to_i)
+      def assess_version_risks # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+        risks = []
+
+        return risks if @pkg.latest_version.nil?
+
+        version_parts = @pkg.version.split('.').map(&:to_i)
+        latest_version_parts = @pkg.latest_version.split('.').map(&:to_i)
 
         if (version_parts.first || 0) < (latest_version_parts.first || 0)
-          Risk.new(Enum::RiskType::MEDIUM, Enum::RiskExplanation::OUTDATED_BY_MAJOR_VERSION)
-        elsif (version_parts <=> latest_version_parts) == -1
-          Risk.new(Enum::RiskType::LOW, Enum::RiskExplanation::OUTDATED)
-        else
-          Risk.new(Enum::RiskType::NONE)
+          risks << Risk.new(Enum::RiskType::MEDIUM, Enum::RiskExplanation::OUTDATED_BY_MAJOR_VERSION)
         end
+        if (version_parts.first || 0) == (latest_version_parts.first || 0) &&
+           (version_parts[1..] <=> latest_version_parts[1..]) == -1
+          risks << Risk.new(Enum::RiskType::LOW, Enum::RiskExplanation::OUTDATED)
+        end
+        risks
       end
 
-      def assess_deprecation_risk
-        seconds_since_date = (Time.now - Time.parse(@dependency.latest_version_date)).to_i
+      def assess_deprecation_risks
+        risks = []
+        seconds_since_date = (Time.now - Time.parse(@pkg.latest_version_date)).to_i
 
-        if @dependency.version == @dependency.latest_version &&
-           seconds_since_date >= Const::SECONDS_ELAPSED_TO_BE_OUTDATED
-          Risk.new(Enum::RiskType::MEDIUM, Enum::RiskExplanation::POTENTIAL_DEPRECATION)
-        else
-          Risk.new(Enum::RiskType::NONE)
+        if seconds_since_date >= Const::Time::SECONDS_ELAPSED_TO_BE_OUTDATED
+          risks << Risk.new(Enum::RiskType::MEDIUM, Enum::RiskExplanation::POTENTIAL_DEPRECATION)
         end
+        risks
       end
 
       def production_dependency?
-        @dependency.groups.none? || (@dependency.groups & [Enum::Environment::DEFAULT,
-                                                           Enum::Environment::PRODUCTION]).any?
+        @pkg.groups.none? || (@pkg.groups & [Enum::Environment::DEFAULT,
+                                             Enum::Environment::PRODUCTION]).any?
       end
     end
   end

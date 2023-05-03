@@ -1,5 +1,3 @@
-require_relative '../const'
-
 module Package
   module Audit
     module Enum

@@ -10,4 +10,5 @@ target :lib do
   library 'json'
   library 'pathname'
   library 'time'
+  library 'uri'
 end

@@ -1,3 +1,4 @@
+require_relative './const/fields'
 require_relative './formatter/risk'
 require_relative './formatter/version'
 require_relative './formatter/version_date'
@@ -5,61 +6,44 @@ require_relative './formatter/vulnerability'
 
 module Package
   module Audit
-    class DependencyPrinter
+    class Printer
       BASH_FORMATTING_REGEX = /\e\[\d+(?:;\d+)*m/
 
       COLUMN_GAP = 2
 
-      # the names of these fields must match the instance variables in the Dependency class
-      FIELDS = %i[
-        name
-        version
-        latest_version
-        latest_version_date
-        groups
-        vulnerabilities
-        risk_type
-        risk_explanation
-      ]
-
-      HEADERS = {
-        name: 'Package',
-        version: 'Version',
-        latest_version: 'Latest',
-        latest_version_date: 'Latest Date',
-        groups: 'Groups',
-        vulnerabilities: 'Vulnerabilities',
-        risk_type: 'Risk',
-        risk_explanation: 'Risk Explanation'
-      }
-
-      def initialize(dependencies, options)
-        @dependencies = dependencies
+      def initialize(pkgs, options)
+        @pkgs = pkgs
         @options = options
       end
 
-      def print(fields = FIELDS)
-        if (fields - FIELDS).any?
-          raise ArgumentError, "#{fields - FIELDS} are not valid field names. Available fields names are: #{FIELDS}."
-        end
+      def print(fields)
+        check_fields(fields)
+        return if @pkgs.empty?
 
         if @options[:csv]
           csv(fields, exclude_headers: @options[:'exclude-headers'])
         else
           pretty(fields)
         end
+        puts
       end
 
       private
 
-      def pretty(fields) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
-        return if @dependencies.empty?
+      def check_fields(fields)
+        return unless (fields - Const::Fields::ALL).any?
 
-        # find the maximum length of each field across all the dependencies so we know how many
+        raise ArgumentError,
+              "#{fields - Const::Fields::ALL} are not valid field names. " \
+              "Available fields names are: #{Const::Fields::ALL}."
+      end
+
+      def pretty(fields = Const::Fields::REPORT) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+        # find the maximum length of each field across all the packages so we know how many
         # characters of horizontal space to allocate for each field when printing
         fields.each do |key|
-          instance_variable_set "@max_#{key}", HEADERS[key].length
-          @dependencies.each do |gem|
+          instance_variable_set "@max_#{key}", Const::Fields::HEADERS[key].length
+          @pkgs.each do |gem|
             curr_field_length = case key
                                 when :vulnerabilities
                                   gem.vulnerabilities_grouped.length
@@ -78,24 +62,24 @@ module Package
 
         puts '=' * line_length
         puts fields.map { |key|
-          HEADERS[key].gsub(BASH_FORMATTING_REGEX, '').ljust(instance_variable_get("@max_#{key}"))
+          Const::Fields::HEADERS[key].gsub(BASH_FORMATTING_REGEX, '').ljust(instance_variable_get("@max_#{key}"))
         }.join(' ' * COLUMN_GAP)
         puts '=' * line_length
 
-        @dependencies.each do |dep|
+        @pkgs.each do |pkg|
           puts fields.map { |key|
-            val = dep.send(key) || ''
+            val = pkg.send(key) || ''
             val = case key
                   when :groups
-                    dep.group_list
+                    pkg.group_list
                   when :risk_type
-                    Formatter::Risk.new(dep.risk_type).format
+                    Formatter::Risk.new(pkg.risk_type).format
                   when :version
-                    Formatter::Version.new(dep.version, dep.latest_version).format
+                    Formatter::Version.new(pkg.version, pkg.latest_version).format
                   when :vulnerabilities
-                    Formatter::Vulnerability.new(dep.vulnerabilities).format
+                    Formatter::Vulnerability.new(pkg.vulnerabilities).format
                   when :latest_version_date
-                    Formatter::VersionDate.new(dep.latest_version_date).format
+                    Formatter::VersionDate.new(pkg.latest_version_date).format
                   else
                     val
                   end
@@ -106,9 +90,7 @@ module Package
         end
       end
 
-      def csv(fields, exclude_headers: false) # rubocop:disable Metrics/MethodLength
-        return if @dependencies.empty?
-
+      def csv(fields, exclude_headers: false)
         value_fields = fields.map do |field|
           case field
           when :groups
@@ -121,7 +103,7 @@ module Package
         end
 
         puts fields.join(',') unless exclude_headers
-        @dependencies.map { |gem| puts gem.to_csv(value_fields) }
+        @pkgs.map { |gem| puts gem.to_csv(value_fields) }
       end
     end
   end

@@ -6,15 +6,21 @@ require_relative './enum/risk_explanation'
 
 module Package
   module Audit
-    class Dependency
+    class Package
       attr_reader :name, :version
       attr_accessor :groups, :version_date, :latest_version, :latest_version_date, :vulnerabilities
 
-      def initialize(name, version)
+      def initialize(name, version, **attr)
         @name = name.to_s
         @version = version.to_s
         @groups = []
         @vulnerabilities = []
+        @risks = []
+        update(**attr)
+      end
+
+      def full_name
+        "#{name}@#{version}"
       end
 
       def update(**attr)
@@ -22,11 +28,15 @@ module Package
       end
 
       def risk
-        @risk ||= RiskCalculator.new(self).find || Risk.new(Enum::RiskType::NONE)
+        risks.max || Risk.new(Enum::RiskType::NONE)
+      end
+
+      def risks
+        RiskCalculator.new(self).find
       end
 
       def risk?
-        risk.type != Enum::RiskType::NONE
+        risks.any?
       end
 
       def group_list
@@ -43,6 +53,30 @@ module Package
 
       def risk_explanation
         risk.explanation
+      end
+
+      def deprecated?
+        risks.each do |risk|
+          return true if risk.explanation == Enum::RiskExplanation::POTENTIAL_DEPRECATION
+        end
+        false
+      end
+
+      def outdated?
+        risks.each do |risk|
+          return true if [
+            Enum::RiskExplanation::OUTDATED,
+            Enum::RiskExplanation::OUTDATED_BY_MAJOR_VERSION
+          ].include?(risk.explanation || '')
+        end
+        false
+      end
+
+      def vulnerable?
+        risks.each do |risk|
+          return true if risk.explanation == Enum::RiskExplanation::VULNERABILITY
+        end
+        false
       end
 
       def to_csv(fields)

@@ -1,10 +1,10 @@
-require_relative '../const'
+require_relative '../const/time'
 
 module Package
   module Audit
     module Enum
       module RiskExplanation
-        POTENTIAL_DEPRECATION = "no updates by author in over #{Const::YEARS_ELAPSED_TO_BE_OUTDATED} years"
+        POTENTIAL_DEPRECATION = "no updates by author in over #{Const::Time::YEARS_ELAPSED_TO_BE_OUTDATED} years"
         OUTDATED_BY_MAJOR_VERSION = 'behind by a major version'
         OUTDATED = 'not at latest version'
         VULNERABILITY = 'security vulnerability'

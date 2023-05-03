@@ -19,8 +19,6 @@ Layout/SpaceInsideHashLiteralBraces:
 
 Metrics/MethodLength:
   Max: 12
-  Exclude:
-    - lib/package/audit/cli.rb
 
 Style/Documentation:
   Enabled: false
