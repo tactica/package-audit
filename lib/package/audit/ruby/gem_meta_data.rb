@@ -29,6 +29,8 @@ module Package
 
             remote_dependencies, = fetcher.spec_for_dependency gem_dependency
 
+            next unless remote_dependencies.any?
+
             remote_dependencies.each do |remote_spec, _|
               latest_version = remote_spec.version if latest_version < remote_spec.version
               latest_version_date = remote_spec.date if latest_version_date < remote_spec.date
