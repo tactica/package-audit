@@ -1,6 +1,7 @@
 require_relative './yarn_lock_parser'
 require_relative './npm_meta_data'
 require_relative './vulnerability_finder'
+require_relative '../duplicate_package_merger'
 
 module Package
   module Audit
@@ -17,30 +18,27 @@ module Package
         def all
           implicit_pkgs = fetch_from_lock_file
           vulnerable_pkgs = VulnerabilityFinder.new(implicit_pkgs).run
-          NpmMetaData.new(vulnerable_pkgs + implicit_pkgs).fetch.filter(&:risk?).sort_by(&:full_name).uniq(&:full_name)
+          pkgs = NpmMetaData.new(vulnerable_pkgs + implicit_pkgs).fetch.filter(&:risk?)
+          DuplicatePackageMerger.new(pkgs).run
         end
 
         def deprecated
           implicit_pkgs = fetch_from_lock_file
-          NpmMetaData.new(implicit_pkgs).fetch.filter do |pkg|
-            pkg.risk.explanation == Enum::RiskExplanation::POTENTIAL_DEPRECATION
-          end.sort_by(&:full_name).uniq(&:full_name)
+          pkgs = NpmMetaData.new(implicit_pkgs).fetch.filter(&:deprecated?)
+          DuplicatePackageMerger.new(pkgs).run
         end
 
         def outdated
           implicit_pkgs = fetch_from_lock_file
-          NpmMetaData.new(implicit_pkgs).fetch.filter do |pkg|
-            ([
-              Enum::RiskExplanation::OUTDATED,
-              Enum::RiskExplanation::OUTDATED_BY_MAJOR_VERSION
-            ] & [pkg.risk.explanation]).any?
-          end.sort_by(&:full_name).uniq(&:full_name)
+          pkgs = NpmMetaData.new(implicit_pkgs).fetch.filter(&:outdated?)
+          DuplicatePackageMerger.new(pkgs).run
         end
 
         def vulnerable
           implicit_pkgs = fetch_from_lock_file
           vulnerable_pkgs = VulnerabilityFinder.new(implicit_pkgs).run
-          NpmMetaData.new(vulnerable_pkgs).fetch.filter(&:risk?).sort_by(&:full_name).uniq(&:full_name)
+          pkgs = NpmMetaData.new(vulnerable_pkgs).fetch
+          DuplicatePackageMerger.new(pkgs).run
         end
 
         private

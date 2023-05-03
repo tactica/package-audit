@@ -14,6 +14,8 @@ module Package
 
       private
 
+      def check_fields: (Array[Symbol]) -> void
+
       def csv: (Array[Symbol], ?exclude_headers: bool) -> void
 
       def pretty: (?Array[Symbol]) -> void

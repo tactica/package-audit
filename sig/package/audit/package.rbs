@@ -2,7 +2,7 @@ module Package
   module Audit
     class Package
       @groups: Array[Symbol]
-      @risk: Risk
+      @risks: Array[Risk]
       @vulnerabilities: Array[String]
 
       attr_accessor groups: Array[Symbol]
@@ -23,9 +23,11 @@ module Package
 
       def outdated?: -> bool
 
+      def risk: -> Risk
+
       def risk?: -> bool
 
-      def risk: -> Risk
+      def risks: -> Array[Risk]
 
       def risk_explanation: -> String?
 

@@ -12,7 +12,7 @@ module Package
         end
 
         def self.deprecated
-          puts Util::BashColor.blue("\nAlthough the packages above have no recent updates, they may not be deprecated.")
+          puts Util::BashColor.blue('Although the packages above have no recent updates, they may not be deprecated.')
           puts Util::BashColor.blue("Please contact the package author for more information about its status.\n")
         end
 
@@ -30,6 +30,7 @@ module Package
           outdated = pkgs.count(&:outdated?)
           deprecated = pkgs.count(&:deprecated?)
           vulnerable = pkgs.count(&:vulnerable?)
+
           vulnerabilities = pkgs.sum { |pkg| pkg.vulnerabilities.length }
 
           puts Util::BashColor.cyan("Found a total of #{pkgs.length} #{package_type}s.\n" \

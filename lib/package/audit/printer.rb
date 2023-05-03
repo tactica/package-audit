@@ -17,14 +17,10 @@ module Package
       end
 
       def print(fields)
-        if (fields - Const::Fields::ALL).any?
-          raise ArgumentError,
-                "#{fields - Const::Fields::ALL} are not valid field names. " \
-                "Available fields names are: #{Const::Fields::ALL}."
-        end
-
+        check_fields(fields)
         return if @pkgs.empty?
 
+        puts
         if @options[:csv]
           csv(fields, exclude_headers: @options[:'exclude-headers'])
         else
@@ -34,6 +30,14 @@ module Package
       end
 
       private
+
+      def check_fields(fields)
+        return unless (fields - Const::Fields::ALL).any?
+
+        raise ArgumentError,
+              "#{fields - Const::Fields::ALL} are not valid field names. " \
+              "Available fields names are: #{Const::Fields::ALL}."
+      end
 
       def pretty(fields = Const::Fields::REPORT) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
         # find the maximum length of each field across all the packages so we know how many

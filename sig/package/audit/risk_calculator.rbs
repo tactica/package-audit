@@ -5,15 +5,15 @@ module Package
 
       def initialize: (Package) -> void
 
-      def find: -> Risk?
+      def find: -> Array[Risk]
 
       private
 
-      def assess_deprecation_risk: -> Risk
+      def assess_deprecation_risks: -> Array[Risk]
 
-      def assess_version_risk: -> Risk
+      def assess_version_risks: -> Array[Risk]
 
-      def assess_vulnerability_risk: -> Risk
+      def assess_vulnerability_risks: -> Array[Risk]
 
       def production_dependency?: -> bool
     end

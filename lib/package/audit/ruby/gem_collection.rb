@@ -1,5 +1,6 @@
 require_relative './bundler_specs'
 require_relative './../enum/risk_type'
+require_relative '../duplicate_package_merger'
 
 module Package
   module Audit
@@ -9,36 +10,28 @@ module Package
           specs = BundlerSpecs.gemfile
           pkgs = specs.map { |spec| Package.new(spec.name, spec.version) }
           vulnerable_pkgs = VulnerabilityFinder.new.run
-          GemMetaData.new(pkgs + vulnerable_pkgs).fetch.filter(&:risk?).sort_by(&:full_name).uniq(&:full_name)
+          pkgs = GemMetaData.new(pkgs + vulnerable_pkgs).fetch.filter(&:risk?)
+          DuplicatePackageMerger.new(pkgs).run
         end
 
         def self.deprecated
           specs = BundlerSpecs.gemfile
           pkgs = specs.map { |spec| Package.new(spec.name, spec.version) }
-
-          GemMetaData.new(pkgs).fetch.filter do |pkg|
-            pkg.risk.explanation == Enum::RiskExplanation::POTENTIAL_DEPRECATION
-          end.sort_by(&:full_name).uniq(&:full_name)
+          pkgs = GemMetaData.new(pkgs).fetch.filter(&:deprecated?)
+          DuplicatePackageMerger.new(pkgs).run
         end
 
         def self.outdated(include_implicit: false)
           specs = include_implicit ? BundlerSpecs.all : BundlerSpecs.gemfile
           pkgs = specs.map { |spec| Package.new(spec.name, spec.version) }
-
-          GemMetaData.new(pkgs).fetch.filter do |pkg|
-            ([
-              Enum::RiskExplanation::OUTDATED,
-              Enum::RiskExplanation::OUTDATED_BY_MAJOR_VERSION
-            ] & [pkg.risk.explanation]).any?
-          end.sort_by(&:full_name).uniq(&:full_name)
+          pkgs = GemMetaData.new(pkgs).fetch.filter(&:outdated?)
+          DuplicatePackageMerger.new(pkgs).run
         end
 
         def self.vulnerable
           pkgs = VulnerabilityFinder.new.run
-
-          GemMetaData.new(pkgs).fetch.filter do |pkg|
-            pkg.risk.explanation == Enum::RiskExplanation::VULNERABILITY
-          end.sort_by(&:full_name).uniq(&:full_name)
+          pkgs = GemMetaData.new(pkgs).fetch.filter(&:vulnerable?)
+          DuplicatePackageMerger.new(pkgs).run
         end
       end
     end
