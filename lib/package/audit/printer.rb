@@ -20,7 +20,6 @@ module Package
         check_fields(fields)
         return if @pkgs.empty?
 
-        puts
         if @options[:csv]
           csv(fields, exclude_headers: @options[:'exclude-headers'])
         else
