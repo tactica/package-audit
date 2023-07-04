@@ -2,6 +2,7 @@ module Package
   module Audit
     module Npm
       class YarnLockParser
+        @yarn_lock_file: String
         @yarn_lock_path: String
 
         def initialize: (String) -> void
