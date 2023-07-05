@@ -1,5 +1,5 @@
-require_relative './const/cmd'
-require_relative './const/file'
+require_relative 'const/cmd'
+require_relative 'const/file'
 
 module Package
   module Audit
@@ -16,7 +16,7 @@ module Package
         pkgs = []
 
         if ruby?
-          gems = Ruby::GemCollection.all
+          gems = Ruby::GemCollection.new(@dir).all
           pkgs += gems
           Printer.new(gems, @options).print(Const::Fields::REPORT)
 
@@ -52,7 +52,7 @@ module Package
         pkgs = []
 
         if ruby?
-          gems = Ruby::GemCollection.vulnerable
+          gems = Ruby::GemCollection.new(@dir).vulnerable
           pkgs += gems
           Printer.new(gems, @options).print(Const::Fields::VULNERABLE)
 
@@ -88,7 +88,7 @@ module Package
         pkgs = []
 
         if ruby?
-          gems = Ruby::GemCollection.outdated
+          gems = Ruby::GemCollection.new(@dir).outdated
           pkgs += gems
           Printer.new(gems, @options).print(Const::Fields::OUTDATED)
 
@@ -122,7 +122,7 @@ module Package
         pkgs = []
 
         if ruby?
-          gems = Ruby::GemCollection.deprecated
+          gems = Ruby::GemCollection.new(@dir).deprecated
           pkgs += gems
           Printer.new(gems, @options).print(Const::Fields::OUTDATED)
 

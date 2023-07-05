@@ -35,31 +35,61 @@
     code: Ruby::UnknownConstant
   - range:
       start:
-        line: 12
-        character: 31
+        line: 14
+        character: 12
       end:
-        line: 12
-        character: 38
+        line: 14
+        character: 19
     severity: WARNING
     message: 'Cannot find the declaration of constant: `Bundler`'
     code: Ruby::UnknownConstant
   - range:
       start:
-        line: 16
+        line: 14
         character: 33
       end:
-        line: 16
+        line: 14
         character: 40
     severity: WARNING
     message: 'Cannot find the declaration of constant: `Bundler`'
     code: Ruby::UnknownConstant
   - range:
       start:
-        line: 17
+        line: 19
+        character: 33
+      end:
+        line: 19
+        character: 40
+    severity: WARNING
+    message: 'Cannot find the declaration of constant: `Bundler`'
+    code: Ruby::UnknownConstant
+  - range:
+      start:
+        line: 21
         character: 12
       end:
-        line: 17
+        line: 21
         character: 19
+    severity: WARNING
+    message: 'Cannot find the declaration of constant: `Bundler`'
+    code: Ruby::UnknownConstant
+  - range:
+      start:
+        line: 22
+        character: 12
+      end:
+        line: 22
+        character: 19
+    severity: WARNING
+    message: 'Cannot find the declaration of constant: `Bundler`'
+    code: Ruby::UnknownConstant
+  - range:
+      start:
+        line: 23
+        character: 14
+      end:
+        line: 23
+        character: 21
     severity: WARNING
     message: 'Cannot find the declaration of constant: `Bundler`'
     code: Ruby::UnknownConstant

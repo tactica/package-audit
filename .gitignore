@@ -13,3 +13,4 @@
 /spec/reports/
 /tmp/
 /vendor/bundle
+node_modules

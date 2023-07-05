@@ -1,8 +1,8 @@
-require_relative './risk'
-require_relative './risk_calculator'
-require_relative './enum/environment'
-require_relative './enum/risk_type'
-require_relative './enum/risk_explanation'
+require_relative 'risk'
+require_relative 'risk_calculator'
+require_relative 'enum/environment'
+require_relative 'enum/risk_type'
+require_relative 'enum/risk_explanation'
 
 module Package
   module Audit

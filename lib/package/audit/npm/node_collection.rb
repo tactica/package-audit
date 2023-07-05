@@ -1,6 +1,6 @@
-require_relative './yarn_lock_parser'
-require_relative './npm_meta_data'
-require_relative './vulnerability_finder'
+require_relative 'yarn_lock_parser'
+require_relative 'npm_meta_data'
+require_relative 'vulnerability_finder'
 require_relative '../duplicate_package_merger'
 
 module Package
@@ -17,7 +17,7 @@ module Package
 
         def all
           implicit_pkgs = fetch_from_lock_file
-          vulnerable_pkgs = VulnerabilityFinder.new(implicit_pkgs).run
+          vulnerable_pkgs = VulnerabilityFinder.new(@dir, implicit_pkgs).run
           pkgs = NpmMetaData.new(vulnerable_pkgs + implicit_pkgs).fetch.filter(&:risk?)
           DuplicatePackageMerger.new(pkgs).run
         end
@@ -36,7 +36,7 @@ module Package
 
         def vulnerable
           implicit_pkgs = fetch_from_lock_file
-          vulnerable_pkgs = VulnerabilityFinder.new(implicit_pkgs).run
+          vulnerable_pkgs = VulnerabilityFinder.new(@dir, implicit_pkgs).run
           pkgs = NpmMetaData.new(vulnerable_pkgs).fetch
           DuplicatePackageMerger.new(pkgs).run
         end

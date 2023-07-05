@@ -34,7 +34,7 @@ Found a total of 14 ruby gems.
 3 vulnerable (7 vulnerabilities), 6 outdated, 9 deprecated.
 
 To get more information about the ruby gem vulnerabilities run:
- > bundle exec bundle-audit check --update
+ > bundle-audit check --update
 
 ==========================================================================================================================
 Package                   Version  Latest   Latest Date  Vulnerabilities      Risk    Risk Explanation
@@ -97,31 +97,31 @@ require 'package-audit'
 * To produce a report of vulnerable, deprecated and outdated packages run:
 
     ```bash
-    bundle exec package-audit
+    package-audit
     ```
 
 * To show how risk is calculated for the above report run:
 
     ```bash
-    bundle exec package-audit risk
+    package-audit risk
     ```
 
 * To produce the same report in a CSV format run:
 
     ```bash
-    bundle exec package-audit --csv
+    package-audit --csv
     ```
 
 * For a list of other useful commands and their options run:
 
     ```bash
-    bundle exec package-audit help
+    package-audit help
     ```
 
     OR
 
     ```bash
-    bundle exec package-audit help [COMMAND]
+    package-audit help [COMMAND]
     ```
 
 ## Development
