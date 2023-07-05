@@ -2,6 +2,8 @@ module Package
   module Audit
     module Ruby
       class GemCollection
+        @dir: String
+
         def self.all: -> Array[Package]
 
         def self.deprecated: -> Array[Package]

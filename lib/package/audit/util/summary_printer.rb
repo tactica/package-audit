@@ -1,5 +1,5 @@
 require_relative '../const/time'
-require_relative './bash_color'
+require_relative 'bash_color'
 
 module Package
   module Audit
@@ -8,7 +8,7 @@ module Package
         def self.report
           printf("\n%<info>s\n%<cmd>s\n\n",
                  info: Util::BashColor.blue('To show how risk is calculated run:'),
-                 cmd: Util::BashColor.magenta(' > bundle exec package-audit risk'))
+                 cmd: Util::BashColor.magenta(' > package-audit risk'))
         end
 
         def self.deprecated

@@ -33,7 +33,10 @@ module Package
 
         def fetch_package_version(dep_name, pkg_block)
           version = pkg_block.match(/version"?\s*"(.*?)"/)&.captures&.[](0)
-          raise NoMatchingPatternError, "Unable to find the version of \"#{dep_name}\" in #{@yarn_lock_path}" if version.nil?
+          if version.nil?
+            raise NoMatchingPatternError,
+                  "Unable to find the version of \"#{dep_name}\" in #{@yarn_lock_path}"
+          end
 
           version || '0.0.0.0'
         end

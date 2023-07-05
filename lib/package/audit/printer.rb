@@ -1,8 +1,8 @@
-require_relative './const/fields'
-require_relative './formatter/risk'
-require_relative './formatter/version'
-require_relative './formatter/version_date'
-require_relative './formatter/vulnerability'
+require_relative 'const/fields'
+require_relative 'formatter/risk'
+require_relative 'formatter/version'
+require_relative 'formatter/version_date'
+require_relative 'formatter/vulnerability'
 
 module Package
   module Audit

@@ -1,4 +1,4 @@
-require_relative './const/time'
+require_relative 'const/time'
 
 module Package
   module Audit

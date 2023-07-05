@@ -11,5 +11,7 @@
 /doc/
 /pkg/
 /spec/reports/
+/test/files/**/Gemfile.lock
 /tmp/
 /vendor/bundle
+node_modules

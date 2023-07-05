@@ -1,6 +1,6 @@
 require_relative '../package'
-require_relative './gem_meta_data'
-require_relative './vulnerability_finder'
+require_relative 'gem_meta_data'
+require_relative 'vulnerability_finder'
 
 require 'bundler'
 
@@ -8,16 +8,23 @@ module Package
   module Audit
     module Ruby
       class BundlerSpecs
-        def self.all
-          Bundler.ui.silence { Bundler.definition.resolve }
+        def self.all(dir = nil)
+          Bundler.with_unbundled_env do
+            ENV['BUNDLE_GEMFILE'] = "#{dir}/Gemfile"
+            Bundler.ui.silence { Bundler.definition.resolve }
+          end
         end
 
-        def self.gemfile
-          current_dependencies = Bundler.ui.silence do
-            Bundler.load.dependencies.to_h { |dep| [dep.name, dep] }
+        def self.gemfile(dir)
+          current_dependencies = Bundler.with_unbundled_env do
+            ENV['BUNDLE_GEMFILE'] = "#{dir}/Gemfile"
+            Bundler.reset!
+            Bundler.ui.silence do
+              Bundler.load.dependencies.to_h { |dep| [dep.name, dep] }
+            end
           end
 
-          gemfile_specs, = all.partition do |spec|
+          gemfile_specs, = all(dir).partition do |spec|
             current_dependencies.key? spec.name
           end
           gemfile_specs
