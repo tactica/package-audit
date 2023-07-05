@@ -8,7 +8,7 @@ module Package
   module Audit
     module Ruby
       class BundlerSpecs
-        def self.all(dir = nil)
+        def self.all(dir)
           Bundler.with_unbundled_env do
             ENV['BUNDLE_GEMFILE'] = "#{dir}/Gemfile"
             Bundler.ui.silence { Bundler.definition.resolve }

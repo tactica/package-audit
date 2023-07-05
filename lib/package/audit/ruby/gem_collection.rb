@@ -26,7 +26,7 @@ module Package
         end
 
         def outdated(include_implicit: false)
-          specs = include_implicit ? BundlerSpecs.all : BundlerSpecs.gemfile(@dir)
+          specs = include_implicit ? BundlerSpecs.all(@dir) : BundlerSpecs.gemfile(@dir)
           pkgs = specs.map { |spec| Package.new(spec.name, spec.version) }
           pkgs = GemMetaData.new(pkgs).fetch.filter(&:outdated?)
           DuplicatePackageMerger.new(pkgs).run

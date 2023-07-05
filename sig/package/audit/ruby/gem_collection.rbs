@@ -4,13 +4,15 @@ module Package
       class GemCollection
         @dir: String
 
-        def self.all: -> Array[Package]
+        def initialize: (String) -> void
 
-        def self.deprecated: -> Array[Package]
+        def all: -> Array[Package]
 
-        def self.outdated: (?include_implicit: bool) -> Array[Package]
+        def deprecated: -> Array[Package]
 
-        def self.vulnerable: -> Array[Package]
+        def outdated: (?include_implicit: bool) -> Array[Package]
+
+        def vulnerable: -> Array[Package]
       end
     end
   end
