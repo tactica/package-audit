@@ -95,6 +95,12 @@ module Package
       assert_match 'There are no deprecated, outdated or vulnerable node modules!', output
     end
 
+    def test_that_there_is_a_report_of_node_modules_formatted_by_npm_with_no_dependencies
+      output = `bundle exec package-audit report test/files/yarn/npm`
+
+      assert_match 'There are no deprecated, outdated or vulnerable node modules!', output
+    end
+
     def test_that_there_is_a_success_message_when_node_modules_are_up_to_date
       output = `bundle exec package-audit outdated test/files/yarn/empty`
 
