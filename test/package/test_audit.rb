@@ -1,3 +1,5 @@
+require 'bundler'
+
 require 'test_helper'
 
 require_relative '../../lib/package/audit/version'
@@ -31,35 +33,35 @@ module Package
     end
 
     def test_that_there_is_a_success_message_when_report_is_empty
-      system 'bundle install --quiet --gemfile=test/files/gemfile/empty/Gemfile'
+      Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/empty/Gemfile' }
       output = `bundle exec package-audit report test/files/gemfile/empty`
 
       assert_match 'There are no deprecated, outdated or vulnerable ruby gems!', output
     end
 
     def test_that_there_is_a_success_message_when_everything_is_up_to_date
-      system 'bundle install --quiet --gemfile=test/files/gemfile/empty/Gemfile'
+      Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/empty/Gemfile' }
       output = `bundle exec package-audit outdated test/files/gemfile/empty`
 
       assert_match 'There are no outdated ruby gems!', output
     end
 
     def test_that_there_is_a_success_message_when_there_are_no_vulnerabilities
-      system 'bundle install --quiet --gemfile=test/files/gemfile/empty/Gemfile'
+      Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/empty/Gemfile' }
       output = `bundle exec package-audit vulnerable test/files/gemfile/empty`
 
       assert_match 'There are no ruby gem vulnerabilities!', output
     end
 
     def test_that_there_is_a_success_message_when_there_are_no_deprecations
-      system 'bundle install --quiet --gemfile=test/files/gemfile/empty/Gemfile'
+      Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/empty/Gemfile' }
       output = `bundle exec package-audit deprecated test/files/gemfile/empty`
 
       assert_match 'There are no potentially deprecated ruby gems!', output
     end
 
     def test_that_there_is_a_report_of_gems
-      system 'bundle install --quiet --gemfile=test/files/gemfile/report/Gemfile'
+      Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/report/Gemfile' }
       output = `bundle exec package-audit report test/files/gemfile/report`
 
       assert_match 'Found a total of 3 ruby gems.', output
@@ -67,21 +69,21 @@ module Package
     end
 
     def test_that_there_is_a_message_about_outdated_gems
-      system 'bundle install --quiet --gemfile=test/files/gemfile/outdated/Gemfile'
+      Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/outdated/Gemfile' }
       output = `bundle exec package-audit outdated test/files/gemfile/outdated`
 
       assert_match 'Found a total of 1 ruby gems.', output
     end
 
     def test_that_there_is_a_message_about_deprecated_gems
-      system 'bundle install --quiet --gemfile=test/files/gemfile/deprecated/Gemfile'
+      Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/deprecated/Gemfile' }
       output = `bundle exec package-audit deprecated test/files/gemfile/deprecated`
 
       assert_match 'Found a total of 1 ruby gems.', output
     end
 
     def test_that_there_is_a_message_about_vulnerable_gems
-      system 'bundle install --quiet --gemfile=test/files/gemfile/vulnerable/Gemfile'
+      Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/vulnerable/Gemfile' }
       output = `bundle exec package-audit vulnerable test/files/gemfile/vulnerable`
 
       assert_match 'Found a total of 1 ruby gems.', output
