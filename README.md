@@ -9,7 +9,19 @@ A useful tool for patch management and prioritization, `package-audit` produces 
 
 `Package::Audit` will automatically detect the technologies used by the project and print out an appropriate report.
 
-Here's an example of such a report:
+## Supported Technologies
+
+* Ruby
+* Node (using Yarn)
+
+## Known Issues
+
+1. [RubyGems.org API](https://guides.rubygems.org/rubygems-org-api/) produces an incorrect date for the latest version of the [puma](https://github.com/puma/puma) gem. As a result, `puma` is shown on reports as an outdated and a deprecated gem as a false positive.
+
+
+## Report Example
+
+Below is an example of running the gem on a project that uses both Ruby and Node.
 
 ```
 ===========================================================================================================================
