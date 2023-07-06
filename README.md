@@ -9,7 +9,19 @@ A useful tool for patch management and prioritization, `package-audit` produces 
 
 `Package::Audit` will automatically detect the technologies used by the project and print out an appropriate report.
 
-Here's an example of such a report:
+## Supported Technologies
+
+* Ruby
+* Node (using Yarn)
+
+## Known Issues
+
+1. [RubyGems.org API](https://guides.rubygems.org/rubygems-org-api/) produces an incorrect date for the latest version of the [puma](https://github.com/puma/puma) gem. As a result, `puma` is shown on reports as an outdated and a deprecated gem as a false positive.
+
+
+## Report Example
+
+Below is an example of running the gem on a project that uses both Ruby and Node.
 
 ```
 ===========================================================================================================================
@@ -132,7 +144,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/tactica/package-audit. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/package-audit/blob/main/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/tactica/package-audit. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/tactica/package-audit/blob/main/CODE_OF_CONDUCT.md).
 
 ## License
 
@@ -140,4 +152,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Package::Audit project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/package-audit/blob/main/CODE_OF_CONDUCT.md).
+Everyone interacting in the Package::Audit project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/tactica/package-audit/blob/main/CODE_OF_CONDUCT.md).
