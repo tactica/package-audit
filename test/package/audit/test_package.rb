@@ -7,11 +7,11 @@ module Package
     class TestPackage < Minitest::Test
       def setup
         @package = Package.new(
-          'test', '1.0.0', groups: %i[test production],
-                           version_date: '2000-01-01',
-                           latest_version: '2.0.0',
-                           latest_version_date: '2000-12-31',
-                           vulnerabilities: %w[low high high moderate]
+          'test', '1.0.0', 'node', groups: %i[test production],
+                                   version_date: '2000-01-01',
+                                   latest_version: '2.0.0',
+                                   latest_version_date: '2000-12-31',
+                                   vulnerabilities: %w[low high high moderate]
         )
       end
 

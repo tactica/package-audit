@@ -5,7 +5,7 @@ module Package
   module Audit
     module Util
       module SummaryPrinter
-        def self.report
+        def self.all
           printf("\n%<info>s\n%<cmd>s\n\n",
                  info: Util::BashColor.blue('To show how risk is calculated run:'),
                  cmd: Util::BashColor.magenta(' > package-audit risk'))
@@ -16,26 +16,31 @@ module Package
           puts Util::BashColor.blue("Please contact the package author for more information about its status.\n")
         end
 
-        def self.vulnerable(package_type, cmd)
+        def self.vulnerable(technology, cmd)
           printf("%<info>s\n%<cmd>s\n\n",
-                 info: Util::BashColor.blue("To get more information about the #{package_type} vulnerabilities run:"),
+                 info: Util::BashColor.blue("To get more information about the #{technology} vulnerabilities run:"),
                  cmd: Util::BashColor.magenta(" > #{cmd}"))
         end
 
-        def self.total(package_type, pkgs)
-          puts Util::BashColor.cyan("Found a total of #{pkgs.length} #{package_type}s.\n")
+        def self.total(technology, pkgs, ignored_pkgs)
+          if ignored_pkgs.empty?
+            puts Util::BashColor.cyan("Found a total of #{pkgs.length} #{technology} packages.\n")
+          else
+            puts Util::BashColor.cyan("Found a total of #{pkgs.length} #{technology} packages " \
+                                      "(#{ignored_pkgs.length} ignored).\n")
+          end
         end
 
-        def self.statistics(package_type, pkgs)
+        def self.statistics(technology, pkgs, ignored_pkgs)
           outdated = pkgs.count(&:outdated?)
           deprecated = pkgs.count(&:deprecated?)
           vulnerable = pkgs.count(&:vulnerable?)
 
           vulnerabilities = pkgs.sum { |pkg| pkg.vulnerabilities.length }
 
-          puts Util::BashColor.cyan("Found a total of #{pkgs.length} #{package_type}s.\n" \
-                                    "#{vulnerable} vulnerable (#{vulnerabilities} vulnerabilities), " \
-                                    "#{outdated} outdated, #{deprecated} deprecated.\n")
+          puts Util::BashColor.cyan("#{vulnerable} vulnerable (#{vulnerabilities} vulnerabilities), " \
+                                    "#{outdated} outdated, #{deprecated} deprecated.")
+          total(technology, pkgs, ignored_pkgs)
         end
 
         def self.risk # rubocop:disable Metrics/AbcSize, Metrics/MethodLength

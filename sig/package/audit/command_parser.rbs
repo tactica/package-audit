@@ -1,0 +1,13 @@
+module Package
+  module Audit
+    class CommandParser
+      @config: Hash[String, untyped]
+      @dir: String
+      @options: Hash[Symbol, untyped]
+      @report: Symbol
+      @technologies: Array[String]
+
+      def initialize: (Symbol, String, Hash[Symbol, untyped]) -> void
+    end
+  end
+end

@@ -12,16 +12,16 @@ module Package
     class TestPrinter < Minitest::Test
       def setup # rubocop:disable Metrics/MethodLength
         @today = Time.now.strftime('%Y-%m-%d')
-        @fileutils = Package.new 'fileutils', '1.5.0'
+        @fileutils = Package.new 'fileutils', '1.5.0', 'ruby'
         @fileutils.update latest_version: '1.7.1', latest_version_date: @today, groups: %i[default]
-        @rails = Package.new 'rails', '6.0.0'
+        @rails = Package.new 'rails', '6.0.0', 'ruby'
         @rails.update latest_version: '7.0.4.3', latest_version_date: @today, groups: %i[default],
                       vulnerabilities: [
                         Enum::VulnerabilityType::MEDIUM,
                         Enum::VulnerabilityType::HIGH,
                         Enum::VulnerabilityType::HIGH
                       ]
-        @puma = Package.new 'puma', '5.1.1'
+        @puma = Package.new 'puma', '5.1.1', 'ruby'
         @puma.update latest_version: '5.1.1', latest_version_date: '2020-12-10', groups: %i[development test]
         @gems = [@fileutils, @puma, @rails]
 

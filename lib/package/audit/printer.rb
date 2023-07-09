@@ -3,6 +3,7 @@ require_relative 'formatter/risk'
 require_relative 'formatter/version'
 require_relative 'formatter/version_date'
 require_relative 'formatter/vulnerability'
+require_relative 'enum/option'
 
 module Package
   module Audit
@@ -20,8 +21,8 @@ module Package
         check_fields(fields)
         return if @pkgs.empty?
 
-        if @options[:csv]
-          csv(fields, exclude_headers: @options[:'exclude-headers'])
+        if @options[Enum::Option::CSV]
+          csv(fields, exclude_headers: @options[Enum::Option::CSV_EXCLUDE_HEADERS])
         else
           pretty(fields)
         end

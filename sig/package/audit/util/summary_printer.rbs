@@ -2,15 +2,15 @@ module Package
   module Audit
     module Util
       module SummaryPrinter
-        def self.deprecated: -> void
+        def self.all: -> void
 
-        def self.report: -> void
+        def self.deprecated: -> void
 
         def self.risk: -> void
 
-        def self.statistics: (String, Array[Package]) -> void
+        def self.statistics: (String, Array[Package], Array[Package]) -> void
 
-        def self.total: (String, Array[Package]) -> void
+        def self.total: (String, Array[Package], Array[Package]) -> void
 
         def self.vulnerable: (String, String) -> void
       end

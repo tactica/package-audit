@@ -1,0 +1,23 @@
+packages:
+  ruby:
+    minitest:
+      version: 0.30.0
+      outdated: false
+      vulnerable: false
+    rubocop-minitest:
+      version: 0.30.0
+      deprecated: false
+    rubocop-performance:
+      version: 1.17.1
+      outdated: false
+    rubocop:
+      version: 1.50.2
+      deprecated: false
+    rails-controller-testing:
+      version: 1.0.5
+      deprecated: false
+
+  node:
+    fast-xml-parser:
+      version: 4.2.2
+      vulnerable: false

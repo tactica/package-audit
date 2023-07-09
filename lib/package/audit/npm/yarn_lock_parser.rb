@@ -12,7 +12,7 @@ module Package
           default_deps.merge(dev_deps).each do |dep_name, expected_version|
             pkg_block = fetch_package_block(dep_name, expected_version)
             version = fetch_package_version(dep_name, pkg_block)
-            pks = Package.new(dep_name.to_s, version)
+            pks = Package.new(dep_name.to_s, version, 'node')
             pks.update groups: dev_deps.key?(dep_name) ? %i[development] : %i[default development]
             pkgs << pks
           end

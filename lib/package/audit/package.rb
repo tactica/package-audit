@@ -7,12 +7,13 @@ require_relative 'enum/risk_explanation'
 module Package
   module Audit
     class Package
-      attr_reader :name, :version
+      attr_reader :name, :version, :technology
       attr_accessor :groups, :version_date, :latest_version, :latest_version_date, :vulnerabilities
 
-      def initialize(name, version, **attr)
+      def initialize(name, version, technology, **attr)
         @name = name.to_s
         @version = version.to_s
+        @technology = technology.to_s
         @groups = []
         @vulnerabilities = []
         @risks = []

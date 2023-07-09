@@ -2,6 +2,7 @@ module Package
   module Audit
     module Const
       module File
+        CONFIG = '.package-audit.yml'
         GEMFILE = 'Gemfile'
         GEMFILE_LOCK = 'Gemfile.lock'
         PACKAGE_JSON = 'package.json'
