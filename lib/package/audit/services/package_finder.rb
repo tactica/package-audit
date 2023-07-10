@@ -29,8 +29,10 @@ module Package
         case technology
         when Enum::Technology::RUBY
           find_ruby
-        else
+        when Enum::Technology::NODE
           find_node
+        else
+          []
         end
       end
 
