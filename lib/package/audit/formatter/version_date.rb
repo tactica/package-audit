@@ -1,6 +1,6 @@
-require_relative 'base'
 require_relative '../const/time'
 require_relative '../util/bash_color'
+require_relative 'base'
 
 require 'time'
 

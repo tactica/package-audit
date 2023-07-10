@@ -2,17 +2,16 @@ module Package
   module Audit
     module Npm
       class NodeCollection
-        PACKAGE_JSON: String
-        PACKAGE_LOCK: String
-        YARN_LOCK: String
-
         @dir: String
+        @report: Symbol
 
-        def initialize: (String) -> void
+        def initialize: (String, Symbol) -> void
 
         def all: -> Array[Package]
 
         def deprecated: -> Array[Package]
+
+        def fetch: -> Array[Package]
 
         def outdated: -> Array[Package]
 

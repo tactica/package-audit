@@ -10,6 +10,7 @@ module Package
       attr_accessor latest_version: String
       attr_accessor latest_version_date: String
       attr_reader name: String
+      attr_reader technology: String
       attr_reader version: String
       attr_accessor version_date: String
       attr_accessor vulnerabilities: Array[String]

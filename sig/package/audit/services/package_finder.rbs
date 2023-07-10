@@ -1,0 +1,23 @@
+module Package
+  module Audit
+    class PackageFinder
+      @config: Hash[String, untyped]?
+      @dir: String
+      @report: Symbol
+
+      def initialize: (Hash[String, untyped]?, String, Symbol) -> void
+
+      def run: (String) -> Array[Array[Package]]
+
+      private
+
+      def filter_pkgs_based_on_config: (Array[Package]) -> Array[Package]
+
+      def find_by_technology: (String) -> Array[Package]
+
+      def find_node: -> Array[Package]
+
+      def find_ruby: -> Array[Package]
+    end
+  end
+end

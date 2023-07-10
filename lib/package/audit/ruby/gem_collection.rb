@@ -1,7 +1,7 @@
-require_relative 'bundler_specs'
-require_relative '../enum/risk_type'
-require_relative '../duplicate_package_merger'
 require_relative '../enum/report'
+require_relative '../enum/risk_type'
+require_relative '../services/duplicate_package_merger'
+require_relative 'bundler_specs'
 
 module Package
   module Audit

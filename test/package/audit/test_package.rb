@@ -1,6 +1,6 @@
 require 'test_helper'
 
-require_relative '../../../lib/package/audit/package'
+require_relative '../../../lib/package/audit/models/package'
 
 module Package
   module Audit

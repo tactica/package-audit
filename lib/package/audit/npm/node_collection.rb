@@ -1,8 +1,8 @@
-require_relative 'yarn_lock_parser'
+require_relative '../const/file'
+require_relative '../services/duplicate_package_merger'
 require_relative 'npm_meta_data'
 require_relative 'vulnerability_finder'
-require_relative '../duplicate_package_merger'
-require_relative '../const/file'
+require_relative 'yarn_lock_parser'
 
 module Package
   module Audit

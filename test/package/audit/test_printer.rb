@@ -3,9 +3,9 @@ require 'stringio'
 
 require_relative '../../../lib/package/audit/const/fields'
 require_relative '../../../lib/package/audit/util/bash_color'
-require_relative '../../../lib/package/audit/printer'
+require_relative '../../../lib/package/audit/services/package_printer'
 require_relative '../../../lib/package/audit/formatter/vulnerability'
-require_relative '../../../lib/package/audit/package'
+require_relative '../../../lib/package/audit/models/package'
 
 module Package
   module Audit
@@ -41,12 +41,12 @@ module Package
         fields = %i[name version unknown]
         exp_error = "[:invalid] are not valid field names. Available fields names are: #{Const::Fields::ALL}."
         assert_raises ArgumentError, exp_error do
-          Printer.new([], {}).print(fields)
+          PackagePrinter.new([], {}).print(fields)
         end
       end
 
       def test_that_the_dependencies_are_displayed_correctly
-        Printer.new(@gems, {}).print(%i[name version latest_version latest_version_date])
+        PackagePrinter.new(@gems, {}).print(%i[name version latest_version latest_version_date])
         lines = @output.string.split("\n")
 
         assert_equal 6, lines.length
@@ -57,7 +57,7 @@ module Package
 
       def test_that_the_dependencies_are_displayed_correctly_in_csv_with_headers # rubocop:disable Metrics/AbcSize
         columns = %i[name version latest_version groups]
-        Printer.new(@gems, { csv: true}).print(columns)
+        PackagePrinter.new(@gems, { csv: true}).print(columns)
         lines = @output.string.split("\n")
 
         assert_equal @gems.length + 1, lines.length
@@ -69,14 +69,14 @@ module Package
       end
 
       def test_that_vulnerabilities_are_displayed_correctly
-        Printer.new([@rails], {}).print(%i[vulnerabilities])
+        PackagePrinter.new([@rails], {}).print(%i[vulnerabilities])
         lines = @output.string.split("\n")
 
         assert_equal Formatter::Vulnerability.new(@rails.vulnerabilities).format, lines[3]
       end
 
       def test_that_vulnerabilities_are_displayed_correctly_in_csv
-        Printer.new([@rails], { csv: true}).print(%i[vulnerabilities])
+        PackagePrinter.new([@rails], { csv: true}).print(%i[vulnerabilities])
         lines = @output.string.split("\n")
 
         assert_equal 'medium(1)|high(2)', lines[1]

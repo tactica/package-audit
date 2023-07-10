@@ -1,20 +1,22 @@
-require 'yaml'
-
-require_relative 'const/cmd'
-require_relative 'const/file'
-require_relative 'enum/option'
-require_relative 'enum/report'
-require_relative 'technology_detector'
-require_relative 'technology_validator'
+require_relative '../const/cmd'
+require_relative '../const/file'
+require_relative '../enum/option'
+require_relative '../enum/report'
+require_relative '../technology/detector'
+require_relative '../technology/validator'
+require_relative '../util/summary_printer'
 require_relative 'package_finder'
+require_relative 'package_printer'
+
+require 'yaml'
 
 module Package
   module Audit
     class CommandParser
-      def initialize(report, dir, options)
+      def initialize(dir, options, report)
         @dir = dir
-        @report = report
         @options = options
+        @report = report
         @config = parse_config_file
         @technologies = parse_technologies
       end
@@ -23,10 +25,10 @@ module Package
         cumulative_pkgs = []
 
         @technologies.each do |technology|
-          all_pkgs, ignored_pkgs = PackageFinder.new(@config, @report, @dir).run(technology)
+          all_pkgs, ignored_pkgs = PackageFinder.new(@config, @dir, @report).run(technology)
           ignored_pkgs = [] if @options[Enum::Option::INCLUDE_IGNORED]
           cumulative_pkgs << all_pkgs
-          print_results(technology, all_pkgs - ignored_pkgs, ignored_pkgs)
+          print_results(technology, (all_pkgs || []) - (ignored_pkgs || []), ignored_pkgs || [])
         end
 
         cumulative_pkgs.any?
@@ -35,7 +37,7 @@ module Package
       private
 
       def print_results(technology, pkgs, ignored_pkgs)
-        Printer.new(pkgs, @options).print(report_fields)
+        PackagePrinter.new(@options, pkgs).print(report_fields)
         print_summary(technology, pkgs, ignored_pkgs) unless @options[Enum::Option::CSV]
         print_disclaimer(technology) unless @options[Enum::Option::CSV] || pkgs.empty?
       end
@@ -84,7 +86,7 @@ module Package
 
       def parse_config_file
         if @options[Enum::Option::CONFIG].nil?
-          YAML.load_file("#{@dir}/Const::File::CONFIG") if File.exist? "#{@dir}/Const::File::CONFIG"
+          YAML.load_file("#{@dir}/#{Const::File::CONFIG}") if File.exist? "#{@dir}/#{Const::File::CONFIG}"
         elsif File.exist? @options[Enum::Option::CONFIG]
           YAML.load_file(@options[Enum::Option::CONFIG])
         else
@@ -94,9 +96,9 @@ module Package
       end
 
       def parse_technologies
-        technology_validator = TechnologyValidator.new(@dir)
+        technology_validator = Technology::Validator.new(@dir)
         @options[Enum::Option::TECHNOLOGY]&.each { |technology| technology_validator.validate! technology }
-        @options[Enum::Option::TECHNOLOGY] || TechnologyDetector.new(@dir).detect
+        @options[Enum::Option::TECHNOLOGY] || Technology::Detector.new(@dir).detect
       end
     end
   end

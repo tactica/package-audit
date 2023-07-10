@@ -1,0 +1,31 @@
+module Package
+  module Audit
+    class CommandParser
+      @config: Hash[String, untyped]?
+      @dir: String
+      @options: Hash[String, untyped]
+      @report: Symbol
+      @technologies: Array[String]
+
+      def initialize: (String, Hash[String, untyped], Symbol) -> void
+
+      def run: -> bool
+
+      private
+
+      def learn_more_command: (String) -> (String | nil)
+
+      def parse_config_file: -> (Hash[String, untyped] | nil)
+
+      def parse_technologies: -> Array[String]
+
+      def print_disclaimer: (String) -> void
+
+      def print_results: (String, Array[Package], Array[Package]) -> void
+
+      def print_summary: (String, Array[Package], Array[Package]) -> void
+
+      def report_fields: -> Array[Symbol]
+    end
+  end
+end

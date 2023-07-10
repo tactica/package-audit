@@ -1,0 +1,9 @@
+module Package
+  module Audit
+    module Const
+      module YAML
+        TECHNOLOGY: String
+      end
+    end
+  end
+end

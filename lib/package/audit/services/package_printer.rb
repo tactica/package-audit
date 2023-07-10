@@ -1,20 +1,20 @@
-require_relative 'const/fields'
-require_relative 'formatter/risk'
-require_relative 'formatter/version'
-require_relative 'formatter/version_date'
-require_relative 'formatter/vulnerability'
-require_relative 'enum/option'
+require_relative '../const/fields'
+require_relative '../enum/option'
+require_relative '../formatter/risk'
+require_relative '../formatter/version'
+require_relative '../formatter/version_date'
+require_relative '../formatter/vulnerability'
 
 module Package
   module Audit
-    class Printer
+    class PackagePrinter
       BASH_FORMATTING_REGEX = /\e\[\d+(?:;\d+)*m/
 
       COLUMN_GAP = 2
 
-      def initialize(pkgs, options)
-        @pkgs = pkgs
+      def initialize(options, pkgs)
         @options = options
+        @pkgs = pkgs
       end
 
       def print(fields)
@@ -39,7 +39,7 @@ module Package
               "Available fields names are: #{Const::Fields::ALL}."
       end
 
-      def pretty(fields = Const::Fields::REPORT) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+      def pretty(fields = Const::Fields::ALL) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
         # find the maximum length of each field across all the packages so we know how many
         # characters of horizontal space to allocate for each field when printing
         fields.each do |key|

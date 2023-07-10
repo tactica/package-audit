@@ -1,4 +1,9 @@
-packages:
+technology:
+  node:
+    fast-xml-parser:
+      version: 4.2.2
+      vulnerable: false
+
   ruby:
     minitest:
       version: 0.30.0
@@ -7,6 +12,7 @@ packages:
     rubocop-minitest:
       version: 0.30.0
       deprecated: false
+      outdated: false
     rubocop-performance:
       version: 1.17.1
       outdated: false
@@ -16,8 +22,3 @@ packages:
     rails-controller-testing:
       version: 1.0.5
       deprecated: false
-
-  node:
-    fast-xml-parser:
-      version: 4.2.2
-      vulnerable: false

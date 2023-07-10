@@ -11,4 +11,5 @@ target :lib do
   library 'pathname'
   library 'time'
   library 'uri'
+  library 'yaml'
 end

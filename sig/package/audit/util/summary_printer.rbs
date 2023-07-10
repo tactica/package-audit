@@ -12,7 +12,7 @@ module Package
 
         def self.total: (String, Array[Package], Array[Package]) -> void
 
-        def self.vulnerable: (String, String) -> void
+        def self.vulnerable: (String, String?) -> void
       end
     end
   end

@@ -9,6 +9,8 @@ module Package
 
       def report: (String) -> void
 
+      def respond_to_missing?: -> bool
+
       def risk: -> void
 
       def version: -> void

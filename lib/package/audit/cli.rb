@@ -1,12 +1,8 @@
+require_relative 'const/file'
 require_relative 'const/time'
+require_relative 'enum/option'
+require_relative 'services/command_parser'
 require_relative 'version'
-require_relative 'util/summary_printer'
-require_relative 'ruby/bundler_specs'
-require_relative 'printer'
-require_relative 'ruby/gem_collection'
-require_relative 'npm/node_collection'
-require_relative 'command_parser'
-require_relative 'enum/report'
 
 require 'json'
 require 'thor'
@@ -35,33 +31,25 @@ module Package
       map '-v' => :version
       map '--version' => :version
 
-      def respond_to_missing?
-        true
-      end
-
-      def method_missing(command, *args)
-        invoke :report, [command], args
-      end
-
       desc 'report [DIR]', 'Show a report of potentially deprecated, outdated or vulnerable packages'
       def report(dir = Dir.pwd)
-        within_rescue_block { exit CommandParser.new(Enum::Report::ALL, dir, options).run }
+        within_rescue_block { exit CommandParser.new(dir, options, Enum::Report::ALL).run }
       end
 
       desc 'deprecated [DIR]',
            "Show packages with no updates by author for at least #{Const::Time::YEARS_ELAPSED_TO_BE_OUTDATED} years"
       def deprecated(dir = Dir.pwd)
-        within_rescue_block { exit CommandParser.new(Enum::Report::DEPRECATED, dir, options).run }
+        within_rescue_block { exit CommandParser.new(dir, options, Enum::Report::DEPRECATED).run }
       end
 
       desc 'outdated [DIR]', 'Show packages that are out of date'
       def outdated(dir = Dir.pwd)
-        within_rescue_block { exit CommandParser.new(Enum::Report::OUTDATED, dir, options).run }
+        within_rescue_block { exit CommandParser.new(dir, options, Enum::Report::OUTDATED).run }
       end
 
       desc 'vulnerable [DIR]', 'Show packages and their dependencies that have security vulnerabilities'
       def vulnerable(dir = Dir.pwd)
-        within_rescue_block { exit CommandParser.new(Enum::Report::VULNERABLE, dir, options).run }
+        within_rescue_block { exit CommandParser.new(dir, options, Enum::Report::VULNERABLE).run }
       end
 
       desc 'risk', 'Print information on how risk is calculated'
@@ -75,6 +63,14 @@ module Package
       end
 
       def self.exit_on_failure?
+        true
+      end
+
+      def method_missing(command, *args)
+        invoke :report, [command], args
+      end
+
+      def respond_to_missing?
         true
       end
 

@@ -1,14 +1,16 @@
-require 'yaml'
+require_relative '../const/cmd'
+require_relative '../const/file'
+require_relative '../const/yaml'
+require_relative '../enum/report'
+require_relative '../enum/technology'
+require_relative '../ruby/gem_collection'
 
-require_relative 'const/cmd'
-require_relative 'const/file'
-require_relative 'enum/report'
-require_relative 'enum/technology'
+require 'yaml'
 
 module Package
   module Audit
     class PackageFinder
-      def initialize(config, report, dir)
+      def initialize(config, dir, report)
         @config = config
         @dir = dir
         @report = report
@@ -31,12 +33,12 @@ module Package
         end
       end
 
-      def find_ruby
-        Ruby::GemCollection.new(@dir, @report).fetch
-      end
-
       def find_node
         Npm::NodeCollection.new(@dir, @report).fetch
+      end
+
+      def find_ruby
+        Ruby::GemCollection.new(@dir, @report).fetch
       end
 
       def filter_pkgs_based_on_config(pkgs)
@@ -44,7 +46,7 @@ module Package
 
         ignored_pkgs = []
         pkgs.each do |pkg|
-          yaml_fragment = @config.dig('packages', pkg.technology, pkg.name)&.to_yaml
+          yaml_fragment = @config&.dig(Const::YAML::TECHNOLOGY, pkg.technology, pkg.name)&.to_yaml
           pkg_yaml = yaml_fragment.nil? ? nil : YAML.safe_load(yaml_fragment)
           next unless pkg_yaml&.dig('version') == pkg.version
 
