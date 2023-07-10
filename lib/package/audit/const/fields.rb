@@ -23,7 +23,6 @@ module Package
         HEADERS = {
           name: 'Package',
           version: 'Version',
-          version_date: 'Date',
           latest_version: 'Latest',
           latest_version_date: 'Latest Date',
           groups: 'Groups',

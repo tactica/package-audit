@@ -3,6 +3,7 @@ require_relative '../const/file'
 require_relative '../const/yaml'
 require_relative '../enum/technology'
 require_relative '../ruby/gem_collection'
+require_relative 'package_filter'
 
 require 'yaml'
 
