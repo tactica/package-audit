@@ -1,3 +1,4 @@
+require_relative '../const/file'
 require_relative '../enum/technology'
 
 module Package
@@ -15,9 +16,8 @@ module Package
           when Enum::Technology::RUBY
             validate_ruby!
           else
-            puts Util::BashColor.red("\"#{technology}\" is not a supported technology, " \
-                                     "use one of #{Enum::Technology.all}")
-            exit 1
+            raise ArgumentError, "\"#{technology}\" is not a supported technology, " \
+                                 "use one of #{Enum::Technology.all}"
           end
         end
 

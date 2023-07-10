@@ -66,8 +66,7 @@ module Package
         when Enum::Technology::NODE
           Const::Cmd::YARN_AUDIT
         else
-          puts Util::BashColor.red("Unexpected technology \"#{technology}\" found in #{__method__}")
-          exit 1
+          raise ArgumentError, "Unexpected technology \"#{technology}\" found in #{__method__}"
         end
       end
 
@@ -90,8 +89,7 @@ module Package
         elsif File.exist? @options[Enum::Option::CONFIG]
           YAML.load_file(@options[Enum::Option::CONFIG])
         else
-          puts Util::BashColor.red "Configuration file not found: #{@options[Enum::Option::CONFIG]}"
-          exit 1
+          raise ArgumentError, "Configuration file not found: #{@options[Enum::Option::CONFIG]}"
         end
       end
 
