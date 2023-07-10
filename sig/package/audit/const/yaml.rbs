@@ -2,7 +2,11 @@ module Package
   module Audit
     module Const
       module YAML
+        DEPRECATED: String
+        OUTDATED: String
         TECHNOLOGY: String
+        VERSION: String
+        VULNERABLE: String
       end
     end
   end

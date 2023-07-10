@@ -13,9 +13,9 @@ module Package
 
       private
 
-      def learn_more_command: (String) -> (String | nil)
+      def learn_more_command: (String) -> String?
 
-      def parse_config_file: -> (Hash[String, untyped] | nil)
+      def parse_config_file: -> Hash[String, untyped]?
 
       def parse_technologies: -> Array[String]
 

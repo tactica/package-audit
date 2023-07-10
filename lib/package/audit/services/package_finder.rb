@@ -1,7 +1,6 @@
 require_relative '../const/cmd'
 require_relative '../const/file'
 require_relative '../const/yaml'
-require_relative '../enum/report'
 require_relative '../enum/technology'
 require_relative '../ruby/gem_collection'
 
@@ -42,19 +41,11 @@ module Package
       end
 
       def filter_pkgs_based_on_config(pkgs)
-        return [] if @config.nil?
-
+        package_filter = PackageFilter.new(@config)
         ignored_pkgs = []
+
         pkgs.each do |pkg|
-          yaml_fragment = @config&.dig(Const::YAML::TECHNOLOGY, pkg.technology, pkg.name)&.to_yaml
-          pkg_yaml = yaml_fragment.nil? ? nil : YAML.safe_load(yaml_fragment)
-          next unless pkg_yaml&.dig('version') == pkg.version
-
-          next unless (!pkg.deprecated? || pkg_yaml['deprecated'] == false) &&
-                      (!pkg.outdated? || pkg_yaml['outdated'] == false) &&
-                      (!pkg.vulnerable? || pkg_yaml['vulnerable'] == false)
-
-          ignored_pkgs << pkg
+          ignored_pkgs << pkg if package_filter.ignored?(pkg)
         end
         ignored_pkgs
       end

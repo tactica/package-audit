@@ -15,7 +15,8 @@ module Package
           when Enum::Technology::RUBY
             validate_ruby!
           else
-            puts Util::BashColor.red("\"#{technology}\" is not a supported technology, use one of #{Enum::Technology.all}")
+            puts Util::BashColor.red("\"#{technology}\" is not a supported technology, " \
+                                     "use one of #{Enum::Technology.all}")
             exit 1
           end
         end
@@ -31,7 +32,8 @@ module Package
             puts Util::BashColor.red("\"#{Const::File::PACKAGE_JSON}\" was not found in #{@dir}")
           end
           unless package_lock_json_present || yarn_lock_present
-            puts Util::BashColor.red("\"#{Const::File::PACKAGE_LOCK_JSON}\" or \"#{Const::File::YARN_LOCK}\" was not found in #{@dir}")
+            puts Util::BashColor.red("\"#{Const::File::PACKAGE_LOCK_JSON}\" or \"#{Const::File::YARN_LOCK}\" " \
+                                     "was not found in #{@dir}")
           end
 
           exit 1 unless package_json_present && (package_lock_json_present || yarn_lock_present)
