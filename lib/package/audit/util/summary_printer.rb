@@ -22,25 +22,31 @@ module Package
                  cmd: Util::BashColor.magenta(" > #{cmd}"))
         end
 
-        def self.total(technology, pkgs, ignored_pkgs)
-          if ignored_pkgs.empty?
-            puts Util::BashColor.cyan("Found a total of #{pkgs.length} #{technology} packages.\n")
-          else
+        def self.total(technology, report, pkgs, ignored_pkgs)
+          if ignored_pkgs.any?
             puts Util::BashColor.cyan("Found a total of #{pkgs.length} #{technology} packages " \
                                       "(#{ignored_pkgs.length} ignored).\n")
+          elsif pkgs.any?
+            puts Util::BashColor.cyan("Found a total of #{pkgs.length} #{technology} packages.\n")
+          else
+            puts Util::BashColor.green("There are no #{report} #{technology} packages!\n")
           end
         end
 
-        def self.statistics(technology, pkgs, ignored_pkgs)
+        def self.statistics(technology, report, pkgs, ignored_pkgs)
           outdated = pkgs.count(&:outdated?)
           deprecated = pkgs.count(&:deprecated?)
           vulnerable = pkgs.count(&:vulnerable?)
 
           vulnerabilities = pkgs.sum { |pkg| pkg.vulnerabilities.length }
 
-          puts Util::BashColor.cyan("#{vulnerable} vulnerable (#{vulnerabilities} vulnerabilities), " \
-                                    "#{outdated} outdated, #{deprecated} deprecated.")
-          total(technology, pkgs, ignored_pkgs)
+          if pkgs.any?
+            puts Util::BashColor.cyan("#{vulnerable} vulnerable (#{vulnerabilities} vulnerabilities), " \
+                                      "#{outdated} outdated, #{deprecated} deprecated.\n")
+            total(technology, report, pkgs, ignored_pkgs)
+          else
+            puts Util::BashColor.green("There are no deprecated, outdated or vulnerable #{technology} packages!\n")
+          end
         end
 
         def self.risk # rubocop:disable Metrics/AbcSize, Metrics/MethodLength

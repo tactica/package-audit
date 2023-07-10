@@ -44,9 +44,9 @@ module Package
 
       def print_summary(technology, pkgs, ignored_pkgs)
         if @report == Enum::Report::ALL
-          Util::SummaryPrinter.statistics(technology, pkgs, ignored_pkgs)
+          Util::SummaryPrinter.statistics(technology, @report, pkgs, ignored_pkgs)
         else
-          Util::SummaryPrinter.total(technology, pkgs, ignored_pkgs)
+          Util::SummaryPrinter.total(technology, @report, pkgs, ignored_pkgs)
         end
       end
 
