@@ -54,7 +54,7 @@ module Package
         case @report
         when Enum::Report::DEPRECATED
           Util::SummaryPrinter.deprecated
-        when Enum::Report::VULNERABLE
+        when Enum::Report::ALL, Enum::Report::VULNERABLE
           Util::SummaryPrinter.vulnerable(technology, learn_more_command(technology))
         end
       end

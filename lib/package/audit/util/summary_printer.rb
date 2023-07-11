@@ -42,7 +42,7 @@ module Package
 
           if pkgs.any?
             puts Util::BashColor.cyan("#{vulnerable} vulnerable (#{vulnerabilities} vulnerabilities), " \
-                                      "#{outdated} outdated, #{deprecated} deprecated.\n")
+                                      "#{outdated} outdated, #{deprecated} deprecated.")
             total(technology, report, pkgs, ignored_pkgs)
           else
             puts Util::BashColor.green("There are no deprecated, outdated or vulnerable #{technology} packages!\n")
