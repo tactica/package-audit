@@ -30,9 +30,9 @@ module Package
       end
 
       def ignore_package?(pkg, yaml)
-        (pkg.deprecated? && yaml&.dig(Const::YAML::DEPRECATED) != false) ||
-          (pkg.outdated? && yaml&.dig(Const::YAML::OUTDATED) != false) ||
-          (pkg.vulnerable? && yaml&.dig(Const::YAML::VULNERABLE) != false)
+        (!pkg.deprecated? || yaml&.dig(Const::YAML::DEPRECATED) == false) &&
+          (!pkg.outdated? || yaml&.dig(Const::YAML::OUTDATED) == false) &&
+          (!pkg.vulnerable? || yaml&.dig(Const::YAML::VULNERABLE) == false)
       end
     end
   end

@@ -4,9 +4,9 @@ module Package
       module YAML
         DEPRECATED = 'deprecated'
         OUTDATED = 'outdated'
+        VULNERABLE = 'vulnerable'
         TECHNOLOGY = 'technology'
         VERSION = 'version'
-        VULNERABLE = 'vulnerable'
       end
     end
   end
