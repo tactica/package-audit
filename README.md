@@ -77,6 +77,10 @@ To get more information about the node module vulnerabilities run:
  > yarn audit
 ```
 
+## Continuous Integration
+
+This gem provides a return code of 0 to indicate success and 1 to indicate failure. It is specifically designed for seamless integration into continuous integration pipelines.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -105,11 +109,30 @@ require 'package-audit'
 
 ## Usage
 
+> To prevent specific packages from showing on the report, create a custom configuration file (see [Configuration File](#configuration-file) for details).
 
-* To produce a report of vulnerable, deprecated and outdated packages run:
+* To generate a report of vulnerable, deprecated, and outdated packages, execute the following command (optionally providing the `DIR` parameter to specify the path of the project you wish to check, which defaults to the current directory):
 
     ```bash
-    package-audit
+    package-audit [DIR]
+    ```
+
+* To display the vulnerable, deprecated or outdated packages separately (one list at a time), use:
+
+    ```bash
+    package-audit [deprecated|outdated|vulnerable] [DIR]
+    ```
+
+* To include ignored packages use the `--include-ignored` flag (see [Configuration File](#configuration-file) for details):
+
+    ```bash
+    package-audit --include-ignored [DIR]
+    ```
+
+* To include only specific technologies use `--technology` or `-t`:
+
+    ```bash
+    package-audit -t node --technology ruby [DIR]
     ```
 
 * To show how risk is calculated for the above report run:
@@ -124,17 +147,52 @@ require 'package-audit'
     package-audit --csv
     ```
 
-* For a list of other useful commands and their options run:
+### For a list of all commands and their options run:
 
-    ```bash
-    package-audit help
-    ```
+```bash
+package-audit help
+```
 
-    OR
+OR
 
-    ```bash
-    package-audit help [COMMAND]
-    ```
+```bash
+package-audit help [COMMAND]
+```
+
+## Configuration File
+
+The `package-audit` gem automatically searches for `.package-audit.yml` in the current directory or in the specified `DIR` if available. However, you have the option to override the default configuration file location by using the `--config` (or `-c`) flag.
+
+#### Below is an example of a configuration file:
+
+```YAML
+technology:
+  node:
+    nth-check:
+      version: 1.0.2
+      vulnerable: false
+  ruby:
+    devise-async:
+      version: 1.0.0
+      deprecated: false
+    puma:
+      version: 6.3.0
+      deprecated: false
+    selenium-webdriver:
+      version: 4.1.0
+      outdated: false
+```
+
+### This configuration file allows you to specify the following exclusions:
+
+
+* Ignore all security vulnerabilities associated with `nth-check@1.0.2`.
+* Suppress messages regarding potential deprecations for  `device-async@1.0.0` and `puma@6.3.0`.
+* Disable warnings about newer available versions of  `selenium-webdriver@4.1.0`
+
+**Note:** If the installed package version differs from the expected package version specified in the configuration file, the exclusion settings will not apply to that particular package.
+
+> By design, wildcard (`*`) version exclusions are not supported to prevent developers from inadvertently overlooking crucial messages when packages are updated.
 
 ## Development
 
