@@ -21,7 +21,7 @@ A useful tool for patch management and prioritization, `package-audit` produces 
 
 ## Report Example
 
-Below is an example of running the gem on a project that uses both Ruby and Node.
+Below is an example of running the script on a project that uses both Ruby and Node.
 
 ```
 ===========================================================================================================================
