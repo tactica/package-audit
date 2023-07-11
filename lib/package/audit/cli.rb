@@ -1,11 +1,8 @@
+require_relative 'const/file'
 require_relative 'const/time'
+require_relative 'enum/option'
+require_relative 'services/command_parser'
 require_relative 'version'
-require_relative 'util/summary_printer'
-require_relative 'ruby/bundler_specs'
-require_relative 'printer'
-require_relative 'ruby/gem_collection'
-require_relative 'npm/node_collection'
-require_relative 'command_service'
 
 require 'json'
 require 'thor'
@@ -15,62 +12,65 @@ module Package
     class CLI < Thor
       default_task :report
 
+      class_option Enum::Option::CONFIG,
+                   aliases: '-c', banner: 'FILE',
+                   desc: "Path to a custom configuration file, default: #{Const::File::CONFIG})"
+      class_option Enum::Option::TECHNOLOGY,
+                   aliases: '-t', repeatable: true,
+                   desc: 'Technology to be audited (repeat this flag for each technology)'
+      class_option Enum::Option::INCLUDE_IGNORED,
+                   type: :boolean, default: false,
+                   desc: 'Include packages ignored by a configuration file'
+      class_option Enum::Option::CSV,
+                   type: :boolean, default: false,
+                   desc: 'Output reports using comma separated values (CSV)'
+      class_option Enum::Option::CSV_EXCLUDE_HEADERS,
+                   type: :boolean, default: false,
+                   desc: "Hide headers when using the --#{Enum::Option::CSV} option"
+
+      map '-v' => :version
       map '--version' => :version
 
       desc 'report [DIR]', 'Show a report of potentially deprecated, outdated or vulnerable packages'
-      method_option :csv, type: :boolean, default: false, desc: 'Output using comma separated values (CSV)'
-      method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
-
       def report(dir = Dir.pwd)
-        # within_rescue_block do
-        exit CommandService.new(dir, options).all
-        # end
+        within_rescue_block { exit CommandParser.new(dir, options, Enum::Report::ALL).run }
       end
 
       desc 'deprecated [DIR]',
            "Show packages with no updates by author for at least #{Const::Time::YEARS_ELAPSED_TO_BE_OUTDATED} years"
-      method_option :csv, type: :boolean, default: false, desc: 'Output using comma separated values (CSV)'
-      method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
-
       def deprecated(dir = Dir.pwd)
-        within_rescue_block do
-          exit CommandService.new(dir, options).deprecated
-        end
+        within_rescue_block { exit CommandParser.new(dir, options, Enum::Report::DEPRECATED).run }
       end
 
       desc 'outdated [DIR]', 'Show packages that are out of date'
-      method_option :csv, type: :boolean, default: false, desc: 'Output using comma separated values (CSV)'
-      method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
-
       def outdated(dir = Dir.pwd)
-        within_rescue_block do
-          exit CommandService.new(dir, options).outdated
-        end
+        within_rescue_block { exit CommandParser.new(dir, options, Enum::Report::OUTDATED).run }
       end
 
       desc 'vulnerable [DIR]', 'Show packages and their dependencies that have security vulnerabilities'
-      method_option :csv, type: :boolean, default: false, desc: 'Output using comma separated values (CSV)'
-      method_option :'exclude-headers', type: :boolean, default: false, desc: 'Hide headers if when using CSV'
-
       def vulnerable(dir = Dir.pwd)
-        within_rescue_block do
-          exit CommandService.new(dir, options).vulnerable
-        end
+        within_rescue_block { exit CommandParser.new(dir, options, Enum::Report::VULNERABLE).run }
       end
 
       desc 'risk', 'Print information on how risk is calculated'
-
       def risk
         Util::SummaryPrinter.risk
       end
 
       desc 'version', 'Print the currently installed version of the package-audit gem'
-
       def version
         puts "package-audit #{VERSION}"
       end
 
       def self.exit_on_failure?
+        true
+      end
+
+      def method_missing(command, *args)
+        invoke :report, [command], args
+      end
+
+      def respond_to_missing?
         true
       end
 

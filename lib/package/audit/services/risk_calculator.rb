@@ -1,4 +1,7 @@
-require_relative 'const/time'
+require_relative '../const/time'
+require_relative '../enum/vulnerability_type'
+
+require 'time'
 
 module Package
   module Audit
@@ -62,12 +65,13 @@ module Package
       end
 
       def assess_deprecation_risks
+        risk = Risk.new(Enum::RiskType::MEDIUM, Enum::RiskExplanation::POTENTIAL_DEPRECATION)
+        return [risk] if @pkg.latest_version_date.nil?
+
         risks = []
         seconds_since_date = (Time.now - Time.parse(@pkg.latest_version_date)).to_i
 
-        if seconds_since_date >= Const::Time::SECONDS_ELAPSED_TO_BE_OUTDATED
-          risks << Risk.new(Enum::RiskType::MEDIUM, Enum::RiskExplanation::POTENTIAL_DEPRECATION)
-        end
+        risks << risk if seconds_since_date >= Const::Time::SECONDS_ELAPSED_TO_BE_OUTDATED
         risks
       end
 

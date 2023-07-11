@@ -1,5 +1,5 @@
-require_relative 'base'
 require_relative '../util/bash_color'
+require_relative 'base'
 
 module Package
   module Audit

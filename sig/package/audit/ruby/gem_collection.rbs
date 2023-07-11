@@ -3,12 +3,15 @@ module Package
     module Ruby
       class GemCollection
         @dir: String
+        @report: Symbol
 
-        def initialize: (String) -> void
+        def initialize: (String, Symbol) -> void
 
         def all: -> Array[Package]
 
         def deprecated: -> Array[Package]
+
+        def fetch: -> Array[Package]
 
         def outdated: (?include_implicit: bool) -> Array[Package]
 

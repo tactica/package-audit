@@ -1,4 +1,4 @@
-require_relative '../package'
+require_relative '../models/package'
 
 module Package
   module Audit

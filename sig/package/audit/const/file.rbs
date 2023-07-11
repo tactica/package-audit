@@ -2,6 +2,7 @@ module Package
   module Audit
     module Const
       module File
+        CONFIG: String
         GEMFILE: String
         GEMFILE_LOCK: String
         PACKAGE_JSON: String

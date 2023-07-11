@@ -1,18 +1,29 @@
-require_relative 'yarn_lock_parser'
+require_relative '../const/file'
+require_relative '../services/duplicate_package_merger'
 require_relative 'npm_meta_data'
 require_relative 'vulnerability_finder'
-require_relative '../duplicate_package_merger'
+require_relative 'yarn_lock_parser'
 
 module Package
   module Audit
     module Npm
       class NodeCollection
-        PACKAGE_JSON = 'package.json'
-        PACKAGE_LOCK = 'package-lock.json'
-        YARN_LOCK = 'yarn.lock'
-
-        def initialize(dir)
+        def initialize(dir, report)
           @dir = dir
+          @report = report
+        end
+
+        def fetch
+          case @report
+          when Enum::Report::DEPRECATED
+            deprecated
+          when Enum::Report::OUTDATED
+            outdated
+          when Enum::Report::VULNERABLE
+            vulnerable
+          else
+            all
+          end
         end
 
         def all
@@ -44,7 +55,7 @@ module Package
         private
 
         def fetch_from_package_json
-          package_json = JSON.parse(File.read("#{@dir}/#{PACKAGE_JSON}"), symbolize_names: true)
+          package_json = JSON.parse(File.read("#{@dir}/#{Const::File::PACKAGE_JSON}"), symbolize_names: true)
           default_deps = package_json[:dependencies] || {}
           dev_deps = package_json[:devDependencies] || {}
           [default_deps, dev_deps]
@@ -52,8 +63,8 @@ module Package
 
         def fetch_from_lock_file
           default_deps, dev_deps = fetch_from_package_json
-          if File.exist?("#{@dir}/#{YARN_LOCK}")
-            YarnLockParser.new("#{@dir}/#{YARN_LOCK}").fetch(default_deps || {}, dev_deps || {})
+          if File.exist?("#{@dir}/#{Const::File::YARN_LOCK}")
+            YarnLockParser.new("#{@dir}/#{Const::File::YARN_LOCK}").fetch(default_deps || {}, dev_deps || {})
           else
             []
           end

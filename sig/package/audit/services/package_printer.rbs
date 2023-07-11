@@ -1,14 +1,14 @@
 module Package
   module Audit
-    class Printer
+    class PackagePrinter
       BASH_FORMATTING_REGEX: Regexp
       COLUMN_GAP: Integer
       CSV_HEADERS: Hash[Symbol, String]
 
       @pkgs: Array[Package]
-      @options: Hash[Symbol, untyped]
+      @options: Hash[String, untyped]
 
-      def initialize: (Array[Package], Hash[Symbol, untyped]) -> void
+      def initialize: (Hash[String, untyped], Array[Package]) -> void
 
       def print: (Array[Symbol]) -> void
 

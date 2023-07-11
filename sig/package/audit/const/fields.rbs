@@ -3,9 +3,10 @@ module Package
     module Const
       module Fields
         ALL: Array[Symbol]
+        AVAILABLE: Array[Symbol]
+        DEPRECATED: Array[Symbol]
         HEADERS: Hash[Symbol, String]
         OUTDATED: Array[Symbol]
-        REPORT: Array[Symbol]
         VULNERABLE: Array[Symbol]
       end
     end
