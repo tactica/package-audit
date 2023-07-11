@@ -19,6 +19,15 @@ module Package
 
         assert_equal "\"invalid\" is not a supported technology, use one of #{Enum::Technology.all}", ex.message
       end
+
+      def test_that_an_invalid_config_file_shows_an_error
+        ex = assert_raises Psych::SyntaxError do
+          CommandParser.new '.', { 'config' => 'test/files/config/.package-audit-invalid.txt' }, Enum::Report::ALL
+        end
+
+        assert_match '(test/files/config/.package-audit-invalid.txt): mapping values are not allowed in this context',
+                     ex.message
+      end
     end
   end
 end
