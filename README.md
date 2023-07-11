@@ -109,12 +109,16 @@ require 'package-audit'
 
 ## Usage
 
-> To prevent specific packages from showing on the report, create a custom configuration file (see [Configuration File](#configuration-file) for details).
-
 * To generate a report of vulnerable, deprecated, and outdated packages, execute the following command (optionally providing the `DIR` parameter to specify the path of the project you wish to check, which defaults to the current directory):
 
     ```bash
     package-audit [DIR]
+    ```
+
+* To include a custom configuration file, use `--config` or `-c` (see [Configuration File](#configuration-file) for details):
+
+    ```bash
+    package-audit --config .package-audit.yml [DIR]
     ```
 
 * To display the vulnerable, deprecated or outdated packages separately (one list at a time), use:
@@ -123,7 +127,7 @@ require 'package-audit'
     package-audit [deprecated|outdated|vulnerable] [DIR]
     ```
 
-* To include ignored packages use the `--include-ignored` flag (see [Configuration File](#configuration-file) for details):
+* To include ignored packages use the `--include-ignored` flag:
 
     ```bash
     package-audit --include-ignored [DIR]
@@ -147,7 +151,7 @@ require 'package-audit'
     package-audit --csv
     ```
 
-### For a list of all commands and their options run:
+#### For a list of all commands and their options run:
 
 ```bash
 package-audit help
@@ -158,6 +162,8 @@ OR
 ```bash
 package-audit help [COMMAND]
 ```
+
+---
 
 ## Configuration File
 
@@ -183,7 +189,7 @@ technology:
       outdated: false
 ```
 
-### This configuration file allows you to specify the following exclusions:
+#### This configuration file allows you to specify the following exclusions:
 
 
 * Ignore all security vulnerabilities associated with `nth-check@1.0.2`.
