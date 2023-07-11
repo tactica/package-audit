@@ -42,8 +42,8 @@ selenium-webdriver        4.8.6    4.9.0    2023-04-21                         l
 serviceworker-rails       0.6.0    0.6.0    2019-07-09                         medium  no updates by author in over 2 years
 turbolinks                5.2.1    5.2.1    2019-09-18                         medium  no updates by author in over 2 years
 
-Found a total of 14 ruby gems.
 3 vulnerable (7 vulnerabilities), 6 outdated, 9 deprecated.
+Found a total of 14 ruby packages.
 
 To get more information about the ruby gem vulnerabilities run:
  > bundle-audit check --update
@@ -70,8 +70,8 @@ shelljs                   0.8.4    0.8.5    2022-01-07   moderate(1) high(1)  hi
 simple-plist              1.3.0    1.3.1    2022-03-31   critical(1)          high    security vulnerability
 urijs                     1.19.7   1.19.11  2022-04-03   high(1) moderate(4)  high    security vulnerability
 
-Found a total of 18 node modules.
 10 vulnerable (61 vulnerabilities), 11 outdated, 7 deprecated.
+Found a total of 18 node packages.
 
 To get more information about the node module vulnerabilities run:
  > yarn audit
@@ -79,7 +79,7 @@ To get more information about the node module vulnerabilities run:
 
 ## Continuous Integration
 
-This gem provides a return code of 0 to indicate success and 1 to indicate failure. It is specifically designed for seamless integration into continuous integration pipelines.
+This gem provides a return code of `0` to indicate success and `1` to indicate failure. It is specifically designed for seamless integration into continuous integration pipelines.
 
 ## Installation
 
@@ -99,12 +99,6 @@ Or install it yourself as:
 
 ```bash
 gem install package-audit
-```
-
-If you are using this gem in a script, you need to require it manually:
-
-```ruby
-require 'package-audit'
 ```
 
 ## Usage
@@ -162,8 +156,6 @@ OR
 ```bash
 package-audit help [COMMAND]
 ```
-
----
 
 ## Configuration File
 
