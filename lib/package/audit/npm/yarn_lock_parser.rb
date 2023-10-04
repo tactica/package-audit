@@ -22,7 +22,7 @@ module Package
         private
 
         def fetch_package_block(dep_name, expected_version)
-          regex = /#{Regexp.escape(dep_name)}@#{Regexp.escape(expected_version)}.*?:.*?(\n\n|\z)/m
+          regex = regex_pattern_for_package(dep_name, expected_version)
           blocks = @yarn_lock_file.match(regex)
           if blocks.nil? || blocks[0].nil?
             raise NoMatchingPatternError, "Unable to find \"#{dep_name}\" in #{@yarn_lock_path}"
@@ -39,6 +39,17 @@ module Package
           end
 
           version || '0.0.0.0'
+        end
+
+        def regex_pattern_for_package(dep_name, version)
+          # assume the package name is prefixed by a space, a quote or be the first thing on the line
+          # there can be multiple comma-separated versions on the same line with or without quotes
+          # Here are some examples of strings that would be matched:
+          # - aria-query@^5.0.0:
+          # - lodash@^4.17.15, lodash@^4.17.20:
+          # - "@adobe/css-tools@^4.0.1":
+          # - "@babel/runtime@^7.23.1", "@babel/runtime@^7.9.2":
+          /(?:^|[ "])#{Regexp.escape(dep_name)}@#{Regexp.escape(version)}.*?:.*?(\n\n|\z)/m
         end
       end
     end

@@ -14,6 +14,8 @@ module Package
         def fetch_package_block: (Symbol, String) -> String
 
         def fetch_package_version: (Symbol, String) -> String
+
+        def regex_pattern_for_package: (Symbol, String) -> Regexp
       end
     end
   end
