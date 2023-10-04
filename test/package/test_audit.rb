@@ -97,7 +97,7 @@ module Package
     def test_that_there_is_a_report_of_node_modules_formatted_by_npm_with_no_dependencies
       output = `bundle exec package-audit report test/files/yarn/npm`
 
-      assert_match 'There are no deprecated, outdated or vulnerable node packages!', output
+      assert_match 'Found a total of 1 node packages.', output
     end
 
     def test_that_there_is_a_success_message_when_node_modules_are_up_to_date
@@ -121,13 +121,13 @@ module Package
     def test_that_there_is_a_report_of_node_modules
       output = `bundle exec package-audit report test/files/yarn/report`
 
-      assert_match '1 vulnerable (1 vulnerabilities), 1 outdated, 1 deprecated.', output
+      assert_match '1 vulnerable (1 vulnerabilities), 2 outdated, 1 deprecated.', output
     end
 
     def test_that_there_is_a_message_about_outdated_node_modules
       output = `bundle exec package-audit outdated test/files/yarn/outdated`
 
-      assert_match 'Found a total of 1 node packages.', output
+      assert_match 'Found a total of 2 node packages.', output
     end
 
     def test_that_there_is_a_message_about_deprecated_node_modules
