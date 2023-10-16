@@ -7,6 +7,7 @@ group :development do
   gem 'rake'
 
   # Type Checking
+  gem 'rbs', '< 3.2.0' # higher versions do not support Ruby 2.7.x
   gem 'steep'
 
   # Code Linting
