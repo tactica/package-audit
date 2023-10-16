@@ -16,14 +16,14 @@ module Package
         assert_equal Risk.new(Enum::RiskType::MEDIUM), Risk.new(Enum::RiskType::MEDIUM)
         assert_equal Risk.new(Enum::RiskType::HIGH), Risk.new(Enum::RiskType::HIGH)
 
-        assert_operator Risk.new(Enum::RiskType::HIGH), :>, Risk.new(Enum::RiskType::MEDIUM)
-        assert_operator Risk.new(Enum::RiskType::HIGH), :>, Risk.new(Enum::RiskType::LOW)
-        assert_operator Risk.new(Enum::RiskType::HIGH), :>, Risk.new(Enum::RiskType::NONE)
+        assert Risk.new(Enum::RiskType::HIGH) > Risk.new(Enum::RiskType::MEDIUM)
+        assert Risk.new(Enum::RiskType::HIGH) > Risk.new(Enum::RiskType::LOW)
+        assert Risk.new(Enum::RiskType::HIGH) > Risk.new(Enum::RiskType::NONE)
 
-        assert_operator Risk.new(Enum::RiskType::MEDIUM), :>, Risk.new(Enum::RiskType::LOW)
-        assert_operator Risk.new(Enum::RiskType::MEDIUM), :>, Risk.new(Enum::RiskType::NONE)
+        assert Risk.new(Enum::RiskType::MEDIUM) > Risk.new(Enum::RiskType::LOW)
+        assert Risk.new(Enum::RiskType::MEDIUM) > Risk.new(Enum::RiskType::NONE)
 
-        assert_operator Risk.new(Enum::RiskType::LOW), :>, Risk.new(Enum::RiskType::NONE)
+        assert Risk.new(Enum::RiskType::LOW) > Risk.new(Enum::RiskType::NONE)
       end
     end
   end
