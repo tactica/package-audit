@@ -3,7 +3,7 @@ require_relative 'lib/package/audit/version'
 Gem::Specification.new do |spec|
   spec.name = 'package-audit'
   spec.version = Package::Audit::VERSION
-  spec.authors = ['Vadim Kononov']
+  spec.authors = ['Tactica Communications Inc.']
   spec.email = ['support@tactica.ca']
 
   spec.summary = 'A helper tool to find outdated, deprecated and vulnerable dependencies.'
