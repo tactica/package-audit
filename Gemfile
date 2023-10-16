@@ -4,7 +4,6 @@ source 'https://rubygems.org'
 gemspec
 
 group :development do
-  gem 'activesupport', '< 7.1.0'
   gem 'rake'
 
   # Type Checking
