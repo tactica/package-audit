@@ -135,35 +135,3 @@
     severity: WARNING
     message: 'Cannot find the declaration of constant: `Bundler`'
     code: Ruby::UnknownConstant
-- file: lib/package/audit/services/package_printer.rb
-  diagnostics:
-  - range:
-      start:
-        line: 88
-        character: 36
-      end:
-        line: 88
-        character: 42
-    severity: ERROR
-    message: Type `void` does not have method `length`
-    code: Ruby::NoMethod
-  - range:
-      start:
-        line: 88
-        character: 49
-      end:
-        line: 88
-        character: 53
-    severity: ERROR
-    message: Type `void` does not have method `gsub`
-    code: Ruby::NoMethod
-  - range:
-      start:
-        line: 89
-        character: 16
-      end:
-        line: 89
-        character: 21
-    severity: ERROR
-    message: Type `void` does not have method `ljust`
-    code: Ruby::NoMethod
