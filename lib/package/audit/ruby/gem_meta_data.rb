@@ -4,8 +4,7 @@ module Package
   module Audit
     module Ruby
       class GemMetaData
-        def initialize(dir, pkgs)
-          @dir = dir
+        def initialize(pkgs)
           @pkgs = pkgs
           @gem_hash = {}
         end
@@ -46,10 +45,7 @@ module Package
         end
 
         def assign_groups # rubocop:disable Metrics/AbcSize
-          definition = Bundler.with_unbundled_env do
-            ENV['BUNDLE_GEMFILE'] = "#{@dir}/Gemfile"
-            Bundler.definition
-          end
+          definition = Bundler.definition
           groups = definition.groups.uniq.sort
           groups.each do |group|
             specs = definition.specs_for([group])

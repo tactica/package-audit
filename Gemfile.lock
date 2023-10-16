@@ -106,6 +106,7 @@ GEM
 PLATFORMS
   arm64-darwin-21
   arm64-darwin-22
+  ruby
   x86_64-darwin-22
   x86_64-linux
 
@@ -120,6 +121,9 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rake
   steep
+
+RUBY VERSION
+   ruby 2.7.8p225
 
 BUNDLED WITH
    2.4.20

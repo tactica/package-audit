@@ -31,27 +31,27 @@ module Package
           specs = BundlerSpecs.gemfile(@dir)
           pkgs = specs.map { |spec| Package.new(spec.name, spec.version, Enum::Technology::RUBY) }
           vulnerable_pkgs = VulnerabilityFinder.new(@dir).run
-          pkgs = GemMetaData.new(@dir, pkgs + vulnerable_pkgs).fetch.filter(&:risk?)
+          pkgs = GemMetaData.new(pkgs + vulnerable_pkgs).fetch.filter(&:risk?)
           DuplicatePackageMerger.new(pkgs).run
         end
 
         def deprecated
           specs = BundlerSpecs.gemfile(@dir)
           pkgs = specs.map { |spec| Package.new(spec.name, spec.version, Enum::Technology::RUBY) }
-          pkgs = GemMetaData.new(@dir, pkgs).fetch.filter(&:deprecated?)
+          pkgs = GemMetaData.new(pkgs).fetch.filter(&:deprecated?)
           DuplicatePackageMerger.new(pkgs).run
         end
 
         def outdated(include_implicit: false)
           specs = include_implicit ? BundlerSpecs.all(@dir) : BundlerSpecs.gemfile(@dir)
           pkgs = specs.map { |spec| Package.new(spec.name, spec.version, Enum::Technology::RUBY) }
-          pkgs = GemMetaData.new(@dir, pkgs).fetch.filter(&:outdated?)
+          pkgs = GemMetaData.new(pkgs).fetch.filter(&:outdated?)
           DuplicatePackageMerger.new(pkgs).run
         end
 
         def vulnerable
           pkgs = VulnerabilityFinder.new(@dir).run
-          pkgs = GemMetaData.new(@dir, pkgs).fetch.filter(&:vulnerable?)
+          pkgs = GemMetaData.new(pkgs).fetch.filter(&:vulnerable?)
           DuplicatePackageMerger.new(pkgs).run
         end
       end
