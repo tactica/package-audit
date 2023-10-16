@@ -97,7 +97,6 @@ DEPENDENCIES
   minitest
   package-audit!
   rake
-  rbs (< 3.2.0)
   rubocop
   rubocop-md
   rubocop-minitest
