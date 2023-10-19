@@ -24,4 +24,4 @@ jobs:
       - name: Install dependencies
         run: bundle install
       - name: Run tests
-        run: RUBY_ENV=test bundle exec rake test
+        run: bundle exec rake test
