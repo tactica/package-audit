@@ -18,9 +18,7 @@ module Package
           @thread = Thread.new do
             step = 0
             while @running
-              if @running && (ENV['RUBY_ENV'] != 'test' && ENV['RACK_ENV'] != 'test')
-                print "\r#{@message} #{STATES[step % STATES.length]}"
-              end
+              print "\r#{@message} #{STATES[step % STATES.length]}" if @running && ENV['RUBY_ENV'] != 'test'
               sleep ANIMATION_SPEED
               step += 1
             end

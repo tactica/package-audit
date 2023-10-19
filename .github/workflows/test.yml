@@ -24,4 +24,4 @@ jobs:
       - name: Install dependencies
         run: bundle install
       - name: Run tests
-        run: bundle exec rake test
+        run: RACK_ENV=test bundle exec rake test
