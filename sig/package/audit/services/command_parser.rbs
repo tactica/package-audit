@@ -3,6 +3,7 @@ module Package
     class CommandParser
       @config: Hash[String, untyped]?
       @dir: String
+      @loading_indicator: Util::LoadingIndicator
       @options: Hash[String, untyped]
       @report: Symbol
       @technologies: Array[String]

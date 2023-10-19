@@ -1,0 +1,24 @@
+module Package
+  module Audit
+    module Util
+      class LoadingIndicator
+        ANIMATION_SPEED: Float
+        STATES: Array[String]
+
+        @message: String
+        @running: bool
+        @thread: Thread?
+
+        def initialize: (String) -> void
+
+        def start: -> void
+
+        def stop: -> void
+
+        private
+
+        def clear_console_line: -> void
+      end
+    end
+  end
+end

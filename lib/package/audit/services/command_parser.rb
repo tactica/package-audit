@@ -5,6 +5,7 @@ require_relative '../enum/report'
 require_relative '../technology/detector'
 require_relative '../technology/validator'
 require_relative '../util/summary_printer'
+require_relative '../util/loading_indicator'
 require_relative 'package_finder'
 require_relative 'package_printer'
 
@@ -19,17 +20,31 @@ module Package
         @report = report
         @config = parse_config_file
         @technologies = parse_technologies
+        @loading_indicator = Util::LoadingIndicator.new('Evaluating packages and their dependencies...')
       end
 
       def run
+        mutex = Mutex.new
         cumulative_pkgs = []
+        thread_index = 0
 
-        @technologies.each do |technology|
-          all_pkgs, ignored_pkgs = PackageFinder.new(@config, @dir, @report).run(technology)
-          ignored_pkgs = [] if @options[Enum::Option::INCLUDE_IGNORED]
-          cumulative_pkgs << all_pkgs
-          print_results(technology, (all_pkgs || []) - (ignored_pkgs || []), ignored_pkgs || [])
+        @loading_indicator.start
+        threads = @technologies.map.with_index do |technology, technology_index|
+          Thread.new do
+            all_pkgs, ignored_pkgs = PackageFinder.new(@config, @dir, @report).run(technology)
+            ignored_pkgs = [] if @options[Enum::Option::INCLUDE_IGNORED]
+            cumulative_pkgs << all_pkgs
+            sleep 0.1 while technology_index != thread_index
+            mutex.synchronize do
+              print "\r"
+              print_results(technology, (all_pkgs || []) - (ignored_pkgs || []), ignored_pkgs || [])
+              thread_index += 1
+            end
+          end
         end
+        threads.each(&:join)
+        @loading_indicator.stop
+        print "WEFOIJWEFOIJEWF"
 
         cumulative_pkgs.any?
       end
