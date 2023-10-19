@@ -3,6 +3,7 @@ module Package
     class CommandParser
       @config: Hash[String, untyped]?
       @dir: String
+      @spinner: Util::Spinner
       @options: Hash[String, untyped]
       @report: Symbol
       @technologies: Array[String]
