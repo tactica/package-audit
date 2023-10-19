@@ -36,15 +36,16 @@ module Package
             cumulative_pkgs << all_pkgs
             sleep 0.1 while technology_index != thread_index
             mutex.synchronize do
+              @loading_indicator.stop
               print "\r"
               print_results(technology, (all_pkgs || []) - (ignored_pkgs || []), ignored_pkgs || [])
               thread_index += 1
+              @loading_indicator.start
             end
           end
         end
         threads.each(&:join)
         @loading_indicator.stop
-        print "WEFOIJWEFOIJEWF"
 
         cumulative_pkgs.any?
       end

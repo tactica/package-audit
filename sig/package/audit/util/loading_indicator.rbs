@@ -9,7 +9,7 @@ module Package
         @running: bool
         @thread: Thread?
 
-        def initialize: (String) -> void
+        def initialize: (?String) -> void
 
         def start: -> void
 

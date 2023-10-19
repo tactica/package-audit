@@ -17,7 +17,7 @@ module Package
           @running = true
           @thread = Thread.new do
             step = 0
-            loop do
+            while @running
               print "\r#{@message} #{STATES[step % STATES.length]}" if @running
               sleep ANIMATION_SPEED
               step += 1
