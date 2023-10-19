@@ -5,7 +5,7 @@ require_relative '../enum/report'
 require_relative '../technology/detector'
 require_relative '../technology/validator'
 require_relative '../util/summary_printer'
-require_relative '../util/loading_indicator'
+require_relative '../util/spinner'
 require_relative 'package_finder'
 require_relative 'package_printer'
 
@@ -20,7 +20,7 @@ module Package
         @report = report
         @config = parse_config_file
         @technologies = parse_technologies
-        @loading_indicator = Util::LoadingIndicator.new('Evaluating packages and their dependencies...')
+        @spinner = Util::Spinner.new('Evaluating packages and their dependencies...')
       end
 
       def run # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
@@ -28,24 +28,24 @@ module Package
         cumulative_pkgs = []
         thread_index = 0
 
-        @loading_indicator.start
+        @spinner.start
         threads = @technologies.map.with_index do |technology, technology_index|
           Thread.new do
             all_pkgs, ignored_pkgs = PackageFinder.new(@config, @dir, @report).run(technology)
             ignored_pkgs = [] if @options[Enum::Option::INCLUDE_IGNORED]
             cumulative_pkgs << all_pkgs
-            sleep 0.1 while technology_index != thread_index
+            sleep 0.1 while technology_index != thread_index # print each technology in order
             mutex.synchronize do
-              @loading_indicator.stop
+              @spinner.stop
               print "\r"
               print_results(technology, (all_pkgs || []) - (ignored_pkgs || []), ignored_pkgs || [])
               thread_index += 1
-              @loading_indicator.start
+              @spinner.start
             end
           end
         end
         threads.each(&:join)
-        @loading_indicator.stop
+        @spinner.stop
 
         cumulative_pkgs.any?
       end

@@ -1,7 +1,7 @@
 module Package
   module Audit
     module Util
-      class LoadingIndicator
+      class Spinner
         ANIMATION_SPEED: Float
         STATES: Array[String]
 
