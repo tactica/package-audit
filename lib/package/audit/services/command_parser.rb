@@ -23,7 +23,7 @@ module Package
         @loading_indicator = Util::LoadingIndicator.new('Evaluating packages and their dependencies...')
       end
 
-      def run
+      def run # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
         mutex = Mutex.new
         cumulative_pkgs = []
         thread_index = 0
