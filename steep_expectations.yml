@@ -135,3 +135,18 @@
     severity: WARNING
     message: 'Cannot find the declaration of constant: `Bundler`'
     code: Ruby::UnknownConstant
+- file: lib/package/audit/services/command_parser.rb
+  diagnostics:
+  - range:
+      start:
+        line: 36
+        character: 31
+      end:
+        line: 36
+        character: 39
+    severity: ERROR
+    message: |-
+      Cannot pass a value of type `(::Array[::Package::Audit::Package] | nil)` as an argument of type `::_ToAry[U(8)]`
+        (::Array[::Package::Audit::Package] | nil) <: ::_ToAry[U(8)]
+          nil <: ::_ToAry[U(8)]
+    code: Ruby::ArgumentTypeMismatch

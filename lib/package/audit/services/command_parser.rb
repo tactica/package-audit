@@ -23,7 +23,7 @@ module Package
         @spinner = Util::Spinner.new('Evaluating packages and their dependencies...')
       end
 
-      def run # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+      def run # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
         mutex = Mutex.new
         cumulative_pkgs = []
         thread_index = 0
@@ -46,7 +46,7 @@ module Package
         threads.each(&:join)
         @spinner.stop
 
-        cumulative_pkgs.any? ? 1: 0
+        cumulative_pkgs.any? ? 1 : 0
       end
 
       private
