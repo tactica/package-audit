@@ -37,7 +37,6 @@ module Package
             sleep 0.1 while technology_index != thread_index # print each technology in order
             mutex.synchronize do
               @spinner.stop
-              print "\r"
               print_results(technology, (all_pkgs || []) - (ignored_pkgs || []), ignored_pkgs || [])
               thread_index += 1
               @spinner.start

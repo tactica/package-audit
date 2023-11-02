@@ -38,7 +38,7 @@ module Package
         private
 
         def clear_console_line
-          print "\r"
+          print "\r#{' ' * (@message.length + 2)}\r"
         end
       end
     end
