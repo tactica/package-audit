@@ -5,7 +5,7 @@ require_relative '../../lib/package/audit/version'
 require 'bundler'
 
 module Package
-  class TestAudit < Minitest::Test
+  class TestAudit < Minitest::Test # rubocop:disable Metrics/ClassLength
     def test_that_it_has_a_version_number
       refute_nil Package::Audit::VERSION
     end
@@ -57,6 +57,18 @@ module Package
       output = `bundle exec package-audit deprecated test/files/gemfile/empty`
 
       assert_match 'There are no deprecated ruby packages!', output
+    end
+
+    def test_that_the_exit_code_is_0_when_report_is_empty
+      Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/empty/Gemfile' }
+
+      assert system('bundle exec package-audit report test/files/gemfile/empty')
+    end
+
+    def test_that_the_exit_code_is_1_when_report_is_not_empty
+      Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/report/Gemfile' }
+
+      refute system('bundle exec package-audit report test/files/gemfile/report')
     end
 
     def test_that_there_is_a_report_of_gems

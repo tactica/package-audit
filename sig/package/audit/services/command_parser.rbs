@@ -10,7 +10,7 @@ module Package
 
       def initialize: (String, Hash[String, untyped], Symbol) -> void
 
-      def run: -> bool
+      def run: -> int
 
       private
 
