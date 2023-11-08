@@ -61,7 +61,6 @@ module Package
         ignored_pkgs = []
 
         pkgs.each do |pkg|
-          puts "#{pkg.name}: #{pkg.groups} - #{@environments}"
           ignored_pkgs << pkg unless (pkg.groups & @environments).any?
         end
         ignored_pkgs
