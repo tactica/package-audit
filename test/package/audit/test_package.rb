@@ -31,7 +31,7 @@ module Package
         @package.update groups: %w[test], version_date: '2020-01-01', latest_version: 'test',
                         latest_version_date: '2020-12-31', vulnerabilities: %w[high medium]
 
-        assert_equal %i[test], @package.groups
+        assert_equal %w[test], @package.groups
         assert_equal '2020-01-01', @package.version_date
         assert_equal 'test', @package.latest_version
         assert_equal '2020-12-31', @package.latest_version_date
