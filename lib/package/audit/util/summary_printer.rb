@@ -85,7 +85,7 @@ module Package
 
           puts Util::BashColor.blue('5. Check whether the package is used in production or not.')
           puts '   If a package is limited to a non-production environment:'
-          puts "      - cap risk severity to\t -> #{Util::BashColor.orange('medium')} risk"
+          puts "      - cap risk severity to\t -> #{Util::BashColor.yellow('low')} risk"
         end
       end
     end
