@@ -11,7 +11,8 @@ module Package
           @thread = nil
         end
 
-        def start
+        def start # rubocop:disable Metrics/MethodLength
+          return if ENV['RACK_ENV'] == 'test'
           raise 'Loading indicator already started.' if @running
 
           @running = true
@@ -28,6 +29,7 @@ module Package
         end
 
         def stop
+          return if ENV['RACK_ENV'] == 'test'
           return unless @running
 
           @running = false
