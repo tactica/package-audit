@@ -1,3 +1,5 @@
+require_relative '../enum/environment'
+
 module Package
   module Audit
     module Npm
@@ -7,13 +9,17 @@ module Package
           @yarn_lock_path = yarn_lock_path
         end
 
-        def fetch(default_deps, dev_deps)
+        def fetch(default_deps, dev_deps) # rubocop:disable Metrics/MethodLength
           pkgs = []
           default_deps.merge(dev_deps).each do |dep_name, expected_version|
             pkg_block = fetch_package_block(dep_name, expected_version)
             version = fetch_package_version(dep_name, pkg_block)
             pks = Package.new(dep_name.to_s, version, 'node')
-            pks.update groups: dev_deps.key?(dep_name) ? %i[development] : %i[default development]
+            pks.update groups: if dev_deps.key?(dep_name)
+                                 [Enum::Environment::DEV]
+                               else
+                                 [Enum::Environment::DEFAULT, Enum::Environment::DEV]
+                               end
             pkgs << pks
           end
           pkgs

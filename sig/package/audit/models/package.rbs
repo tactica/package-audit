@@ -1,12 +1,12 @@
 module Package
   module Audit
     class Package
-      @groups: Array[Symbol]
+      @groups: Array[String]
       @risks: Array[Risk]
       @technology: String
       @vulnerabilities: Array[String]
 
-      attr_accessor groups: Array[Symbol]
+      attr_accessor groups: Array[String]
       attr_accessor latest_version: String
       attr_accessor latest_version_date: String
       attr_reader name: String
