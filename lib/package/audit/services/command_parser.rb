@@ -53,7 +53,7 @@ module Package
       private
 
       def print_results(technology, pkgs, ignored_pkgs)
-        PackagePrinter.new(@options, pkgs).print(report_fields)
+        PackagePrinter.new(@options, pkgs).print(Const::Fields::DEFAULT)
         print_summary(technology, pkgs, ignored_pkgs) unless @options[Enum::Option::CSV]
         print_disclaimer(technology) unless @options[Enum::Option::CSV] || pkgs.empty?
       end
@@ -83,19 +83,6 @@ module Package
           Const::Cmd::YARN_AUDIT
         else
           raise ArgumentError, "Unexpected technology \"#{technology}\" found in #{__method__}"
-        end
-      end
-
-      def report_fields
-        case @report
-        when Enum::Report::DEPRECATED
-          Const::Fields::DEPRECATED
-        when Enum::Report::OUTDATED
-          Const::Fields::OUTDATED
-        when Enum::Report::VULNERABLE
-          Const::Fields::VULNERABLE
-        else
-          Const::Fields::ALL
         end
       end
 

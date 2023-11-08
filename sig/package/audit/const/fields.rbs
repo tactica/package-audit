@@ -2,12 +2,9 @@ module Package
   module Audit
     module Const
       module Fields
-        ALL: Array[Symbol]
         AVAILABLE: Array[Symbol]
-        DEPRECATED: Array[Symbol]
+        DEFAULT: Array[Symbol]
         HEADERS: Hash[Symbol, String]
-        OUTDATED: Array[Symbol]
-        VULNERABLE: Array[Symbol]
       end
     end
   end

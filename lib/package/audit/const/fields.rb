@@ -14,15 +14,13 @@ module Package
           risk_explanation
         ]
 
-        ALL = %i[name version latest_version latest_version_date groups vulnerabilities risk_type risk_explanation]
-        DEPRECATED = %i[name version latest_version latest_version_date groups]
-        OUTDATED = %i[name version latest_version latest_version_date groups]
-        VULNERABLE = %i[name version latest_version groups vulnerabilities]
+        DEFAULT = %i[name version latest_version latest_version_date groups vulnerabilities risk_type risk_explanation]
 
         # the names of these fields must match the instance variables in the Dependency class
         HEADERS = {
           name: 'Package',
           version: 'Version',
+          version_date: 'Version Date',
           latest_version: 'Latest',
           latest_version_date: 'Latest Date',
           groups: 'Groups',

@@ -1,0 +1,35 @@
+require 'test_helper'
+require_relative '../../../lib/package/audit/const/fields'
+
+require 'bundler'
+
+module Package
+  module Audit
+    class TestEnvironment < Minitest::Test
+      def test_that_all_available_fields_have_headers
+        assert_equal Const::Fields::AVAILABLE, Const::Fields::HEADERS.keys
+      end
+
+      def test_that_default_fields_are_a_subset_of_available_fields
+        assert_empty Const::Fields::DEFAULT - Const::Fields::AVAILABLE
+      end
+
+      def test_that_the_same_fields_are_shown_for_all_reports
+        Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/report/Gemfile' }
+        headers = Const::Fields::HEADERS.select { |key, _value| Const::Fields::DEFAULT.include?(key) }
+
+        deprecated_output = `bundle exec package-audit deprecated test/files/gemfile/report`
+        outdated_output = `bundle exec package-audit outdated test/files/gemfile/report`
+        report_output = `bundle exec package-audit report test/files/gemfile/report`
+        vulnerable_output = `bundle exec package-audit vulnerable test/files/gemfile/report`
+
+        headers.each_value do |value|
+          assert_match value, deprecated_output
+          assert_match value, outdated_output
+          assert_match value, report_output
+          assert_match value, vulnerable_output
+        end
+      end
+    end
+  end
+end
