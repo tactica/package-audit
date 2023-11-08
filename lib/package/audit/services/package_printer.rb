@@ -32,14 +32,14 @@ module Package
       private
 
       def check_fields(fields)
-        return unless (fields - Const::Fields::ALL).any?
+        return unless (fields - Const::Fields::DEFAULT).any?
 
         raise ArgumentError,
-              "#{fields - Const::Fields::ALL} are not valid field names. " \
-              "Available fields names are: #{Const::Fields::ALL}."
+              "#{fields - Const::Fields::DEFAULT} are not valid field names. " \
+              "Available fields names are: #{Const::Fields::DEFAULT}."
       end
 
-      def pretty(fields = Const::Fields::ALL) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+      def pretty(fields = Const::Fields::DEFAULT) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
         # find the maximum length of each field across all the packages so we know how many
         # characters of horizontal space to allocate for each field when printing
         fields.each do |key|
