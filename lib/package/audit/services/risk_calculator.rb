@@ -16,7 +16,7 @@ module Package
         unless production_dependency?
           risks.each_with_index do |risk, index|
             risks[index] =
-              [risk, Risk.new(Enum::RiskType::MEDIUM, risk.explanation)].min || Risk.new(Enum::RiskType::NONE)
+              [risk, Risk.new(Enum::RiskType::LOW, risk.explanation)].min || Risk.new(Enum::RiskType::NONE)
           end
         end
         risks
