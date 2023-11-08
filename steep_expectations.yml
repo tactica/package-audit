@@ -135,3 +135,13 @@
     severity: WARNING
     message: 'Cannot find the declaration of constant: `Bundler`'
     code: Ruby::UnknownConstant
+  - range:
+      start:
+        line: 52
+        character: 12
+      end:
+        line: 52
+        character: 19
+    severity: WARNING
+    message: 'Cannot find the declaration of constant: `Bundler`'
+    code: Ruby::UnknownConstant
