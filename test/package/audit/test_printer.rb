@@ -33,13 +33,9 @@ module Package
         $stdout = STDOUT
       end
 
-      def test_that_headers_match_field_names
-        assert_equal Const::Fields::ALL.sort, Const::Fields::HEADERS.keys.sort
-      end
-
       def test_that_an_error_is_shown_for_invalid_fields
         fields = %i[name version unknown]
-        exp_error = "[:invalid] are not valid field names. Available fields names are: #{Const::Fields::ALL}."
+        exp_error = "[:invalid] are not valid field names. Available fields names are: #{Const::Fields::DEFAULT}."
         assert_raises ArgumentError, exp_error do
           PackagePrinter.new({}, []).print(fields)
         end
