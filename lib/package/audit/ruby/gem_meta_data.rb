@@ -45,7 +45,7 @@ module Package
           end
         end
 
-        def assign_groups # rubocop:disable Metrics/AbcSize
+        def assign_groups # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           definition = Bundler.with_unbundled_env do
             ENV['BUNDLE_GEMFILE'] = "#{@dir}/Gemfile"
             Bundler.reset!
@@ -55,7 +55,9 @@ module Package
           groups.each do |group|
             specs = definition.specs_for([group])
             specs.each do |spec|
-              @gem_hash[spec.name].update(groups: @gem_hash[spec.name].groups | [group]) if @gem_hash.key? spec.name
+              if @gem_hash.key? spec.name
+                @gem_hash[spec.name].update(groups: (@gem_hash[spec.name].groups | [group]).map(&:to_s))
+              end
             end
           end
         end

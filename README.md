@@ -130,7 +130,15 @@ gem install package-audit
 * To include only specific technologies use `--technology` or `-t`:
 
     ```bash
-    package-audit -t node --technology ruby [DIR]
+    package-audit -t node -t ruby [DIR]
+    package-audit --technology node --technology ruby [DIR]
+    ```
+
+* To include only specific environments use `--environment` or `-e`:
+
+    ```bash
+    package-audit -e staging -e production [DIR]
+    package-audit --environment staging --environment production [DIR]
     ```
 
 * To show how risk is calculated for the above report run:

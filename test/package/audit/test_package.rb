@@ -7,7 +7,7 @@ module Package
     class TestPackage < Minitest::Test
       def setup
         @package = Package.new(
-          'test', '1.0.0', 'node', groups: %i[test production],
+          'test', '1.0.0', 'node', groups: %w[test production],
                                    version_date: '2000-01-01',
                                    latest_version: '2.0.0',
                                    latest_version_date: '2000-12-31',
@@ -28,10 +28,10 @@ module Package
       end
 
       def test_that_package_can_be_updated
-        @package.update groups: %i[test], version_date: '2020-01-01', latest_version: 'test',
+        @package.update groups: %w[test], version_date: '2020-01-01', latest_version: 'test',
                         latest_version_date: '2020-12-31', vulnerabilities: %w[high medium]
 
-        assert_equal %i[test], @package.groups
+        assert_equal %w[test], @package.groups
         assert_equal '2020-01-01', @package.version_date
         assert_equal 'test', @package.latest_version
         assert_equal '2020-12-31', @package.latest_version_date

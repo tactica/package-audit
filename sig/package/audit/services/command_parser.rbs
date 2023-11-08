@@ -3,6 +3,7 @@ module Package
     class CommandParser
       @config: Hash[String, untyped]?
       @dir: String
+      @environments: Array[String]
       @spinner: Util::Spinner
       @options: Hash[String, untyped]
       @report: Symbol
@@ -17,6 +18,8 @@ module Package
       def learn_more_command: (String) -> String?
 
       def parse_config_file: -> Hash[String, untyped]?
+
+      def parse_environments: -> Array[String]
 
       def parse_technologies: -> Array[String]
 

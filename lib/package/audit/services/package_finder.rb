@@ -11,16 +11,19 @@ require 'yaml'
 module Package
   module Audit
     class PackageFinder
-      def initialize(config, dir, report)
+      def initialize(config, dir, report, environments)
         @config = config
         @dir = dir
         @report = report
+        @environments = environments
       end
 
       def run(technology)
         all_pkgs = find_by_technology(technology)
-        ignored_pkgs = filter_pkgs_based_on_config(all_pkgs)
-        [all_pkgs, ignored_pkgs]
+        ignored_by_environment_pkgs = filter_pkgs_based_on_environment(all_pkgs)
+        active_pkgs = all_pkgs - ignored_by_environment_pkgs
+        ignored_by_config_pkgs = filter_pkgs_based_on_config(active_pkgs)
+        [active_pkgs, ignored_by_config_pkgs]
       end
 
       private
@@ -50,6 +53,15 @@ module Package
 
         pkgs.each do |pkg|
           ignored_pkgs << pkg if package_filter.ignored?(pkg)
+        end
+        ignored_pkgs
+      end
+
+      def filter_pkgs_based_on_environment(pkgs)
+        ignored_pkgs = []
+
+        pkgs.each do |pkg|
+          ignored_pkgs << pkg unless (pkg.groups & @environments).any?
         end
         ignored_pkgs
       end

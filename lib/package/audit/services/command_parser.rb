@@ -19,6 +19,7 @@ module Package
         @options = options
         @report = report
         @config = parse_config_file
+        @environments = parse_environments
         @technologies = parse_technologies
         @spinner = Util::Spinner.new('Evaluating packages and their dependencies...')
       end
@@ -31,7 +32,7 @@ module Package
         @spinner.start
         threads = @technologies.map.with_index do |technology, technology_index|
           Thread.new do
-            all_pkgs, ignored_pkgs = PackageFinder.new(@config, @dir, @report).run(technology)
+            all_pkgs, ignored_pkgs = PackageFinder.new(@config, @dir, @report, @environments).run(technology)
             ignored_pkgs = [] if @options[Enum::Option::INCLUDE_IGNORED]
             cumulative_pkgs += all_pkgs || []
             sleep 0.1 while technology_index != thread_index # print each technology in order
@@ -106,6 +107,17 @@ module Package
         else
           raise ArgumentError, "Configuration file not found: #{@options[Enum::Option::CONFIG]}"
         end
+      end
+
+      def parse_environments
+        unsupported_technologies = (@options[Enum::Option::ENVIRONMENT] || []) - Enum::Environment.all
+
+        if unsupported_technologies.any?
+          raise ArgumentError, "#{unsupported_technologies} is not valid list of environments, " \
+                               "use one of #{Enum::Environment.all}"
+        end
+
+        (@options[Enum::Option::ENVIRONMENT] || Enum::Environment.all) | [Enum::Environment::DEFAULT]
       end
 
       def parse_technologies
