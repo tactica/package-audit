@@ -48,6 +48,7 @@ module Package
         def assign_groups # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           definition = Bundler.with_unbundled_env do
             ENV['BUNDLE_GEMFILE'] = "#{@dir}/Gemfile"
+            Bundler.reset!
             Bundler.definition
           end
           groups = definition.groups.uniq.sort
