@@ -11,17 +11,23 @@ module Package
           @packages = packages
         end
 
-        def fetch
+        def fetch # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           threads = @packages.map do |package|
             Thread.new do
               response = Net::HTTP.get_response(URI.parse("#{REGISTRY_URL}/#{package.name}"))
-              raise response.error unless response.is_a?(Net::HTTPSuccess)
+              raise "Unable to fetch meta data for #{package.name} from #{REGISTRY_URL} (#{response.class})" unless
+                response.is_a?(Net::HTTPSuccess)
 
               json_package = JSON.parse(response.body, symbolize_names: true)
               update_meta_data(package, json_package)
+            rescue StandardError => e
+              Thread.current[:exception] = e
             end
           end
-          threads.each(&:join)
+          threads.each do |thread|
+            thread.join
+            raise thread[:exception] if thread[:exception]
+          end
           @packages
         end
 
