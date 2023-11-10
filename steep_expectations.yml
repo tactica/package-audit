@@ -13,11 +13,11 @@
     code: Ruby::UnknownConstant
   - range:
       start:
-        line: 18
-        character: 57
+        line: 19
+        character: 31
       end:
-        line: 18
-        character: 60
+        line: 19
+        character: 34
     severity: WARNING
     message: 'Cannot find the declaration of constant: `Net`'
     code: Ruby::UnknownConstant
