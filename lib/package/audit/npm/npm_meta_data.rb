@@ -19,9 +19,14 @@ module Package
 
               json_package = JSON.parse(response.body, symbolize_names: true)
               update_meta_data(package, json_package)
+            rescue StandardError => e
+              Thread.current[:exception] = e
             end
           end
-          threads.each(&:join)
+          threads.each do |thread|
+            thread.join
+            raise thread[:exception] if thread[:exception]
+          end
           @packages
         end
 

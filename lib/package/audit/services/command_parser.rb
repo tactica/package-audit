@@ -42,12 +42,17 @@ module Package
               thread_index += 1
               @spinner.start
             end
+          rescue StandardError => e
+            Thread.current[:exception] = e
           end
         end
-        threads.each(&:join)
-        @spinner.stop
-
+        threads.each do |thread|
+          thread.join
+          raise thread[:exception] if thread[:exception]
+        end
         cumulative_pkgs.any? ? 1 : 0
+      ensure
+        @spinner.stop
       end
 
       private
