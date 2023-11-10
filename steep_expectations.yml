@@ -127,21 +127,11 @@
     code: Ruby::UnknownConstant
   - range:
       start:
-        line: 51
-        character: 12
+        line: 50
+        character: 10
       end:
-        line: 51
-        character: 19
-    severity: WARNING
-    message: 'Cannot find the declaration of constant: `Bundler`'
-    code: Ruby::UnknownConstant
-  - range:
-      start:
-        line: 52
-        character: 12
-      end:
-        line: 52
-        character: 19
+        line: 50
+        character: 17
     severity: WARNING
     message: 'Cannot find the declaration of constant: `Bundler`'
     code: Ruby::UnknownConstant

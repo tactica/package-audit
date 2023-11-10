@@ -15,7 +15,6 @@ module Package
       end
 
       def test_that_the_same_fields_are_shown_for_all_reports
-        Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/report/Gemfile' }
         headers = Const::Fields::HEADERS.select { |key, _value| Const::Fields::DEFAULT.include?(key) }
 
         deprecated_output = `bundle exec package-audit deprecated test/files/gemfile/report`
