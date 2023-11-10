@@ -14,7 +14,6 @@ module Package
       end
 
       def test_that_no_environment_produces_expected_output
-        Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/environments/Gemfile' }
         output = `bundle exec package-audit report test/files/gemfile/environments`
 
         %w[irb minitest rack reline tzinfo yard].each { |pkg| assert_match pkg, output }
@@ -22,7 +21,6 @@ module Package
       end
 
       def test_that_default_environment_produces_expected_output
-        Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/environments/Gemfile' }
         output = `bundle exec package-audit report test/files/gemfile/environments -e default`
 
         %w[irb rack reline].each { |pkg| assert_match pkg, output }
@@ -30,7 +28,6 @@ module Package
       end
 
       def test_that_development_environment_produces_expected_output
-        Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/environments/Gemfile' }
         output = `bundle exec package-audit report test/files/gemfile/environments -e development`
 
         %w[irb rack reline yard].each { |pkg| assert_match pkg, output }
@@ -38,7 +35,6 @@ module Package
       end
 
       def test_that_test_environment_produces_expected_output
-        Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/environments/Gemfile' }
         output = `bundle exec package-audit report test/files/gemfile/environments -e test`
 
         %w[irb minitest rack reline].each { |pkg| assert_match pkg, output }
@@ -46,7 +42,6 @@ module Package
       end
 
       def test_that_production_environment_produces_expected_output
-        Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/environments/Gemfile' }
         output = `bundle exec package-audit report test/files/gemfile/environments -e production`
 
         %w[irb rack reline tzinfo].each { |pkg| assert_match pkg, output }
@@ -54,7 +49,6 @@ module Package
       end
 
       def test_that_multiple_environments_produces_expected_output
-        Bundler.with_unbundled_env { system 'bundle install --quiet --gemfile=test/files/gemfile/environments/Gemfile' }
         output = `bundle exec package-audit report test/files/gemfile/environments -e test -e production`
 
         %w[irb minitest rack reline tzinfo].each { |pkg| assert_match pkg, output }

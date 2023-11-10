@@ -45,12 +45,10 @@ module Package
           end
         end
 
-        def assign_groups # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-          definition = Bundler.with_unbundled_env do
-            ENV['BUNDLE_GEMFILE'] = "#{@dir}/Gemfile"
-            Bundler.reset!
-            Bundler.definition
-          end
+        def assign_groups # rubocop:disable Metrics/AbcSize
+          definition = Bundler::Definition.build Pathname("#{@dir}/Gemfile"), Pathname("#{@dir}/Gemfile.lock"), nil
+          Bundler.ui.level = 'error'
+          definition.resolve_remotely!
           groups = definition.groups.uniq.sort
           groups.each do |group|
             specs = definition.specs_for([group])
