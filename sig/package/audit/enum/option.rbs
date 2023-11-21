@@ -5,7 +5,7 @@ module Package
         CONFIG: String
         CSV: String
         CSV_EXCLUDE_HEADERS: String
-        ENVIRONMENT: String
+        GROUP: String
         INCLUDE_IGNORED: String
         TECHNOLOGY: String
       end

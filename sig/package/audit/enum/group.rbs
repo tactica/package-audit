@@ -1,7 +1,7 @@
 module Package
   module Audit
     module Enum
-      module Environment
+      module Group
         DEFAULT: String
         DEV: String
         PRODUCTION: String

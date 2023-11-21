@@ -1,7 +1,7 @@
 module Package
   module Audit
     module Enum
-      module Environment
+      module Group
         DEV = 'development'
         TEST = 'test'
         STAGING = 'staging'
@@ -9,7 +9,7 @@ module Package
         DEFAULT = 'default'
 
         def self.all
-          constants.map { |key| Enum::Environment.const_get(key) }.sort
+          constants.map { |key| Enum::Group.const_get(key) }.sort
         end
       end
     end

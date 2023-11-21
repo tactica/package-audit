@@ -1,4 +1,4 @@
-require_relative '../enum/environment'
+require_relative '../enum/group'
 
 module Package
   module Audit
@@ -16,9 +16,9 @@ module Package
             version = fetch_package_version(dep_name, pkg_block)
             pks = Package.new(dep_name.to_s, version, 'node')
             pks.update groups: if dev_deps.key?(dep_name)
-                                 [Enum::Environment::DEV]
+                                 [Enum::Group::DEV]
                                else
-                                 [Enum::Environment::DEFAULT, Enum::Environment::DEV]
+                                 [Enum::Group::DEFAULT, Enum::Group::DEV]
                                end
             pkgs << pks
           end

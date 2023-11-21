@@ -134,11 +134,11 @@ gem install package-audit
     package-audit --technology node --technology ruby [DIR]
     ```
 
-* To include only specific environments use `--environment` or `-e`:
+* To include only specific environments use `--group` or `-g`:
 
     ```bash
-    package-audit -e staging -e production [DIR]
-    package-audit --environment staging --environment production [DIR]
+    package-audit -e staging -g production [DIR]
+    package-audit --group staging --group production [DIR]
     ```
 
 * To show how risk is calculated for the above report run:
