@@ -5,7 +5,7 @@ module Package
         CONFIG = 'config'
         CSV = 'csv'
         CSV_EXCLUDE_HEADERS = 'exclude-headers'
-        ENVIRONMENT = 'environment'
+        GROUP = 'group'
         INCLUDE_IGNORED = 'include-ignored'
         TECHNOLOGY = 'technology'
       end

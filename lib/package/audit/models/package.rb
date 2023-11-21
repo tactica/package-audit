@@ -1,4 +1,4 @@
-require_relative '../enum/environment'
+require_relative '../enum/group'
 require_relative '../enum/risk_explanation'
 require_relative '../enum/risk_type'
 require_relative '../services/risk_calculator'

@@ -5,7 +5,7 @@ require 'bundler'
 
 module Package
   module Audit
-    class TestEnvironment < Minitest::Test
+    class TestFields < Minitest::Test
       def test_that_all_available_fields_have_headers
         assert_equal Const::Fields::AVAILABLE, Const::Fields::HEADERS.keys
       end

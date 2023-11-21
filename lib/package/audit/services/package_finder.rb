@@ -11,17 +11,17 @@ require 'yaml'
 module Package
   module Audit
     class PackageFinder
-      def initialize(config, dir, report, environments)
+      def initialize(config, dir, report, groups)
         @config = config
         @dir = dir
         @report = report
-        @environments = environments
+        @groups = groups
       end
 
       def run(technology)
         all_pkgs = find_by_technology(technology)
-        ignored_by_environment_pkgs = filter_pkgs_based_on_environment(all_pkgs)
-        active_pkgs = all_pkgs - ignored_by_environment_pkgs
+        ignored_by_group_pkgs = filter_pkgs_based_on_group(all_pkgs)
+        active_pkgs = all_pkgs - ignored_by_group_pkgs
         ignored_by_config_pkgs = filter_pkgs_based_on_config(active_pkgs)
         [active_pkgs, ignored_by_config_pkgs]
       end
@@ -57,12 +57,15 @@ module Package
         ignored_pkgs
       end
 
-      def filter_pkgs_based_on_environment(pkgs)
+      def filter_pkgs_based_on_group(pkgs)
         ignored_pkgs = []
 
-        pkgs.each do |pkg|
-          ignored_pkgs << pkg unless (pkg.groups & @environments).any?
+        unless @groups.nil?
+          pkgs.each do |pkg|
+            ignored_pkgs << pkg unless (pkg.groups & (@groups | [Enum::Group::DEFAULT])).any?
+          end
         end
+
         ignored_pkgs
       end
     end

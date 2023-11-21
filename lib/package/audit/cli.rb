@@ -15,9 +15,9 @@ module Package
       class_option Enum::Option::CONFIG,
                    aliases: '-c', banner: 'FILE',
                    desc: "Path to a custom configuration file, default: #{Const::File::CONFIG})"
-      class_option Enum::Option::ENVIRONMENT,
-                   aliases: '-e', repeatable: true,
-                   desc: 'Environment to be audited (repeat this flag for each environment)'
+      class_option Enum::Option::GROUP,
+                   aliases: '-g', repeatable: true,
+                   desc: 'Group to be audited (repeat this flag for each group)'
       class_option Enum::Option::TECHNOLOGY,
                    aliases: '-t', repeatable: true,
                    desc: 'Technology to be audited (repeat this flag for each technology)'

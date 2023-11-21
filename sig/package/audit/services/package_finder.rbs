@@ -4,7 +4,7 @@ module Package
       @config: Hash[String, untyped]?
       @dir: String
       @report: Symbol
-      @environments: Array[String]
+      @groups: Array[String]
 
       def initialize: (Hash[String, untyped]?, String, Symbol, Array[String]) -> void
 
@@ -14,7 +14,7 @@ module Package
 
       def filter_pkgs_based_on_config: (Array[Package]) -> Array[Package]
 
-      def filter_pkgs_based_on_environment: (Array[Package]) -> Array[Package]
+      def filter_pkgs_based_on_group: (Array[Package]) -> Array[Package]
 
       def find_by_technology: (String) -> Array[Package]
 
