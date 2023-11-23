@@ -18,6 +18,7 @@ module Package
         def self.gemfile(dir)
           current_dependencies = Bundler.with_unbundled_env do
             ENV['BUNDLE_GEMFILE'] = "#{dir}/Gemfile"
+            Bundler.ui.level = 'error'
             Bundler.reset!
             Bundler.ui.silence do
               Bundler.load.dependencies.to_h { |dep| [dep.name, dep] }
