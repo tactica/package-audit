@@ -3,7 +3,7 @@ module Package
     module Const
       module Cmd
         BUNDLE_AUDIT = 'bundle-audit check --update'
-        BUNDLE_AUDIT_JSON = 'bundle-audit check --update --quiet --format json %s'
+        BUNDLE_AUDIT_JSON = 'bundle-audit check --update --quiet --format json %s 2>/dev/null'
 
         NPM_AUDIT = 'npm audit'
         NPM_AUDIT_JSON = 'npm audit --json'
