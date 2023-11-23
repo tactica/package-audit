@@ -27,12 +27,8 @@ module Package
       assert_equal stdout.string, output
     end
 
-    def test_that_the_default_version_points_to_report
-      assert_equal `bundle exec package-audit report`, `bundle exec package-audit`
-    end
-
     def test_that_there_is_a_success_message_when_report_is_empty
-      output = `bundle exec package-audit report test/files/gemfile/empty`
+      output = `bundle exec package-audit test/files/gemfile/empty`
 
       assert_match 'There are no deprecated, outdated or vulnerable ruby packages!', output
     end
@@ -56,15 +52,15 @@ module Package
     end
 
     def test_that_the_exit_code_is_0_when_report_is_empty
-      assert system('bundle exec package-audit report test/files/gemfile/empty')
+      assert system('bundle exec package-audit test/files/gemfile/empty')
     end
 
     def test_that_the_exit_code_is_1_when_report_is_not_empty
-      refute system('bundle exec package-audit report test/files/gemfile/report')
+      refute system('bundle exec package-audit test/files/gemfile/report')
     end
 
     def test_that_there_is_a_report_of_gems
-      output = `bundle exec package-audit report test/files/gemfile/report`
+      output = `bundle exec package-audit test/files/gemfile/report`
 
       assert_match 'Found a total of 3 ruby packages.', output
       assert_match '1 vulnerable (8 vulnerabilities), 2 outdated, 1 deprecated.', output
@@ -89,13 +85,13 @@ module Package
     end
 
     def test_that_there_is_a_report_of_node_modules_with_no_dependencies
-      output = `bundle exec package-audit report test/files/yarn/empty`
+      output = `bundle exec package-audit test/files/yarn/empty`
 
       assert_match 'There are no deprecated, outdated or vulnerable node packages!', output
     end
 
     def test_that_there_is_a_report_of_node_modules_formatted_by_npm_with_no_dependencies
-      output = `bundle exec package-audit report test/files/yarn/npm`
+      output = `bundle exec package-audit test/files/yarn/npm`
 
       assert_match 'Found a total of 1 node packages.', output
     end
@@ -119,7 +115,7 @@ module Package
     end
 
     def test_that_there_is_a_report_of_node_modules
-      output = `bundle exec package-audit report test/files/yarn/report`
+      output = `bundle exec package-audit test/files/yarn/report`
 
       assert_match '1 vulnerable (1 vulnerabilities), 2 outdated, 1 deprecated.', output
     end

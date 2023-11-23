@@ -10,7 +10,7 @@ require 'thor'
 module Package
   module Audit
     class CLI < Thor
-      default_task :report
+      default_task :default
 
       class_option Enum::Option::CONFIG,
                    aliases: '-c', banner: 'FILE',
@@ -34,8 +34,8 @@ module Package
       map '-v' => :version
       map '--version' => :version
 
-      desc 'report [DIR]', 'Show a report of potentially deprecated, outdated or vulnerable packages'
-      def report(dir = Dir.pwd)
+      desc '[DIR]', 'Show a report of potentially deprecated, outdated or vulnerable packages'
+      def default(dir = Dir.pwd)
         within_rescue_block { exit CommandParser.new(dir, options, Enum::Report::ALL).run }
       end
 
@@ -70,7 +70,7 @@ module Package
       end
 
       def method_missing(command, *args)
-        invoke :report, [command], args
+        invoke :default, [command], args
       end
 
       def respond_to_missing?

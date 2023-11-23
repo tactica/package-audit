@@ -19,13 +19,13 @@ module Package
 
         deprecated_output = `bundle exec package-audit deprecated test/files/gemfile/report`
         outdated_output = `bundle exec package-audit outdated test/files/gemfile/report`
-        report_output = `bundle exec package-audit report test/files/gemfile/report`
+        default_output = `bundle exec package-audit test/files/gemfile/report`
         vulnerable_output = `bundle exec package-audit vulnerable test/files/gemfile/report`
 
         headers.each_value do |value|
           assert_match value, deprecated_output
           assert_match value, outdated_output
-          assert_match value, report_output
+          assert_match value, default_output
           assert_match value, vulnerable_output
         end
       end
