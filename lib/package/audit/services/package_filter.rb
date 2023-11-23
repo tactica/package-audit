@@ -9,7 +9,8 @@ require 'yaml'
 module Package
   module Audit
     class PackageFilter
-      def initialize(config)
+      def initialize(report, config)
+        @report = report
         @config = config
       end
 
@@ -30,9 +31,28 @@ module Package
       end
 
       def ignore_package?(pkg, yaml)
-        (!pkg.deprecated? || yaml&.dig(Const::YAML::DEPRECATED) == false) &&
-          (!pkg.outdated? || yaml&.dig(Const::YAML::OUTDATED) == false) &&
-          (!pkg.vulnerable? || yaml&.dig(Const::YAML::VULNERABLE) == false)
+        case @report
+        when Enum::Report::DEPRECATED
+          ignore_deprecated?(pkg, yaml)
+        when Enum::Report::OUTDATED
+          ignore_outdated?(pkg, yaml)
+        when Enum::Report::VULNERABLE
+          ignore_vulnerable?(pkg, yaml)
+        else
+          ignore_deprecated?(pkg, yaml) && ignore_outdated?(pkg, yaml) && ignore_vulnerable?(pkg, yaml)
+        end
+      end
+
+      def ignore_deprecated?(pkg, yaml)
+        !pkg.deprecated? || yaml&.dig(Const::YAML::DEPRECATED) == false
+      end
+
+      def ignore_outdated?(pkg, yaml)
+        !pkg.outdated? || yaml&.dig(Const::YAML::OUTDATED) == false
+      end
+
+      def ignore_vulnerable?(pkg, yaml)
+        !pkg.vulnerable? || yaml&.dig(Const::YAML::VULNERABLE) == false
       end
     end
   end

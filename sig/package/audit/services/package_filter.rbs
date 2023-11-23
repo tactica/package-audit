@@ -2,14 +2,21 @@ module Package
   module Audit
     class PackageFilter
       @config: Hash[String, untyped]?
+      @report: Symbol
 
-      def initialize: (Hash[String, untyped]?) -> void
+      def initialize: (Symbol, Hash[String, untyped]?) -> void
 
       def ignored?: (Package) -> bool
 
       private
 
+      def ignore_deprecated?: (Package, Hash[String, untyped]?) -> bool
+
+      def ignore_outdated?: (Package, Hash[String, untyped]?) -> bool
+
       def ignore_package?: (Package, Hash[String, untyped]?) -> bool
+
+      def ignore_vulnerable?: (Package, Hash[String, untyped]?) -> bool
 
       def pkg_version_in_config?: (Package, Hash[String, untyped]?) -> bool
 
