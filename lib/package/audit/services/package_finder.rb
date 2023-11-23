@@ -48,7 +48,7 @@ module Package
       end
 
       def filter_pkgs_based_on_config(pkgs)
-        package_filter = PackageFilter.new(@config)
+        package_filter = PackageFilter.new(@report, @config)
         ignored_pkgs = []
 
         pkgs.each do |pkg|

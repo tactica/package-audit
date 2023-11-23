@@ -198,6 +198,8 @@ technology:
 
 **Note:** If the installed package version differs from the expected package version specified in the configuration file, the exclusion settings will not apply to that particular package.
 
+**Note:** If a package is reported for multiple reasons (e.g. vulnerable and outdated), it will still be reported unless the exclusion criteria match every reason for being on the report.
+
 > By design, wildcard (`*`) version exclusions are not supported to prevent developers from inadvertently overlooking crucial messages when packages are updated.
 
 ## Development
