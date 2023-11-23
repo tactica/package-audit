@@ -3,6 +3,8 @@ module Package
     class CLI
       def self.exit_on_failure?: -> bool
 
+      def default: (String) -> void
+
       def deprecated: (String) -> void
 
       def outdated: (String) -> void
