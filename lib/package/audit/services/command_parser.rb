@@ -24,7 +24,21 @@ module Package
         @spinner = Util::Spinner.new('Evaluating packages and their dependencies...')
       end
 
-      def run # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+      def run
+        if File.file? @dir.to_s
+          raise "\"#{@dir}\" is a file instead of directory"
+        elsif !File.directory? @dir.to_s
+          raise "\"#{@dir}\" is not a valid directory"
+        elsif @technologies.empty?
+          raise 'No supported technologies found in this directory'
+        else
+          process_technologies
+        end
+      end
+
+      private
+
+      def process_technologies # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
         mutex = Mutex.new
         cumulative_pkgs = []
         thread_index = 0
@@ -54,8 +68,6 @@ module Package
       ensure
         @spinner.stop
       end
-
-      private
 
       def print_results(technology, pkgs, ignored_pkgs)
         PackagePrinter.new(@options, pkgs).print(Const::Fields::DEFAULT)

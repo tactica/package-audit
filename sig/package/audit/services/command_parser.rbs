@@ -26,6 +26,8 @@ module Package
       def print_results: (String, Array[Package], Array[Package]) -> void
 
       def print_summary: (String, Array[Package], Array[Package]) -> void
+
+      def process_technologies: -> int
     end
   end
 end
