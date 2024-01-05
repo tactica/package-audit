@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.description = 'A useful tool for patch management and prioritization, package-audit produces a list of dependencies that are outdated, deprecated or have security vulnerabilities.' # rubocop:disable Layout/LineLength
   spec.homepage = 'https://github.com/tactica/package-audit'
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 2.6.0'
+  spec.required_ruby_version = '>= 2.5.0'
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/tactica/package-audit'
