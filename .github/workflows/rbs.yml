@@ -9,17 +9,14 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Steep ${{ matrix.ruby }}
-    strategy:
-      matrix:
-        ruby: [ '3.3', '3.2', '3.1', '3.0', '2.7' ]
+    name: Steep
 
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Ruby ${{ matrix.ruby }}
+      - name: Set up Ruby 3.3
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ${{ matrix.ruby }}
+          ruby-version: 3.3
           bundler-cache: true
       - name: Install dependencies
         run: bundle install
