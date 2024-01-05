@@ -25,7 +25,7 @@ module Package
       end
 
       def update(**attr)
-        attr.each { |key, value| instance_variable_set("@#{key}", value) }
+        attr.each { |key, value| instance_variable_set(:"@#{key}", value) }
       end
 
       def risk

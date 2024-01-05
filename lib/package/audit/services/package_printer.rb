@@ -43,7 +43,7 @@ module Package
         # find the maximum length of each field across all the packages so we know how many
         # characters of horizontal space to allocate for each field when printing
         fields.each do |key|
-          instance_variable_set "@max_#{key}", Const::Fields::HEADERS[key].length
+          instance_variable_set :"@max_#{key}", Const::Fields::HEADERS[key].length
           @pkgs.each do |gem|
             curr_field_length = case key
                                 when :vulnerabilities
@@ -53,17 +53,17 @@ module Package
                                 else
                                   gem.send(key)&.gsub(BASH_FORMATTING_REGEX, '')&.length || 0
                                 end
-            max_field_length = instance_variable_get "@max_#{key}"
-            instance_variable_set "@max_#{key}", [curr_field_length, max_field_length].max
+            max_field_length = instance_variable_get :"@max_#{key}"
+            instance_variable_set :"@max_#{key}", [curr_field_length, max_field_length].max
           end
         end
 
-        line_length = fields.sum { |key| instance_variable_get "@max_#{key}" } +
+        line_length = fields.sum { |key| instance_variable_get :"@max_#{key}" } +
                       (COLUMN_GAP * (fields.length - 1))
 
         puts '=' * line_length
         puts fields.map { |key|
-          Const::Fields::HEADERS[key].gsub(BASH_FORMATTING_REGEX, '').ljust(instance_variable_get("@max_#{key}"))
+          Const::Fields::HEADERS[key].gsub(BASH_FORMATTING_REGEX, '').ljust(instance_variable_get(:"@max_#{key}"))
         }.join(' ' * COLUMN_GAP)
         puts '=' * line_length
 
@@ -86,7 +86,7 @@ module Package
                   end
 
             formatting_length = val.length - val.gsub(BASH_FORMATTING_REGEX, '').length
-            val.ljust(instance_variable_get("@max_#{key}") + formatting_length)
+            val.ljust(instance_variable_get(:"@max_#{key}") + formatting_length)
           }.join(' ' * COLUMN_GAP)
         end
       end

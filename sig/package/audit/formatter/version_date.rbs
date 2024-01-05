@@ -6,7 +6,7 @@ module Package
 
         def initialize: (String) -> void
 
-        def format: -> void
+        def format: -> String
       end
     end
   end

@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     io-console (0.5.2)
-    irb (1.7.0)
+    irb (1.5.0)
       reline (>= 0.3.0)
     minitest (5.10.0)
     rack (2.2.0)
@@ -16,9 +16,10 @@ GEM
 PLATFORMS
   arm64-darwin-22
   x86_64-darwin-22
+  x86_64-darwin-23
 
 DEPENDENCIES
-  irb (= 1.7.0)
+  irb (= 1.5.0)
   minitest (= 5.10.0)
   rack (= 2.2.0.0)
   reline (= 0.3.0)
