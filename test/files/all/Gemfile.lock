@@ -2,19 +2,20 @@ GEM
   remote: https://rubygems.org/
   specs:
     deprecated (3.0.1)
-    io-console (0.6.0)
-    irb (1.7.0)
+    io-console (0.7.1)
+    irb (1.5.0)
       reline (>= 0.3.0)
     rack (2.2.0)
-    reline (0.3.5)
+    reline (0.4.2)
       io-console (~> 0.5)
 
 PLATFORMS
   arm64-darwin-22
+  x86_64-darwin-23
 
 DEPENDENCIES
   deprecated
-  irb (= 1.7.0)
+  irb (= 1.5.0)
   rack (= 2.2.0.0)
 
 BUNDLED WITH
