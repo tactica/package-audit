@@ -26,5 +26,8 @@ Style/Documentation:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/HashEachMethods:
+  Enabled: false
+
 Style/MutableConstant:
   Enabled: false
