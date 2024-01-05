@@ -33,7 +33,7 @@ module Package
           end
         end
 
-        def self.statistics(technology, report, pkgs, ignored_pkgs)
+        def self.statistics(technology, report, pkgs, ignored_pkgs) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           outdated = pkgs.count(&:outdated?)
           deprecated = pkgs.count(&:deprecated?)
           vulnerable = pkgs.count(&:vulnerable?)
@@ -44,6 +44,9 @@ module Package
             puts Util::BashColor.cyan("#{vulnerable} vulnerable (#{vulnerabilities} vulnerabilities), " \
                                       "#{outdated} outdated, #{deprecated} deprecated.")
             total(technology, report, pkgs, ignored_pkgs)
+          elsif ignored_pkgs.any?
+            puts Util::BashColor.green("There are no deprecated, outdated or vulnerable #{technology} " \
+                                       "packages (#{ignored_pkgs.length} ignored)!\n")
           else
             puts Util::BashColor.green("There are no deprecated, outdated or vulnerable #{technology} packages!\n")
           end
