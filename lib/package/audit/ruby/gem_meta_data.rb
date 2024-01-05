@@ -32,7 +32,7 @@ module Package
 
             next unless remote_dependencies.any?
 
-            remote_dependencies.each do |remote_spec, _|
+            remote_dependencies.each_key do |remote_spec|
               latest_version = remote_spec.version if latest_version < remote_spec.version
               latest_version_date = remote_spec.date if latest_version_date < remote_spec.date
               local_version_date = remote_spec.date if local_version == remote_spec.version
