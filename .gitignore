@@ -6,6 +6,7 @@
 /.bundle/
 /.idea/
 /.yardoc
+/Gemfile.lock
 /_yardoc/
 /coverage/
 /doc/
@@ -13,5 +14,4 @@
 /spec/reports/
 /tmp/
 /vendor/bundle
-Gemfile.lock
 node_modules
