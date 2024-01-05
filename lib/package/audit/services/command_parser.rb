@@ -48,7 +48,7 @@ module Package
           Thread.new do
             all_pkgs, ignored_pkgs = PackageFinder.new(@config, @dir, @report, @groups).run(technology)
             ignored_pkgs = [] if @options[Enum::Option::INCLUDE_IGNORED]
-            cumulative_pkgs += all_pkgs || []
+            cumulative_pkgs += (all_pkgs || []) - (ignored_pkgs || [])
             sleep 0.1 while technology_index != thread_index # print each technology in order
             mutex.synchronize do
               @spinner.stop
