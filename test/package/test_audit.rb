@@ -33,6 +33,18 @@ module Package
       assert_match 'There are no deprecated, outdated or vulnerable ruby packages!', output
     end
 
+    def test_that_there_is_a_success_with_ignored_packages_message_when_report_is_empty
+      output = `bundle exec package-audit test/files/gemfile/ignored_empty`
+
+      assert_match 'There are no deprecated, outdated or vulnerable ruby packages (1 ignored)!', output
+    end
+
+    def test_that_there_is_a_success_with_ignored_packages_message_when_report_is_not_empty
+      output = `bundle exec package-audit test/files/gemfile/ignored`
+
+      assert_match 'Found a total of 1 ruby packages (1 ignored).', output
+    end
+
     def test_that_there_is_a_success_message_when_everything_is_up_to_date
       output = `bundle exec package-audit outdated test/files/gemfile/empty`
 

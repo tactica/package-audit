@@ -1,0 +1,4 @@
+source 'https://rubygems.org'
+
+gem 'deprecated'
+gem 'irb', '1.7.0'

@@ -1,0 +1,5 @@
+technology:
+  ruby:
+    deprecated:
+      version: 3.0.1
+      deprecated: false
