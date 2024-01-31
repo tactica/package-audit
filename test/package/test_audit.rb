@@ -1,4 +1,5 @@
 require 'test_helper'
+require_relative '../../lib/package/audit/util/risk_legend'
 require_relative '../../lib/package/audit/util/summary_printer'
 require_relative '../../lib/package/audit/version'
 
@@ -21,7 +22,7 @@ module Package
 
       stdout = StringIO.new
       $stdout = stdout
-      Package::Audit::Util::SummaryPrinter.risk
+      Package::Audit::Util::RiskLegend.risk
       $stdout = STDOUT
 
       assert_equal stdout.string, output
