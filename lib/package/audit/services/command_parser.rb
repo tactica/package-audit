@@ -79,7 +79,7 @@ module Package
         if @report == Enum::Report::ALL
           Util::SummaryPrinter.statistics(technology, @report, pkgs, ignored_pkgs)
         else
-          Util::SummaryPrinter.total(technology, @report, pkgs, ignored_pkgs)
+          Util::SummaryPrinter.total(technology, @report, pkgs)
         end
       end
 

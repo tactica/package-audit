@@ -10,7 +10,7 @@ module Package
 
         def self.statistics: (String, Symbol, Array[Package], Array[Package]) -> void
 
-        def self.total: (String, Symbol, Array[Package], Array[Package]) -> void
+        def self.total: (String, Symbol, Array[Package]) -> void
 
         def self.vulnerable: (String, String?) -> void
       end
