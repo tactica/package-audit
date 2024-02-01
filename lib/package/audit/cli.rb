@@ -2,6 +2,7 @@ require_relative 'const/file'
 require_relative 'const/time'
 require_relative 'enum/option'
 require_relative 'services/command_parser'
+require_relative 'util//risk_legend'
 require_relative 'version'
 
 require 'json'

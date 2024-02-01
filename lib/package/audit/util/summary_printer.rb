@@ -22,8 +22,11 @@ module Package
                  cmd: Util::BashColor.magenta(" > #{cmd}"))
         end
 
-        def self.total(technology, report, pkgs)
-          if pkgs.any?
+        def self.total(technology, report, pkgs, ignored_pkgs)
+          if ignored_pkgs.any?
+            puts Util::BashColor.cyan("Found a total of #{pkgs.length} #{technology} packages " \
+                                      "(#{ignored_pkgs.length} ignored).\n")
+          elsif pkgs.any?
             puts Util::BashColor.cyan("Found a total of #{pkgs.length} #{technology} packages.\n")
           else
             puts Util::BashColor.green("There are no #{report} #{technology} packages!\n")
@@ -35,71 +38,62 @@ module Package
           display_results(technology, report, pkgs, ignored_pkgs, stats)
         end
 
-        class << self
-          private
+        private_class_method def self.calculate_statistics(pkgs, ignored_pkgs)
+          stats = {
+            outdated: count_status(pkgs, :outdated?),
+            deprecated: count_status(pkgs, :deprecated?),
+            vulnerable: count_status(pkgs, :vulnerable?),
+            outdated_ignored: count_status(ignored_pkgs, :outdated?),
+            deprecated_ignored: count_status(ignored_pkgs, :deprecated?),
+            vulnerable_ignored: count_status(ignored_pkgs, :vulnerable?)
+          }
 
-          def calculate_statistics(pkgs, ignored_pkgs)
-            stats = {
-              outdated: count_status(pkgs, :outdated?),
-              deprecated: count_status(pkgs, :deprecated?),
-              vulnerable: count_status(pkgs, :vulnerable?),
-              outdated_ignored: count_status(ignored_pkgs, :outdated?),
-              deprecated_ignored: count_status(ignored_pkgs, :deprecated?),
-              vulnerable_ignored: count_status(ignored_pkgs, :vulnerable?)
-            }
+          stats[:vulnerabilities] = pkgs.sum { |pkg| pkg.vulnerabilities.length }
+          stats
+        end
 
-            stats[:vulnerabilities] = pkgs.sum { |pkg| pkg.vulnerabilities.length }
-            stats
+        private_class_method def self.count_status(pkgs, status)
+          pkgs.count(&status)
+        end
+
+        private_class_method def self.display_results(technology, report, pkgs, ignored_pkgs, stats)
+          if pkgs.any?
+            puts status_message(stats)
+            total(technology, report, pkgs, ignored_pkgs)
+          elsif ignored_pkgs.any?
+            puts status_message(stats)
+            puts Util::BashColor.green("There are no deprecated, outdated or vulnerable #{technology} " \
+                                       "packages (#{ignored_pkgs.length} ignored)!\n")
+          else
+            puts Util::BashColor.green("There are no deprecated, outdated or vulnerable #{technology} packages!\n")
           end
+        end
 
-          def count_status(pkgs, status)
-            pkgs.count(&status)
-          end
+        private_class_method def self.status_message(stats)
+          outdated_str = "#{stats[:outdated]} outdated" + outdated_details(stats)
+          deprecated_str = "#{stats[:deprecated]} deprecated" + deprecated_details(stats)
+          vulnerable_str = "#{stats[:vulnerable]} vulnerable" + vulnerability_details(stats)
 
-          def display_results(technology, report, pkgs, ignored_pkgs, stats)
-            if pkgs.any?
-              puts status_message(stats)
-              total(technology, report, pkgs)
-            elsif ignored_pkgs.any?
-              puts Util::BashColor.green("There are no deprecated, outdated or vulnerable #{technology}  " \
-                                         "packages (#{ignored_pkgs} ignored)!\n")
-            else
-              puts Util::BashColor.green("There are no deprecated, outdated or vulnerable #{technology} packages!\n")
-            end
-          end
+          Util::BashColor.cyan("#{vulnerable_str}, #{outdated_str}, #{deprecated_str}.")
+        end
 
-          def status_message(stats)
-            outdated_str = "#{stats[:outdated]} outdated" + outdated_details(stats)
-            deprecated_str = "#{stats[:deprecated]} deprecated" + deprecated_details(stats)
-            vulnerable_str = "#{stats[:vulnerable]} vulnerable" + vulnerability_details(stats)
+        private_class_method def self.deprecated_details(stats)
+          details = []
+          details << "#{stats[:deprecated_ignored]} ignored" if stats[:deprecated_ignored].positive?
+          details.any? ? " (#{details.join(', ')})" : ''
+        end
 
-            Util::BashColor.cyan("#{vulnerable_str}, #{outdated_str}, #{deprecated_str}.")
-          end
+        private_class_method def self.outdated_details(stats)
+          details = []
+          details << "#{stats[:outdated_ignored]} ignored" if stats[:outdated_ignored].positive?
+          details.any? ? " (#{details.join(', ')})" : ''
+        end
 
-          def outdated_details(stats)
-            return '' if (stats[:outdated_ignored] + stats[:outdated]).zero?
-
-            details = []
-            details << "#{stats[:outdated_ignored]} ignored" if stats[:outdated_ignored].positive?
-            " (#{details.join(', ')})"
-          end
-
-          def deprecated_details(stats)
-            return '' if (stats[:deprecated_ignored] + stats[:deprecated]).zero?
-
-            details = []
-            details << "#{stats[:deprecated_ignored]} ignored" if stats[:deprecated_ignored].positive?
-            " (#{details.join(', ')})"
-          end
-
-          def vulnerability_details(stats)
-            return '' if (stats[:vulnerable_ignored] + stats[:vulnerabilities]).zero?
-
-            details = []
-            details << "#{stats[:vulnerabilities]} vulnerabilities" if stats[:vulnerabilities].positive?
-            details << "#{stats[:vulnerable_ignored]} ignored" if stats[:vulnerable_ignored].positive?
-            " (#{details.join(', ')})"
-          end
+        private_class_method def self.vulnerability_details(stats)
+          details = []
+          details << "#{stats[:vulnerabilities]} vulnerabilities" if stats[:vulnerabilities].positive?
+          details << "#{stats[:vulnerable_ignored]} ignored" if stats[:vulnerable_ignored].positive?
+          details.any? ? " (#{details.join(', ')})" : ''
         end
       end
     end
