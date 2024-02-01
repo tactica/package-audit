@@ -145,3 +145,28 @@
     severity: WARNING
     message: 'Cannot find the declaration of constant: `Bundler`'
     code: Ruby::UnknownConstant
+- file: lib/package/audit/util/summary_printer.rb
+  diagnostics:
+  - range:
+      start:
+        line: 37
+        character: 18
+      end:
+        line: 37
+        character: 38
+    severity: ERROR
+    message: Type `singleton(::Package::Audit::Util::SummaryPrinter)` does not have
+      method `calculate_statistics`
+    code: Ruby::NoMethod
+  - range:
+      start:
+        line: 56
+        character: 21
+      end:
+        line: 56
+        character: 28
+    severity: WARNING
+    message: |-
+      Cannot pass a value of type `::Proc` as a block-pass-argument of type `^(::Package::Audit::Package) -> ::boolish`
+        ::Proc <: ^(::Package::Audit::Package) -> ::boolish
+    code: Ruby::BlockTypeMismatch

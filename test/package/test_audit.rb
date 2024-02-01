@@ -1,4 +1,5 @@
 require 'test_helper'
+require_relative '../../lib/package/audit/util/risk_legend'
 require_relative '../../lib/package/audit/util/summary_printer'
 require_relative '../../lib/package/audit/version'
 
@@ -21,7 +22,7 @@ module Package
 
       stdout = StringIO.new
       $stdout = stdout
-      Package::Audit::Util::SummaryPrinter.risk
+      Package::Audit::Util::RiskLegend.print
       $stdout = STDOUT
 
       assert_equal stdout.string, output
@@ -36,12 +37,14 @@ module Package
     def test_that_there_is_a_success_with_ignored_packages_message_when_report_is_empty
       output = `bundle exec package-audit test/files/gemfile/ignored_empty`
 
+      assert_match '0 vulnerable, 0 outdated, 0 deprecated (1 ignored).', output
       assert_match 'There are no deprecated, outdated or vulnerable ruby packages (1 ignored)!', output
     end
 
     def test_that_there_is_a_success_with_ignored_packages_message_when_report_is_not_empty
       output = `bundle exec package-audit test/files/gemfile/ignored`
 
+      assert_match '0 vulnerable, 1 outdated, 0 deprecated (1 ignored).', output
       assert_match 'Found a total of 1 ruby packages (1 ignored).', output
     end
 
