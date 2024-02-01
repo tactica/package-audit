@@ -12,7 +12,7 @@ module Package
 
       COLUMN_GAP = 2
 
-      def initialize(options, pkgs)
+      def initialize( options, pkgs)
         @options = options
         @pkgs = pkgs
       end
@@ -21,8 +21,11 @@ module Package
         check_fields(fields)
         return if @pkgs.empty?
 
-        if @options[Enum::Option::CSV]
-          csv(fields, exclude_headers: @options[Enum::Option::CSV_EXCLUDE_HEADERS])
+        case @options[Enum::Option::FORMAT]
+        when Enum::Format::CSV
+          csv(fields, exclude_headers: @options[Enum::Option::EXCLUDE_HEADERS])
+        when Enum::Format::MD
+          markdown(fields)
         else
           pretty(fields)
         end
@@ -69,21 +72,7 @@ module Package
 
         @pkgs.each do |pkg|
           puts fields.map { |key|
-            val = pkg.send(key) || ''
-            val = case key
-                  when :groups
-                    pkg.group_list
-                  when :risk_type
-                    Formatter::Risk.new(pkg.risk_type).format
-                  when :version
-                    Formatter::Version.new(pkg.version, pkg.latest_version).format
-                  when :vulnerabilities
-                    Formatter::Vulnerability.new(pkg.vulnerabilities).format
-                  when :latest_version_date
-                    Formatter::VersionDate.new(pkg.latest_version_date).format
-                  else
-                    val
-                  end
+            val = get_field_value(pkg, key)
 
             formatting_length = val.length - val.gsub(BASH_FORMATTING_REGEX, '').length
             val.ljust(instance_variable_get(:"@max_#{key}") + formatting_length)
@@ -105,6 +94,56 @@ module Package
 
         puts fields.join(',') unless exclude_headers
         @pkgs.map { |gem| puts gem.to_csv(value_fields) }
+      end
+
+      def markdown(fields)
+        # Calculate the maximum width for each column, including header titles and content
+        max_widths = fields.map do |field|
+          max_content_width = [@pkgs.map { |pkg|
+            value = get_field_value(pkg, field).to_s.gsub(BASH_FORMATTING_REGEX, '').length
+            value
+          }.max, Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').length].max
+          max_content_width
+        end
+
+        # Construct the header with padding
+        header = fields.map.with_index { |field, index|
+          Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').ljust(max_widths[index])
+        }.join(" | ")
+
+        # Adjust the separator to ensure it matches the column widths exactly
+        separator = max_widths.map { |width| ':' + '-' * (width) }.join('-|')
+
+        puts "| #{header} |"
+        puts "|#{separator}-|"
+
+        @pkgs.each do |pkg|
+          puts '| ' + fields.map.with_index { |key, index|
+            val = get_field_value(pkg, key)
+
+            formatting_length = val.length - val.gsub(BASH_FORMATTING_REGEX, '').length
+            val.ljust(max_widths[index] + formatting_length)
+          }.join(' | ') + ' |'
+        end
+      end
+
+      private
+
+      def get_field_value(pkg, field)
+        case field
+        when :groups
+          pkg.group_list
+        when :risk_type
+          Formatter::Risk.new(pkg.risk_type).format
+        when :version
+          Formatter::Version.new(pkg.version, pkg.latest_version).format
+        when :vulnerabilities
+          Formatter::Vulnerability.new(pkg.vulnerabilities).format
+        when :latest_version_date
+          Formatter::VersionDate.new(pkg.latest_version_date).format
+        else
+          pkg.send(field) || ''
+        end
       end
     end
   end

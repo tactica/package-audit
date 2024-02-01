@@ -219,3 +219,10 @@ The gem is available as open source under the terms of the [MIT License](https:/
 ## Code of Conduct
 
 Everyone interacting in the Package::Audit project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/tactica/package-audit/blob/main/CODE_OF_CONDUCT.md).
+
+
+
+| Package      | Version | Latest | Latest Date | Groups      | Vulnerabilities | Risk | Risk Explanation                        |
+|--------------|---------|--------|-------------|-------------|-----------------|------|-----------------------------------------|
+| rubocop-rake | 0.6.0   | 0.6.0  | 2021-06-28  | development |                 | low  | no updates by author in over 2 years    |
+| rubocop      | 1.60.1  | 1.60.2 | 2024-01-24  | development |                 | low  | not at latest version                   |

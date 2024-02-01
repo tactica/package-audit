@@ -3,8 +3,8 @@ module Package
     module Enum
       module Option
         CONFIG = 'config'
-        CSV = 'csv'
-        CSV_EXCLUDE_HEADERS = 'exclude-headers'
+        FORMAT = 'format'
+        EXCLUDE_HEADERS = 'exclude-headers'
         GROUP = 'group'
         INCLUDE_IGNORED = 'include-ignored'
         TECHNOLOGY = 'technology'

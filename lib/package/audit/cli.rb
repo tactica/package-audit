@@ -1,5 +1,6 @@
 require_relative 'const/file'
 require_relative 'const/time'
+require_relative 'enum/format'
 require_relative 'enum/option'
 require_relative 'services/command_parser'
 require_relative 'util//risk_legend'
@@ -25,12 +26,12 @@ module Package
       class_option Enum::Option::INCLUDE_IGNORED,
                    type: :boolean, default: false,
                    desc: 'Include packages ignored by a configuration file'
-      class_option Enum::Option::CSV,
+      class_option Enum::Option::FORMAT,
+                   aliases: '-f', banner: Enum::Format.all.join('|'), type: :string,
+                   desc: "Output reports using a different format (e.g. CSV or Markdown)"
+      class_option Enum::Option::EXCLUDE_HEADERS,
                    type: :boolean, default: false,
-                   desc: 'Output reports using comma separated values (CSV)'
-      class_option Enum::Option::CSV_EXCLUDE_HEADERS,
-                   type: :boolean, default: false,
-                   desc: "Hide headers when using the --#{Enum::Option::CSV} option"
+                   desc: "Hide headers when using the --#{Enum::Option::FORMAT} option"
 
       map '-v' => :version
       map '--version' => :version
@@ -82,8 +83,8 @@ module Package
 
       def within_rescue_block
         yield
-      rescue StandardError => e
-        exit_with_error "#{e.class}: #{e.message}"
+      # rescue StandardError => e
+      #   exit_with_error "#{e.class}: #{e.message}"
       end
 
       def exit_with_error(msg)

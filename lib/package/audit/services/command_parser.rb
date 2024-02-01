@@ -18,9 +18,10 @@ module Package
         @dir = dir
         @options = options
         @report = report
-        @config = parse_config_file
+        @config = parse_config_file!
         @groups = @options[Enum::Option::GROUP]
-        @technologies = parse_technologies
+        @technologies = parse_technologies!
+        validate_format!
         @spinner = Util::Spinner.new('Evaluating packages and their dependencies...')
       end
 
@@ -71,8 +72,8 @@ module Package
 
       def print_results(technology, pkgs, ignored_pkgs)
         PackagePrinter.new(@options, pkgs).print(Const::Fields::DEFAULT)
-        print_summary(technology, pkgs, ignored_pkgs) unless @options[Enum::Option::CSV]
-        print_disclaimer(technology) unless @options[Enum::Option::CSV] || pkgs.empty?
+        print_summary(technology, pkgs, ignored_pkgs) unless @options[Enum::Option::FORMAT] == Enum::Format::CSV
+        print_disclaimer(technology) unless @options[Enum::Option::FORMAT] == Enum::Format::CSV || pkgs.empty?
       end
 
       def print_summary(technology, pkgs, ignored_pkgs)
@@ -103,7 +104,7 @@ module Package
         end
       end
 
-      def parse_config_file
+      def parse_config_file!
         if @options[Enum::Option::CONFIG].nil?
           YAML.load_file("#{@dir}/#{Const::File::CONFIG}") if File.exist? "#{@dir}/#{Const::File::CONFIG}"
         elsif File.exist? @options[Enum::Option::CONFIG]
@@ -113,7 +114,13 @@ module Package
         end
       end
 
-      def parse_technologies
+      def validate_format!
+        format = @options[Enum::Option::FORMAT]
+          raise ArgumentError, "Invalid format: #{format}, should be one of [#{Enum::Format.all.join('|')}]" unless
+            @options[Enum::Option::FORMAT].nil? || Enum::Format.all.include?(format)
+      end
+
+      def parse_technologies!
         technology_validator = Technology::Validator.new(@dir)
         @options[Enum::Option::TECHNOLOGY]&.each { |technology| technology_validator.validate! technology }
         @options[Enum::Option::TECHNOLOGY] || Technology::Detector.new(@dir).detect
