@@ -149,10 +149,10 @@
   diagnostics:
   - range:
       start:
-        line: 34
+        line: 37
         character: 18
       end:
-        line: 34
+        line: 37
         character: 38
     severity: ERROR
     message: Type `singleton(::Package::Audit::Util::SummaryPrinter)` does not have
@@ -160,10 +160,10 @@
     code: Ruby::NoMethod
   - range:
       start:
-        line: 53
+        line: 56
         character: 21
       end:
-        line: 53
+        line: 56
         character: 28
     severity: WARNING
     message: |-
