@@ -56,7 +56,7 @@ module Package
           pkgs.count(&status)
         end
 
-        private_class_method def self.display_results(format, technology, report, pkgs, ignored_pkgs, stats)
+        private_class_method def self.display_results(format, technology, report, pkgs, ignored_pkgs, stats) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/ParameterLists
           if pkgs.any?
             print status_message(stats)
             print Util::BashColor.cyan(' \\') if format == Enum::Format::MARKDOWN
