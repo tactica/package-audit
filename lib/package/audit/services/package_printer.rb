@@ -43,39 +43,33 @@ module Package
       end
 
       def pretty(fields = Const::Fields::DEFAULT) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
-        # find the maximum length of each field across all the packages so we know how many
-        # characters of horizontal space to allocate for each field when printing
-        fields.each do |key|
-          instance_variable_set :"@max_#{key}", Const::Fields::HEADERS[key].length
-          @pkgs.each do |gem|
-            curr_field_length = case key
-                                when :vulnerabilities
-                                  gem.vulnerabilities_grouped.length
-                                when :groups
-                                  gem.group_list.length
-                                else
-                                  gem.send(key)&.gsub(BASH_FORMATTING_REGEX, '')&.length || 0
-                                end
-            max_field_length = instance_variable_get :"@max_#{key}"
-            instance_variable_set :"@max_#{key}", [curr_field_length, max_field_length].max
-          end
+        # Calculate the maximum width for each column, including header titles and content
+        max_widths = fields.map do |field|
+          max_content_width = [@pkgs.map do |pkg|
+            value = get_field_value(pkg, field).to_s.gsub(BASH_FORMATTING_REGEX, '').length
+            value
+          end.max, Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').length].max
+          max_content_width
         end
 
-        line_length = fields.sum { |key| instance_variable_get :"@max_#{key}" } +
-                      (COLUMN_GAP * (fields.length - 1))
+        # Construct the header with padding
+        header = fields.map.with_index do |field, index|
+          Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').ljust(max_widths[index])
+        end.join(' ' * COLUMN_GAP)
 
-        puts '=' * line_length
-        puts fields.map { |key|
-          Const::Fields::HEADERS[key].gsub(BASH_FORMATTING_REGEX, '').ljust(instance_variable_get(:"@max_#{key}"))
-        }.join(' ' * COLUMN_GAP)
-        puts '=' * line_length
+        # Adjust the separator to ensure it matches the column widths exactly
+        separator = max_widths.map { |width| '=' * width }.join('=' * COLUMN_GAP)
+
+        puts separator
+        puts header
+        puts separator
 
         @pkgs.each do |pkg|
-          puts fields.map { |key|
+          puts fields.map.with_index { |key, index|
             val = get_field_value(pkg, key)
 
             formatting_length = val.length - val.gsub(BASH_FORMATTING_REGEX, '').length
-            val.ljust(instance_variable_get(:"@max_#{key}") + formatting_length)
+            val.ljust(max_widths[index] + formatting_length)
           }.join(' ' * COLUMN_GAP)
         end
       end

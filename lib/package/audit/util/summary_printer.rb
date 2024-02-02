@@ -59,11 +59,13 @@ module Package
         private_class_method def self.display_results(format, technology, report, pkgs, ignored_pkgs, stats)
           if pkgs.any?
             print status_message(stats)
-            puts Util::BashColor.cyan(' \\') if format == Enum::Format::MARKDOWN
+            print Util::BashColor.cyan(' \\') if format == Enum::Format::MARKDOWN
+            puts
             total(technology, report, pkgs, ignored_pkgs)
           elsif ignored_pkgs.any?
             print status_message(stats)
-            puts Util::BashColor.cyan(' \\') if format == Enum::Format::MARKDOWN
+            print Util::BashColor.cyan(' \\') if format == Enum::Format::MARKDOWN
+            puts
             puts Util::BashColor.green("There are no deprecated, outdated or vulnerable #{technology} " \
                                        "packages (#{ignored_pkgs.length} ignored)!\n")
           else
