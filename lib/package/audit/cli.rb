@@ -28,7 +28,7 @@ module Package
                    desc: 'Include packages ignored by a configuration file'
       class_option Enum::Option::FORMAT,
                    aliases: '-f', banner: Enum::Format.all.join('|'), type: :string,
-                   desc: "Output reports using a different format (e.g. CSV or Markdown)"
+                   desc: 'Output reports using a different format (e.g. CSV or Markdown)'
       class_option Enum::Option::EXCLUDE_HEADERS,
                    type: :boolean, default: false,
                    desc: "Hide headers when using the --#{Enum::Option::FORMAT} option"
@@ -83,8 +83,8 @@ module Package
 
       def within_rescue_block
         yield
-      # rescue StandardError => e
-      #   exit_with_error "#{e.class}: #{e.message}"
+        # rescue StandardError => e
+        #   exit_with_error "#{e.class}: #{e.message}"
       end
 
       def exit_with_error(msg)

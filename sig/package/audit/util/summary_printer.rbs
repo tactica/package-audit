@@ -4,13 +4,15 @@ module Package
       module SummaryPrinter
         def self.all: -> void
 
+        def self.calculate_statistics: (Array[Package], Array[Package]) -> Hash[Symbol, Integer]
+
         def self.count_status: (Array[Package], Symbol) -> Integer
 
         def self.deprecated: -> void
 
-        def self.display_results: (String, Symbol, Array[Package], Array[Package], Hash[Symbol, Integer]) -> void
+        def self.display_results: (String, String, Symbol, Array[Package], Array[Package], Hash[Symbol, Integer]) -> void
 
-        def self.statistics: (String, Symbol, Array[Package], Array[Package]) -> void
+        def self.statistics: (String, String, Symbol, Array[Package], Array[Package]) -> void
 
         def self.status_message: (Hash[Symbol, Integer]) -> String
 

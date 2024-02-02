@@ -78,7 +78,7 @@ module Package
 
       def print_summary(technology, pkgs, ignored_pkgs)
         if @report == Enum::Report::ALL
-          Util::SummaryPrinter.statistics(technology, @report, pkgs, ignored_pkgs)
+          Util::SummaryPrinter.statistics(@options[Enum::Option::FORMAT], technology, @report, pkgs, ignored_pkgs)
         else
           Util::SummaryPrinter.total(technology, @report, pkgs, ignored_pkgs)
         end
@@ -116,8 +116,8 @@ module Package
 
       def validate_format!
         format = @options[Enum::Option::FORMAT]
-          raise ArgumentError, "Invalid format: #{format}, should be one of [#{Enum::Format.all.join('|')}]" unless
-            @options[Enum::Option::FORMAT].nil? || Enum::Format.all.include?(format)
+        raise ArgumentError, "Invalid format: #{format}, should be one of [#{Enum::Format.all.join('|')}]" unless
+          @options[Enum::Option::FORMAT].nil? || Enum::Format.all.include?(format)
       end
 
       def parse_technologies!

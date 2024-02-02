@@ -3,7 +3,7 @@ module Package
     module Enum
       module Format
         CSV = 'csv'
-        MD = 'md'
+        MARKDOWN = 'md'
 
         def self.all
           constants.map { |key| const_get(key) }.sort

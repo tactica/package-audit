@@ -12,7 +12,7 @@ module Package
 
       COLUMN_GAP = 2
 
-      def initialize( options, pkgs)
+      def initialize(options, pkgs)
         @options = options
         @pkgs = pkgs
       end
@@ -24,7 +24,7 @@ module Package
         case @options[Enum::Option::FORMAT]
         when Enum::Format::CSV
           csv(fields, exclude_headers: @options[Enum::Option::EXCLUDE_HEADERS])
-        when Enum::Format::MD
+        when Enum::Format::MARKDOWN
           markdown(fields)
         else
           pretty(fields)
@@ -99,20 +99,20 @@ module Package
       def markdown(fields)
         # Calculate the maximum width for each column, including header titles and content
         max_widths = fields.map do |field|
-          max_content_width = [@pkgs.map { |pkg|
+          max_content_width = [@pkgs.map do |pkg|
             value = get_field_value(pkg, field).to_s.gsub(BASH_FORMATTING_REGEX, '').length
             value
-          }.max, Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').length].max
+          end.max, Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').length].max
           max_content_width
         end
 
         # Construct the header with padding
-        header = fields.map.with_index { |field, index|
+        header = fields.map.with_index do |field, index|
           Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').ljust(max_widths[index])
-        }.join(" | ")
+        end.join(' | ')
 
         # Adjust the separator to ensure it matches the column widths exactly
-        separator = max_widths.map { |width| ':' + '-' * (width) }.join('-|')
+        separator = max_widths.map { |width| ":#{'-' * width}" }.join('-|')
 
         puts "| #{header} |"
         puts "|#{separator}-|"
@@ -126,8 +126,6 @@ module Package
           }.join(' | ') + ' |'
         end
       end
-
-      private
 
       def get_field_value(pkg, field)
         case field
