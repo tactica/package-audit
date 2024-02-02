@@ -17,9 +17,11 @@ module Package
 
       def learn_more_command: (String) -> String?
 
-      def parse_config_file: -> Hash[String, untyped]?
+      def parse_config_file!: -> Hash[String, untyped]?
 
       def parse_technologies: -> Array[String]
+
+      def parse_technologies!: -> Array[String]
 
       def print_disclaimer: (String) -> void
 
@@ -28,6 +30,8 @@ module Package
       def print_summary: (String, Array[Package], Array[Package]) -> void
 
       def process_technologies: -> int
+
+      def validate_format!: -> void
     end
   end
 end

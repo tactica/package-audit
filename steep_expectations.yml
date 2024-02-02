@@ -145,3 +145,32 @@
     severity: WARNING
     message: 'Cannot find the declaration of constant: `Bundler`'
     code: Ruby::UnknownConstant
+- file: lib/package/audit/services/package_printer.rb
+  diagnostics:
+  - range:
+      start:
+        line: 94
+        character: 19
+      end:
+        line: 99
+        character: 11
+    severity: WARNING
+    message: |-
+      Cannot allow block body have type `(::Integer | nil)` because declared as type `::Integer`
+        (::Integer | nil) <: ::Integer
+          nil <: ::Integer
+    code: Ruby::BlockBodyTypeMismatch
+- file: lib/package/audit/util/summary_printer.rb
+  diagnostics:
+  - range:
+      start:
+        line: 56
+        character: 21
+      end:
+        line: 56
+        character: 28
+    severity: WARNING
+    message: |-
+      Cannot pass a value of type `::Proc` as a block-pass-argument of type `^(::Package::Audit::Package) -> ::boolish`
+        ::Proc <: ^(::Package::Audit::Package) -> ::boolish
+    code: Ruby::BlockTypeMismatch
