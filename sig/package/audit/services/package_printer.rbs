@@ -20,7 +20,9 @@ module Package
 
       def get_field_max_widths: (Array[Symbol]) -> Array[Integer]
 
-      def pretty: (?Array[Symbol]) -> void
+      def markdown: (Array[Symbol]) -> void
+
+      def pretty: (Array[Symbol]) -> void
     end
   end
 end

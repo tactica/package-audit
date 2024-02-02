@@ -42,7 +42,7 @@ module Package
               "Available fields names are: #{Const::Fields::DEFAULT}."
       end
 
-      def pretty(fields = Const::Fields::DEFAULT) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+      def pretty(fields = Const::Fields::DEFAULT) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
         max_widths = get_field_max_widths(fields)
         header = fields.map.with_index do |field, index|
           Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').ljust(max_widths[index])
@@ -56,30 +56,20 @@ module Package
         @pkgs.each do |pkg|
           puts fields.map.with_index { |key, index|
             val = get_field_value(pkg, key)
-
             formatting_length = val.length - val.gsub(BASH_FORMATTING_REGEX, '').length
             val.ljust(max_widths[index] + formatting_length)
           }.join(' ' * COLUMN_GAP)
         end
       end
 
-      def csv(fields, exclude_headers: false)
-        value_fields = fields.map do |field|
-          case field
-          when :groups
-            :group_list
-          when :vulnerabilities
-            :vulnerabilities_grouped
-          else
-            field
-          end
-        end
-
+      def csv(fields = Const::Fields::DEFAULT, exclude_headers: false) #
         puts fields.join(',') unless exclude_headers
-        @pkgs.map { |gem| puts gem.to_csv(value_fields) }
+        @pkgs.map do |pkg|
+          puts fields.map { |field| get_field_value(pkg, field) }.join(',').gsub(BASH_FORMATTING_REGEX, '')
+        end
       end
 
-      def markdown(fields)
+      def markdown(fields = Const::Fields::DEFAULT) #
         max_widths = get_field_max_widths(fields)
         header = fields.map.with_index do |field, index|
           Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').ljust(max_widths[index])
