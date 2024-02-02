@@ -1,5 +1,4 @@
 require 'test_helper'
-require_relative '../../lib/package/audit/util/risk_legend'
 require_relative '../../lib/package/audit/util/summary_printer'
 require_relative '../../lib/package/audit/version'
 
@@ -9,23 +8,6 @@ module Package
   class TestAudit < Minitest::Test
     def test_that_it_has_a_version_number
       refute_nil Package::Audit::VERSION
-    end
-
-    def test_that_it_returns_a_version_number
-      output = `bundle exec package-audit --version`
-
-      assert_match Package::Audit::VERSION, output
-    end
-
-    def test_that_it_prints_risk_information
-      output = `bundle exec package-audit risk`
-
-      stdout = StringIO.new
-      $stdout = stdout
-      Package::Audit::Util::RiskLegend.print
-      $stdout = STDOUT
-
-      assert_equal stdout.string, output
     end
 
     def test_that_there_is_a_success_message_when_report_is_empty

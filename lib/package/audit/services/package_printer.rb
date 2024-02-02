@@ -21,8 +21,11 @@ module Package
         check_fields(fields)
         return if @pkgs.empty?
 
-        if @options[Enum::Option::CSV]
+        case @options[Enum::Option::FORMAT]
+        when Enum::Format::CSV
           csv(fields, exclude_headers: @options[Enum::Option::CSV_EXCLUDE_HEADERS])
+        when Enum::Format::MARKDOWN
+          markdown(fields)
         else
           pretty(fields)
         end
@@ -39,72 +42,78 @@ module Package
               "Available fields names are: #{Const::Fields::DEFAULT}."
       end
 
-      def pretty(fields = Const::Fields::DEFAULT) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
-        # find the maximum length of each field across all the packages so we know how many
-        # characters of horizontal space to allocate for each field when printing
-        fields.each do |key|
-          instance_variable_set :"@max_#{key}", Const::Fields::HEADERS[key].length
-          @pkgs.each do |gem|
-            curr_field_length = case key
-                                when :vulnerabilities
-                                  gem.vulnerabilities_grouped.length
-                                when :groups
-                                  gem.group_list.length
-                                else
-                                  gem.send(key)&.gsub(BASH_FORMATTING_REGEX, '')&.length || 0
-                                end
-            max_field_length = instance_variable_get :"@max_#{key}"
-            instance_variable_set :"@max_#{key}", [curr_field_length, max_field_length].max
-          end
-        end
+      def pretty(fields = Const::Fields::DEFAULT) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+        max_widths = get_field_max_widths(fields)
+        header = fields.map.with_index do |field, index|
+          Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').ljust(max_widths[index])
+        end.join(' ' * COLUMN_GAP)
+        separator = max_widths.map { |width| '=' * width }.join('=' * COLUMN_GAP)
 
-        line_length = fields.sum { |key| instance_variable_get :"@max_#{key}" } +
-                      (COLUMN_GAP * (fields.length - 1))
-
-        puts '=' * line_length
-        puts fields.map { |key|
-          Const::Fields::HEADERS[key].gsub(BASH_FORMATTING_REGEX, '').ljust(instance_variable_get(:"@max_#{key}"))
-        }.join(' ' * COLUMN_GAP)
-        puts '=' * line_length
+        puts separator
+        puts header
+        puts separator
 
         @pkgs.each do |pkg|
-          puts fields.map { |key|
-            val = pkg.send(key) || ''
-            val = case key
-                  when :groups
-                    pkg.group_list
-                  when :risk_type
-                    Formatter::Risk.new(pkg.risk_type).format
-                  when :version
-                    Formatter::Version.new(pkg.version, pkg.latest_version).format
-                  when :vulnerabilities
-                    Formatter::Vulnerability.new(pkg.vulnerabilities).format
-                  when :latest_version_date
-                    Formatter::VersionDate.new(pkg.latest_version_date).format
-                  else
-                    val
-                  end
-
+          puts fields.map.with_index { |key, index|
+            val = get_field_value(pkg, key)
             formatting_length = val.length - val.gsub(BASH_FORMATTING_REGEX, '').length
-            val.ljust(instance_variable_get(:"@max_#{key}") + formatting_length)
+            val.ljust(max_widths[index] + formatting_length)
           }.join(' ' * COLUMN_GAP)
         end
       end
 
-      def csv(fields, exclude_headers: false)
-        value_fields = fields.map do |field|
-          case field
-          when :groups
-            :group_list
-          when :vulnerabilities
-            :vulnerabilities_grouped
-          else
-            field
-          end
-        end
-
+      def csv(fields = Const::Fields::DEFAULT, exclude_headers: false)
         puts fields.join(',') unless exclude_headers
-        @pkgs.map { |gem| puts gem.to_csv(value_fields) }
+        @pkgs.map do |pkg|
+          puts fields.map { |field| get_field_value(pkg, field) }.join(',').gsub(BASH_FORMATTING_REGEX, '')
+        end
+      end
+
+      def markdown(fields = Const::Fields::DEFAULT) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+        max_widths = get_field_max_widths(fields)
+        header = fields.map.with_index do |field, index|
+          Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').ljust(max_widths[index])
+        end.join(' | ')
+        separator = max_widths.map { |width| ":#{'-' * width}" }.join('-|')
+
+        puts "| #{header} |"
+        puts "|#{separator}-|"
+
+        @pkgs.each do |pkg|
+          row = fields.map.with_index do |key, index|
+            val = get_field_value(pkg, key)
+            formatting_length = val.length - val.gsub(BASH_FORMATTING_REGEX, '').length
+            val.ljust(max_widths[index] + formatting_length)
+          end
+          puts "| #{row.join(' | ')} |"
+        end
+      end
+
+      def get_field_max_widths(fields)
+        # Calculate the maximum width for each column, including header titles and content
+        fields.map do |field|
+          [@pkgs.map do |pkg|
+            value = get_field_value(pkg, field).to_s.gsub(BASH_FORMATTING_REGEX, '').length
+            value
+          end.max, Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').length].max
+        end
+      end
+
+      def get_field_value(pkg, field) # rubocop:disable Metrics/MethodLength
+        case field
+        when :groups
+          pkg.group_list
+        when :risk_type
+          Formatter::Risk.new(pkg.risk_type).format
+        when :version
+          Formatter::Version.new(pkg.version, pkg.latest_version).format
+        when :vulnerabilities
+          Formatter::Vulnerability.new(pkg.vulnerabilities).format
+        when :latest_version_date
+          Formatter::VersionDate.new(pkg.latest_version_date).format
+        else
+          pkg.send(field) || ''
+        end
       end
     end
   end

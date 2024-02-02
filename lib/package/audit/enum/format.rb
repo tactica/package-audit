@@ -1,9 +1,9 @@
 module Package
   module Audit
     module Enum
-      module Technology
-        NODE = 'node'
-        RUBY = 'ruby'
+      module Format
+        CSV = 'csv'
+        MARKDOWN = 'md'
 
         def self.all
           constants.map { |key| const_get(key) }.sort

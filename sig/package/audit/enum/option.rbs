@@ -3,7 +3,7 @@ module Package
     module Enum
       module Option
         CONFIG: String
-        CSV: String
+        FORMAT: String
         CSV_EXCLUDE_HEADERS: String
         GROUP: String
         INCLUDE_IGNORED: String

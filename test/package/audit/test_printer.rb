@@ -2,6 +2,7 @@ require 'test_helper'
 require 'stringio'
 
 require_relative '../../../lib/package/audit/const/fields'
+require_relative '../../../lib/package/audit/enum/format'
 require_relative '../../../lib/package/audit/util/bash_color'
 require_relative '../../../lib/package/audit/services/package_printer'
 require_relative '../../../lib/package/audit/formatter/vulnerability'
@@ -41,19 +42,36 @@ module Package
         end
       end
 
-      def test_that_the_dependencies_are_displayed_correctly
+      def test_that_the_dependencies_are_displayed_correctly # rubocop:disable Metrics/AbcSize
         PackagePrinter.new({}, @gems).print(%i[name version latest_version latest_version_date])
         lines = @output.string.split("\n")
 
         assert_equal 6, lines.length
+        assert_equal '========================================', lines[0]
+        assert_equal 'Package    Version  Latest   Latest Date', lines[1]
+        assert_equal '========================================', lines[2]
         assert_equal "fileutils  1.#{Util::BashColor.yellow('5.0')}    1.7.1    #{@today} ", lines[3]
         assert_equal "puma       5.1.1    5.1.1    #{Util::BashColor.yellow('2020-12-10')} ", lines[4]
         assert_equal "rails      #{Util::BashColor.orange('6.0.0')}    7.0.4.3  #{@today} ", lines[5]
       end
 
+      def test_that_the_dependencies_are_displayed_correctly_in_markdown # rubocop:disable Metrics/AbcSize
+        options = {Enum::Option::FORMAT => Enum::Format::MARKDOWN}
+        PackagePrinter.new(options, @gems).print(%i[name version latest_version latest_version_date])
+        lines = @output.string.split("\n")
+
+        assert_equal 5, lines.length
+        assert_equal '| Package   | Version | Latest  | Latest Date |', lines[0]
+        assert_equal '|:----------|:--------|:--------|:------------|', lines[1]
+        assert_equal "| fileutils | 1.#{Util::BashColor.yellow('5.0')}   | 1.7.1   | #{@today}  |", lines[2]
+        assert_equal "| puma      | 5.1.1   | 5.1.1   | #{Util::BashColor.yellow('2020-12-10')}  |", lines[3]
+        assert_equal "| rails     | #{Util::BashColor.orange('6.0.0')}   | 7.0.4.3 | #{@today}  |", lines[4]
+      end
+
       def test_that_the_dependencies_are_displayed_correctly_in_csv_with_headers # rubocop:disable Metrics/AbcSize
+        options = {Enum::Option::FORMAT => Enum::Format::CSV}
         columns = %i[name version latest_version groups]
-        PackagePrinter.new({ 'csv' => true}, @gems).print(columns)
+        PackagePrinter.new(options, @gems).print(columns)
         lines = @output.string.split("\n")
 
         assert_equal @gems.length + 1, lines.length
@@ -72,10 +90,11 @@ module Package
       end
 
       def test_that_vulnerabilities_are_displayed_correctly_in_csv
-        PackagePrinter.new({ 'csv' => true}, [@rails]).print(%i[vulnerabilities])
+        options = {Enum::Option::FORMAT => Enum::Format::CSV}
+        PackagePrinter.new(options, [@rails]).print(%i[vulnerabilities])
         lines = @output.string.split("\n")
 
-        assert_equal 'medium(1)|high(2)', lines[1]
+        assert_equal 'medium(1) high(2)', lines[1]
       end
     end
   end

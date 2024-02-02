@@ -41,7 +41,7 @@ module Package
       end
 
       def group_list
-        @groups.join('|')
+        @groups.join(' ')
       end
 
       def vulnerabilities_grouped

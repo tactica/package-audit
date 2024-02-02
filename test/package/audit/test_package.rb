@@ -20,7 +20,7 @@ module Package
       end
 
       def test_that_the_group_list_is_properly_delimited
-        assert_equal @package.groups.join('|'), @package.group_list
+        assert_equal @package.groups.join(' '), @package.group_list
       end
 
       def test_that_grouped_vulnerabilities_are_formatted_correctly

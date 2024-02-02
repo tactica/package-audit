@@ -33,9 +33,9 @@ module Package
           end
         end
 
-        def self.statistics(technology, report, pkgs, ignored_pkgs)
+        def self.statistics(format, technology, report, pkgs, ignored_pkgs)
           stats = calculate_statistics(pkgs, ignored_pkgs)
-          display_results(technology, report, pkgs, ignored_pkgs, stats)
+          display_results(format, technology, report, pkgs, ignored_pkgs, stats)
         end
 
         private_class_method def self.calculate_statistics(pkgs, ignored_pkgs)
@@ -56,12 +56,16 @@ module Package
           pkgs.count(&status)
         end
 
-        private_class_method def self.display_results(technology, report, pkgs, ignored_pkgs, stats)
+        private_class_method def self.display_results(format, technology, report, pkgs, ignored_pkgs, stats) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/ParameterLists
           if pkgs.any?
-            puts status_message(stats)
+            print status_message(stats)
+            print Util::BashColor.cyan(' \\') if format == Enum::Format::MARKDOWN
+            puts
             total(technology, report, pkgs, ignored_pkgs)
           elsif ignored_pkgs.any?
-            puts status_message(stats)
+            print status_message(stats)
+            print Util::BashColor.cyan(' \\') if format == Enum::Format::MARKDOWN
+            puts
             puts Util::BashColor.green("There are no deprecated, outdated or vulnerable #{technology} " \
                                        "packages (#{ignored_pkgs.length} ignored)!\n")
           else

@@ -1,5 +1,6 @@
 require_relative 'const/file'
 require_relative 'const/time'
+require_relative 'enum/format'
 require_relative 'enum/option'
 require_relative 'services/command_parser'
 require_relative 'util//risk_legend'
@@ -25,12 +26,12 @@ module Package
       class_option Enum::Option::INCLUDE_IGNORED,
                    type: :boolean, default: false,
                    desc: 'Include packages ignored by a configuration file'
-      class_option Enum::Option::CSV,
-                   type: :boolean, default: false,
-                   desc: 'Output reports using comma separated values (CSV)'
+      class_option Enum::Option::FORMAT,
+                   aliases: '-f', banner: Enum::Format.all.join('|'), type: :string,
+                   desc: 'Output reports using a different format (e.g. CSV or Markdown)'
       class_option Enum::Option::CSV_EXCLUDE_HEADERS,
                    type: :boolean, default: false,
-                   desc: "Hide headers when using the --#{Enum::Option::CSV} option"
+                   desc: "Hide headers when using the #{Enum::Format::CSV} format"
 
       map '-v' => :version
       map '--version' => :version

@@ -145,19 +145,23 @@
     severity: WARNING
     message: 'Cannot find the declaration of constant: `Bundler`'
     code: Ruby::UnknownConstant
-- file: lib/package/audit/util/summary_printer.rb
+- file: lib/package/audit/services/package_printer.rb
   diagnostics:
   - range:
       start:
-        line: 37
-        character: 18
+        line: 94
+        character: 19
       end:
-        line: 37
-        character: 38
-    severity: ERROR
-    message: Type `singleton(::Package::Audit::Util::SummaryPrinter)` does not have
-      method `calculate_statistics`
-    code: Ruby::NoMethod
+        line: 99
+        character: 11
+    severity: WARNING
+    message: |-
+      Cannot allow block body have type `(::Integer | nil)` because declared as type `::Integer`
+        (::Integer | nil) <: ::Integer
+          nil <: ::Integer
+    code: Ruby::BlockBodyTypeMismatch
+- file: lib/package/audit/util/summary_printer.rb
+  diagnostics:
   - range:
       start:
         line: 56
