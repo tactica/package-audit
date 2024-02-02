@@ -141,16 +141,22 @@ gem install package-audit
     package-audit --group staging --group production [DIR]
     ```
 
+* To produce the same report in a CSV format run:
+
+    ```bash
+    package-audit --format csv
+    ```
+
+* To produce the same report in a Markdown format run:
+
+    ```bash
+    package-audit --format md
+    ```
+
 * To show how risk is calculated for the above report run:
 
     ```bash
     package-audit risk
-    ```
-
-* To produce the same report in a CSV format run:
-
-    ```bash
-    package-audit --csv
     ```
 
 #### For a list of all commands and their options run:

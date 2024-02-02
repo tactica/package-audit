@@ -42,7 +42,7 @@ module Package
         end
       end
 
-      def test_that_the_dependencies_are_displayed_correctly
+      def test_that_the_dependencies_are_displayed_correctly # rubocop:disable Metrics/AbcSize
         PackagePrinter.new({}, @gems).print(%i[name version latest_version latest_version_date])
         lines = @output.string.split("\n")
 
@@ -55,7 +55,7 @@ module Package
         assert_equal "rails      #{Util::BashColor.orange('6.0.0')}    7.0.4.3  #{@today} ", lines[5]
       end
 
-      def test_that_the_dependencies_are_displayed_correctly_in_markdown
+      def test_that_the_dependencies_are_displayed_correctly_in_markdown # rubocop:disable Metrics/AbcSize
         options = {Enum::Option::FORMAT => Enum::Format::MARKDOWN}
         PackagePrinter.new(options, @gems).print(%i[name version latest_version latest_version_date])
         lines = @output.string.split("\n")
@@ -66,7 +66,6 @@ module Package
         assert_equal "| fileutils | 1.#{Util::BashColor.yellow('5.0')}   | 1.7.1   | #{@today}  |", lines[2]
         assert_equal "| puma      | 5.1.1   | 5.1.1   | #{Util::BashColor.yellow('2020-12-10')}  |", lines[3]
         assert_equal "| rails     | #{Util::BashColor.orange('6.0.0')}   | 7.0.4.3 | #{@today}  |", lines[4]
-
       end
 
       def test_that_the_dependencies_are_displayed_correctly_in_csv_with_headers # rubocop:disable Metrics/AbcSize

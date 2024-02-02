@@ -8,13 +8,13 @@ require 'bundler'
 module Package
   module Audit
     class Cli < Minitest::Test
-      def test_that_it_the_version_command_works
+      def test_that_it_version_command_works
         output = `bundle exec package-audit --version`
 
         assert_match VERSION, output
       end
 
-      def test_that_it_the_risk_command_works
+      def test_that_it_risk_command_works
         output = `bundle exec package-audit risk`
 
         stdout = StringIO.new
@@ -35,6 +35,24 @@ module Package
         output = `bundle exec package-audit invalid`
 
         assert_match '"invalid" is not a valid directory', output
+      end
+
+      def test_that_that_config_option_works
+        output = `bundle exec package-audit test/files/gemfile/empty --config test/files/config/.package-audit.yml`
+
+        assert_match 'There are no deprecated, outdated or vulnerable ruby packages!', output
+      end
+
+      def test_that_that_config_option_alias_works
+        output = `bundle exec package-audit test/files/gemfile/empty -c test/files/config/.package-audit.yml`
+
+        assert_match 'There are no deprecated, outdated or vulnerable ruby packages!', output
+      end
+
+      def test_that_that_config_option_returns_an_appropriate_error
+        output = `bundle exec package-audit test/files/gemfile/empty -c test/files/config/invalid`
+
+        assert_match 'Configuration file not found: test/files/config/invalid', output
       end
 
       def test_that_that_include_ignored_option_works
