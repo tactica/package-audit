@@ -80,12 +80,12 @@ module Package
         puts "|#{separator}-|"
 
         @pkgs.each do |pkg|
-          puts "| #{fields.map.with_index { |key, index|
+          row = fields.map.with_index do |key, index|
             val = get_field_value(pkg, key)
-
             formatting_length = val.length - val.gsub(BASH_FORMATTING_REGEX, '').length
             val.ljust(max_widths[index] + formatting_length)
-          }.join(' | ')} |"
+            end
+          puts "| #{row.join(' | ')} |"
         end
       end
 
