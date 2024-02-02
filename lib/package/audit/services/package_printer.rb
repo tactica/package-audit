@@ -43,21 +43,10 @@ module Package
       end
 
       def pretty(fields = Const::Fields::DEFAULT) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
-        # Calculate the maximum width for each column, including header titles and content
-        max_widths = fields.map do |field|
-          max_content_width = [@pkgs.map do |pkg|
-            value = get_field_value(pkg, field).to_s.gsub(BASH_FORMATTING_REGEX, '').length
-            value
-          end.max, Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').length].max
-          max_content_width
-        end
-
-        # Construct the header with padding
+        max_widths = get_field_max_widths(fields)
         header = fields.map.with_index do |field, index|
           Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').ljust(max_widths[index])
         end.join(' ' * COLUMN_GAP)
-
-        # Adjust the separator to ensure it matches the column widths exactly
         separator = max_widths.map { |width| '=' * width }.join('=' * COLUMN_GAP)
 
         puts separator
@@ -91,33 +80,32 @@ module Package
       end
 
       def markdown(fields)
-        # Calculate the maximum width for each column, including header titles and content
-        max_widths = fields.map do |field|
-          max_content_width = [@pkgs.map do |pkg|
-            value = get_field_value(pkg, field).to_s.gsub(BASH_FORMATTING_REGEX, '').length
-            value
-          end.max, Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').length].max
-          max_content_width
-        end
-
-        # Construct the header with padding
+        max_widths = get_field_max_widths(fields)
         header = fields.map.with_index do |field, index|
           Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').ljust(max_widths[index])
         end.join(' | ')
-
-        # Adjust the separator to ensure it matches the column widths exactly
         separator = max_widths.map { |width| ":#{'-' * width}" }.join('-|')
 
         puts "| #{header} |"
         puts "|#{separator}-|"
 
         @pkgs.each do |pkg|
-          puts '| ' + fields.map.with_index { |key, index|
+          puts "| #{fields.map.with_index { |key, index|
             val = get_field_value(pkg, key)
 
             formatting_length = val.length - val.gsub(BASH_FORMATTING_REGEX, '').length
             val.ljust(max_widths[index] + formatting_length)
-          }.join(' | ') + ' |'
+          }.join(' | ')} |"
+        end
+      end
+
+      def get_field_max_widths(fields)
+        # Calculate the maximum width for each column, including header titles and content
+        fields.map do |field|
+          [@pkgs.map do |pkg|
+            value = get_field_value(pkg, field).to_s.gsub(BASH_FORMATTING_REGEX, '').length
+            value
+          end.max, Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').length].max
         end
       end
 
