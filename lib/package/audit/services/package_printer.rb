@@ -62,14 +62,14 @@ module Package
         end
       end
 
-      def csv(fields = Const::Fields::DEFAULT, exclude_headers: false) #
+      def csv(fields = Const::Fields::DEFAULT, exclude_headers: false)
         puts fields.join(',') unless exclude_headers
         @pkgs.map do |pkg|
           puts fields.map { |field| get_field_value(pkg, field) }.join(',').gsub(BASH_FORMATTING_REGEX, '')
         end
       end
 
-      def markdown(fields = Const::Fields::DEFAULT) #
+      def markdown(fields = Const::Fields::DEFAULT)
         max_widths = get_field_max_widths(fields)
         header = fields.map.with_index do |field, index|
           Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').ljust(max_widths[index])
@@ -84,7 +84,7 @@ module Package
             val = get_field_value(pkg, key)
             formatting_length = val.length - val.gsub(BASH_FORMATTING_REGEX, '').length
             val.ljust(max_widths[index] + formatting_length)
-            end
+          end
           puts "| #{row.join(' | ')} |"
         end
       end
