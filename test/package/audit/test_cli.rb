@@ -1,0 +1,59 @@
+require 'test_helper'
+require_relative '../../../lib/package/audit/enum/format'
+require_relative '../../../lib/package/audit/enum/technology'
+require_relative '../../../lib/package/audit/util/risk_legend'
+require_relative '../../../lib/package/audit/version'
+require 'bundler'
+
+module Package
+  module Audit
+    class Cli < Minitest::Test
+      def test_that_it_the_version_command_works
+        output = `bundle exec package-audit --version`
+
+        assert_match Package::Audit::VERSION, output
+      end
+
+      def test_that_it_the_risk_command_works
+        output = `bundle exec package-audit risk`
+
+        stdout = StringIO.new
+        $stdout = stdout
+        Package::Audit::Util::RiskLegend.print
+        $stdout = STDOUT
+
+        assert_equal stdout.string, output
+      end
+
+      def test_that_help_command_works
+        output = `bundle exec package-audit help`
+
+        assert_match 'Commands:', output
+      end
+
+      def test_that_that_exclude_headers_option_works
+        output = `bundle exec package-audit test/files/gemfile/empty --exclude-headers`
+
+        assert_match 'There are no deprecated, outdated or vulnerable ruby packages!', output
+      end
+
+      def test_that_that_format_option_works
+        output = `bundle exec package-audit test/files/gemfile/empty --format invalid`
+
+        assert_match "Invalid format: invalid, should be one of [#{Enum::Format.all.join('|')}]", output
+      end
+
+      def test_that_that_format_option_alias_works
+        output = `bundle exec package-audit test/files/gemfile/empty -f invalid`
+
+        assert_match "Invalid format: invalid, should be one of [#{Enum::Format.all.join('|')}]", output
+      end
+
+      def test_that_that_technology_option_works
+        output = `bundle exec package-audit test/files/gemfile/empty --technology invalid`
+
+        assert_match "\"invalid\" is not a supported technology, use one of #{Enum::Technology.all}", output
+      end
+    end
+  end
+end
