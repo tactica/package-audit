@@ -23,7 +23,7 @@ module Package
 
         case @options[Enum::Option::FORMAT]
         when Enum::Format::CSV
-          csv(fields, exclude_headers: @options[Enum::Option::EXCLUDE_HEADERS])
+          csv(fields, exclude_headers: @options[Enum::Option::CSV_EXCLUDE_HEADERS])
         when Enum::Format::MARKDOWN
           markdown(fields)
         else

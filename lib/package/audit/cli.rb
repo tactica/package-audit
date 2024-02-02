@@ -29,9 +29,9 @@ module Package
       class_option Enum::Option::FORMAT,
                    aliases: '-f', banner: Enum::Format.all.join('|'), type: :string,
                    desc: 'Output reports using a different format (e.g. CSV or Markdown)'
-      class_option Enum::Option::EXCLUDE_HEADERS,
+      class_option Enum::Option::CSV_EXCLUDE_HEADERS,
                    type: :boolean, default: false,
-                   desc: "Hide headers when using the --#{Enum::Option::FORMAT} option"
+                   desc: "Hide headers when using the #{Enum::Format::CSV} format"
 
       map '-v' => :version
       map '--version' => :version
