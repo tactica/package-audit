@@ -11,7 +11,7 @@ module Package
       def test_that_it_the_version_command_works
         output = `bundle exec package-audit --version`
 
-        assert_match Package::Audit::VERSION, output
+        assert_match VERSION, output
       end
 
       def test_that_it_the_risk_command_works
@@ -19,7 +19,7 @@ module Package
 
         stdout = StringIO.new
         $stdout = stdout
-        Package::Audit::Util::RiskLegend.print
+        Util::RiskLegend.print
         $stdout = STDOUT
 
         assert_equal stdout.string, output
@@ -29,6 +29,18 @@ module Package
         output = `bundle exec package-audit help`
 
         assert_match 'Commands:', output
+      end
+
+      def test_that_unknown_commands_give_an_appropriate_error
+        output = `bundle exec package-audit invalid`
+
+        assert_match '"invalid" is not a valid directory', output
+      end
+
+      def test_that_that_include_ignored_option_works
+        output = `bundle exec package-audit test/files/gemfile/empty --include-ignored`
+
+        assert_match 'There are no deprecated, outdated or vulnerable ruby packages!', output
       end
 
       def test_that_that_exclude_headers_option_works
