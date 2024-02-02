@@ -69,7 +69,7 @@ module Package
         end
       end
 
-      def markdown(fields = Const::Fields::DEFAULT)
+      def markdown(fields = Const::Fields::DEFAULT) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
         max_widths = get_field_max_widths(fields)
         header = fields.map.with_index do |field, index|
           Const::Fields::HEADERS[field].gsub(BASH_FORMATTING_REGEX, '').ljust(max_widths[index])
@@ -99,7 +99,7 @@ module Package
         end
       end
 
-      def get_field_value(pkg, field)
+      def get_field_value(pkg, field) # rubocop:disable Metrics/MethodLength
         case field
         when :groups
           pkg.group_list
