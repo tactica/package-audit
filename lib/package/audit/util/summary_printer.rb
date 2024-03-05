@@ -18,18 +18,18 @@ module Package
 
         def self.vulnerable(technology, cmd)
           printf("%<info>s\n%<cmd>s\n\n",
-                 info: Util::BashColor.blue("To get more information about the #{technology} vulnerabilities run:"),
+                 info: Util::BashColor.blue("For more information about #{technology.capitalize} vulnerabilities run:"),
                  cmd: Util::BashColor.magenta(" > #{cmd}"))
         end
 
         def self.total(technology, report, pkgs, ignored_pkgs)
           if ignored_pkgs.any?
-            puts Util::BashColor.cyan("Found a total of #{pkgs.length} #{technology} packages " \
+            puts Util::BashColor.cyan("Found a total of #{pkgs.length} #{technology.capitalize} packages " \
                                       "(#{ignored_pkgs.length} ignored).\n")
           elsif pkgs.any?
-            puts Util::BashColor.cyan("Found a total of #{pkgs.length} #{technology} packages.\n")
+            puts Util::BashColor.cyan("Found a total of #{pkgs.length} #{technology.capitalize} packages.\n")
           else
-            puts Util::BashColor.green("There are no #{report} #{technology} packages!\n")
+            puts Util::BashColor.green("There are no #{report} #{technology.capitalize} packages!\n")
           end
         end
 
@@ -66,10 +66,11 @@ module Package
             print status_message(stats)
             print Util::BashColor.cyan(' \\') if format == Enum::Format::MARKDOWN
             puts
-            puts Util::BashColor.green("There are no deprecated, outdated or vulnerable #{technology} " \
+            puts Util::BashColor.green("There are no deprecated, outdated or vulnerable #{technology.capitalize} " \
                                        "packages (#{ignored_pkgs.length} ignored)!\n")
           else
-            puts Util::BashColor.green("There are no deprecated, outdated or vulnerable #{technology} packages!\n")
+            puts Util::BashColor.green("There are no deprecated, outdated or vulnerable #{technology.capitalize} " \
+                                       "packages!\n")
           end
         end
 
