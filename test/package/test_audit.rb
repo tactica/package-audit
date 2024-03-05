@@ -59,7 +59,7 @@ module Package
     def test_that_there_is_a_report_of_gems
       output = `bundle exec package-audit test/files/gemfile/report`
 
-      assert_match 'Found a total of 3 ruby packages.', output
+      assert_match 'Found a total of 3 Ruby packages.', output
       assert_match '1 vulnerable (11 vulnerabilities), 2 outdated, 1 deprecated.', output
     end
 
