@@ -145,6 +145,18 @@
     severity: WARNING
     message: 'Cannot find the declaration of constant: `Bundler`'
     code: Ruby::UnknownConstant
+- file: lib/package/audit/services/command_parser.rb
+  diagnostics:
+  - range:
+      start:
+        line: 135
+        character: 24
+      end:
+        line: 135
+        character: 28
+    severity: ERROR
+    message: Type `(::Array[::String] | nil)` does not have method `join`
+    code: Ruby::NoMethod
 - file: lib/package/audit/services/package_printer.rb
   diagnostics:
   - range:
