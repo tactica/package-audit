@@ -43,7 +43,7 @@ serviceworker-rails       0.6.0    0.6.0    2019-07-09                         m
 turbolinks                5.2.1    5.2.1    2019-09-18                         medium  no updates by author in over 2 years
 
 3 vulnerable (7 vulnerabilities), 6 outdated, 9 deprecated.
-Found a total of 14 ruby packages.
+Found a total of 14 Ruby packages.
 
 To get more information about the ruby gem vulnerabilities run:
  > bundle-audit check --update
@@ -71,7 +71,7 @@ simple-plist              1.3.0    1.3.1    2022-03-31   critical(1)          hi
 urijs                     1.19.7   1.19.11  2022-04-03   high(1) moderate(4)  high    security vulnerability
 
 10 vulnerable (61 vulnerabilities), 11 outdated, 7 deprecated.
-Found a total of 18 node packages.
+Found a total of 18 Node packages.
 
 To get more information about the node module vulnerabilities run:
  > yarn audit

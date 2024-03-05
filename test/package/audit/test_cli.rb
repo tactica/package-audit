@@ -40,13 +40,13 @@ module Package
       def test_that_that_config_option_works
         output = `bundle exec package-audit test/files/gemfile/empty --config test/files/config/.package-audit.yml`
 
-        assert_match 'There are no deprecated, outdated or vulnerable ruby packages!', output
+        assert_match 'There are no deprecated, outdated or vulnerable Ruby packages!', output
       end
 
       def test_that_that_config_option_alias_works
         output = `bundle exec package-audit test/files/gemfile/empty -c test/files/config/.package-audit.yml`
 
-        assert_match 'There are no deprecated, outdated or vulnerable ruby packages!', output
+        assert_match 'There are no deprecated, outdated or vulnerable Ruby packages!', output
       end
 
       def test_that_that_config_option_returns_an_appropriate_error
@@ -58,13 +58,13 @@ module Package
       def test_that_that_include_ignored_option_works
         output = `bundle exec package-audit test/files/gemfile/empty --include-ignored`
 
-        assert_match 'There are no deprecated, outdated or vulnerable ruby packages!', output
+        assert_match 'There are no deprecated, outdated or vulnerable Ruby packages!', output
       end
 
       def test_that_that_exclude_headers_option_works
         output = `bundle exec package-audit test/files/gemfile/empty --exclude-headers`
 
-        assert_match 'There are no deprecated, outdated or vulnerable ruby packages!', output
+        assert_match 'There are no deprecated, outdated or vulnerable Ruby packages!', output
       end
 
       def test_that_that_format_option_works
