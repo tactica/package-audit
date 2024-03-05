@@ -13,7 +13,7 @@ require 'yaml'
 
 module Package
   module Audit
-    class CommandParser
+    class CommandParser # rubocop:disable Metrics/ClassLength
       def initialize(dir, options, report)
         @dir = dir
         @options = options
@@ -22,7 +22,7 @@ module Package
         @groups = @options[Enum::Option::GROUP]
         @technologies = parse_technologies!
         validate_format!
-        @spinner = Util::Spinner.new('Evaluating packages and their dependencies...')
+        @spinner = Util::Spinner.new("Evaluating packages and their dependencies for #{human_readable_technologies}...")
       end
 
       def run
@@ -123,7 +123,16 @@ module Package
       def parse_technologies!
         technology_validator = Technology::Validator.new(@dir)
         @options[Enum::Option::TECHNOLOGY]&.each { |technology| technology_validator.validate! technology }
-        @options[Enum::Option::TECHNOLOGY] || Technology::Detector.new(@dir).detect
+        (@options[Enum::Option::TECHNOLOGY] || Technology::Detector.new(@dir).detect).sort
+      end
+
+      def human_readable_technologies
+        array = @technologies.map(&:capitalize)
+        return '' if array.nil?
+        return array.join if array.size <= 1
+        return array.join(' and ') if array.size == 2
+
+        "#{array[0..-2].join(', ')}, and #{array.last}"
       end
     end
   end
